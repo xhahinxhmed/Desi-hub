@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DESI HUB PREMIUM</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: #050a05; min-height: 100vh; overflow-x: hidden; margin: 0; }
+        .app-container {
+            max-width: 480px; margin: 0 auto; min-height: 100vh;
+            background: #071207; position: relative;
+            box-shadow: 0 0 60px rgba(0, 255, 0, 0.05);
+        }
+        /* Page switching */
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Scrollbar hide */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Category chips - Updated to be centered and neat */
+        .cat-chip {
+            background: #0f1f0f; border: 1px solid #1a331a;
+            color: #a3d9a3; padding: 7px 14px; border-radius: 10px;
+            font-size: 12px; font-weight: 600; white-space: nowrap;
+            transition: all 0.25s ease; cursor: pointer;
+        }
+        .cat-chip.active {
+            background: linear-gradient(135deg, #00c853, #00e676);
+            color: #000; border-color: #00e676;
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.2);
+        }
+        .cat-chip:active { transform: scale(0.95); }
+
+        /* Thumbnail cards */
+        .thumb-card {
+            position: relative; border-radius: 16px; overflow: hidden;
+            cursor: pointer; transition: transform 0.25s ease;
+            background: #0a1a0a;
+        }
+        .thumb-card:active { transform: scale(0.97); }
+        .thumb-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .thumb-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%);
+        }
+        .collection-badge {
+            position: absolute; bottom: 10px; right: 10px;
+            background: rgba(0,0,0,0.8); color: white;
+            font-size: 11px; font-weight: 600; padding: 5px 10px;
+            border-radius: 8px; backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .photo-count {
+            position: absolute; top: 10px; left: 10px;
+            background: rgba(0,0,0,0.7); color: white;
+            font-size: 10px; font-weight: 700; padding: 4px 8px;
+            border-radius: 6px; backdrop-filter: blur(4px);
+        }
+
+        /* Detail page elements */
+        .stat-pill {
+            display: flex; align-items: center; gap: 6px;
+            background: #0d1f0d; border: 1px solid #1a331a;
+            color: #a3d9a3; padding: 8px 14px; border-radius: 20px;
+            font-size: 13px; font-weight: 600;
+        }
+        .unlock-box {
+            background: linear-gradient(180deg, #0a1a0a 0%, #061006 100%);
+            border: 1px solid #1a331a; border-radius: 20px;
+            padding: 20px; margin-top: 20px;
+        }
+        .progress-bar-bg {
+            height: 6px; background: #1a331a; border-radius: 3px;
+            overflow: hidden; margin-top: 10px;
+        }
+        .progress-bar-fill {
+            height: 100%; background: linear-gradient(90deg, #00c853, #00e676);
+            border-radius: 3px; width: 0%; transition: width 0.5s ease;
+        }
+        .unlock-btn {
+            width: 100%; background: linear-gradient(135deg, #00c853, #00e676);
+            color: #000; font-weight: 800; font-size: 15px; letter-spacing: 0.5px;
+            padding: 16px; border-radius: 14px; border: none;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 8px 30px rgba(0, 230, 118, 0.25);
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .unlock-btn:active { transform: scale(0.97); }
+        .unlock-btn:disabled {
+            background: #1a331a; color: #4a6a4a;
+            box-shadow: none; cursor: not-allowed;
+        }
+        .watch-more-btn {
+            width: 100%; background: linear-gradient(135deg, #00c853, #00e676);
+            color: #000; font-weight: 800; font-size: 15px;
+            padding: 16px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 16px; border: none; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .watch-more-btn:active { transform: scale(0.97); }
+
+        /* Header */
+        .header-fixed {
+            position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(7, 18, 7, 0.95);
+            border-bottom: 1px solid rgba(0, 255, 80, 0.06);
+        }
+        .icon-btn {
+            width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: transparent; color: #00e676; border: none;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .icon-btn:active { background: rgba(0, 230, 118, 0.1); }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed; top: 0; left: -300px; width: 280px; height: 100vh;
+            background: linear-gradient(180deg, #0f1f0f 0%, #060c06 100%);
+            z-index: 1000; transition: left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            border-right: 1px solid rgba(0, 255, 0, 0.08);
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.7);
+        }
+        .sidebar.open { left: 0; }
+        .overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px); z-index: 999;
+            opacity: 0; visibility: hidden; transition: all 0.35s ease;
+        }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .menu-item {
+            transition: all 0.25s ease; border-left: 3px solid transparent;
+            display: flex; align-items: center; gap: 16px;
+            padding: 14px 16px; border-radius: 10px; color: #a3d9a3;
+            text-decoration: none; font-weight: 500;
+        }
+        .menu-item:hover, .menu-item:active { background: rgba(0, 255, 80, 0.06); border-left-color: #00cc44; }
+        .menu-item.active { background: rgba(0, 255, 80, 0.1); border-left-color: #00ff66; }
+        .telegram-btn {
+            background: linear-gradient(135deg, #0088cc, #00aaff);
+            display: flex; align-items: center; gap: 12px;
+            margin: 0 12px; padding: 14px 16px; border-radius: 12px;
+            color: white; font-weight: 600; text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .telegram-btn:active { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 136, 204, 0.35); }
+
+        /* Glow */
+        .glow-green { text-shadow: 0 0 20px rgba(0, 255, 100, 0.4); }
+        
+        /* Description text */
+        .desc-title { color: #00e676; font-size: 18px; font-weight: 700; line-height: 1.5; }
+        .desc-text { color: #c5e1c5; font-size: 14px; line-height: 1.7; }
+        
+        /* Empty screenshot box */
+        .no-screenshot-box {
+            background: #0d1f0d; border: 1px solid #1a331a;
+            border-radius: 16px; padding: 24px 16px;
+            text-align: center; color: #a3d9a3; font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Like animation */
+        @keyframes heartBeat {
+            0% { transform: scale(1); } 25% { transform: scale(1.3); }
+            50% { transform: scale(0.95); } 100% { transform: scale(1); }
+        }
+        .liked { animation: heartBeat 0.5s ease; }
+
+        /* Bottom bar */
+        .bottom-bar {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            max-width: 480px; width: 100%;
+            background: rgba(7, 18, 7, 0.98); backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 255, 80, 0.1);
+            padding: 12px 16px; z-index: 200;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar no-scrollbar overflow-y-auto">
+        <div class="flex items-center justify-between px-5 py-5 border-b border-green-900/30">
+            <h2 class="text-green-400 font-bold text-lg tracking-wider glow-green">DESI HUB</h2>
+            <button onclick="toggleSidebar()" class="w-9 h-9 rounded-full bg-green-900/30 flex items-center justify-center text-green-400 active:scale-90 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <nav class="mt-4 px-2">
+            <a href="#" onclick="showPage('home'); toggleSidebar();" class="menu-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>Home</span>
+            </a>
+            <div class="my-4 mx-4 border-t border-green-900/30"></div>
+            <p class="px-4 text-xs font-semibold text-green-600 uppercase tracking-widest mb-2">Social Links</p>
+            <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="telegram-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+                <span>Telegram</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-auto opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+            </a>
+        </nav>
+        <div class="absolute bottom-0 left-0 right-0 px-5 py-4 border-t border-green-900/20">
+            <p class="text-green-800 text-xs text-center">© 2024 DESI HUB PREMIUM</p>
+        </div>
+    </aside>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+
+        <!-- ============ HOME PAGE ============ -->
+        <div id="homePage" class="page active">
+
+            <!-- Home Header -->
+            <header class="header-fixed flex items-center justify-between px-4 py-3">
+                <button onclick="toggleSidebar()" class="icon-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <h1 class="text-lg font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-green-400 to-emerald-500 glow-green">
+                    DESI HUNT PREMIUM
+                </h1>
+                <div class="flex items-center gap-1">
+                    <button class="icon-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button class="icon-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Category Chips (Updated: Centered and neatly wrapped) -->
+            <div class="px-4 py-5">
+                <div class="flex flex-wrap justify-center gap-2">
+                    <button class="cat-chip active">🎬 All Videos</button>
+                    <button class="cat-chip">Mom Son</button>
+                    <button class="cat-chip">Viral</button>
+                    <button class="cat-chip">Leaked</button>
+                    <button class="cat-chip">Video Call</button>
+                    <button class="cat-chip">Indian 🇮🇳</button>
+                    <button class="cat-chip">Bangladeshi 🇧🇩</button>
+                    <button class="cat-chip">Pakistani 🇵🇰</button>
+                    <button class="cat-chip">English Full Videos</button>
+                    <button class="cat-chip">Desi ☀️</button>
+                    <button class="cat-chip">18+ Web Series</button>
+                    <button class="cat-chip">Movies 🎬</button>
+                </div>
+            </div>
+
+            <!-- Photo Grid -->
+            <main class="px-4 pb-4">
+                <div class="grid grid-cols-2 gap-3">
+
+                    <!-- Card 1 -->
+                    <div class="thumb-card aspect-[3/4]" onclick="openDetail(1)">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=600&fit=crop" alt="Video thumbnail" loading="lazy">
+                        <div class="thumb-overlay"></div>
+                        <div class="photo-count">📸 333</div>
+                        <div class="collection-badge">Full Collection</div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="thumb-card aspect-[3/4]" onclick="openDetail(2)">
+                        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=600&fit=crop" alt="Video thumbnail" loading="lazy">
+                        <div class="thumb-overlay"></div>
+                        <div class="photo-count">📸 333</div>
+                        <div class="collection-badge">Full Collection</div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="thumb-card aspect-[3/4]" onclick="openDetail(3)">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop" alt="Video thumbnail" loading="lazy">
+                        <div class="thumb-overlay"></div>
+                        <div class="photo-count">📸 333</div>
+                        <div class="collection-badge">Full Collection</div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="thumb-card aspect-[3/4]" onclick="openDetail(4)">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=600&fit=crop" alt="Video thumbnail" loading="lazy">
+                        <div class="thumb-overlay"></div>
+                        <div class="photo-count">📸 333</div>
+                        <div class="collection-badge">Full Collection</div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="thumb-card aspect-[3/4]" onclick="openDetail(5)">
+                        <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=600&fit=crop" alt="Video thumbnail" loading="lazy">
+                        <div class="thumb-overlay"></div>
+                        <div class="photo-count">📸 333</div>
+                        <div class="collection-badge">Full Collection</div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="thumb-card aspect-[3/4]" onclick="openDetail(6)">
+                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=600&fit=crop" alt="Video thumbnail" loading="lazy">
+                        <div class="thumb-overlay"></div>
+                        <div class="photo-count">📸 333</div>
+                        <div class="collection-badge">Full Collection</div>
+                    </div>
+
+                </div>
+
+                <!-- Pagination Section (Updated) -->
+                <div class="flex items-center justify-center gap-2.5 mt-8 mb-6">
+                    <button class="page-btn active w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 text-black font-bold text-sm flex items-center justify-center shadow-lg shadow-green-500/20 active:scale-95 transition-all">1</button>
+                    <button class="page-btn w-10 h-10 rounded-xl bg-green-950/60 border border-green-800/30 text-green-400 font-bold text-sm flex items-center justify-center active:bg-green-900/40 active:scale-95 transition-all">2</button>
+                    <button class="page-btn w-10 h-10 rounded-xl bg-green-950/60 border border-green-800/30 text-green-400 font-bold text-sm flex items-center justify-center active:bg-green-900/40 active:scale-95 transition-all">3</button>
+                    <button class="page-btn w-10 h-10 rounded-xl bg-green-950/60 border border-green-800/30 text-green-400 font-bold text-sm flex items-center justify-center active:bg-green-900/40 active:scale-95 transition-all">»</button>
+                </div>
+                
+                <footer class="text-center pb-4">
+                    <p class="text-green-900 text-xs">© 2024 DESI HUB PREMIUM</p>
+                </footer>
+            </main>
+        </div>
+
+        <!-- ============ DETAIL PAGE ============ -->
+        <div id="detailPage" class="page">
+
+            <!-- Detail Header -->
+            <header class="header-fixed flex items-center justify-between px-3 py-3">
+                <button onclick="showPage('home')" class="icon-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </button>
+                <h1 class="text-base font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-green-400 to-emerald-500">
+                    DESI HUB PREMIUM
+                </h1>
+                <div class="flex items-center gap-1">
+                    <button class="icon-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Collage Image Grid -->
+            <div class="px-3 pt-3">
+                <div class="grid grid-cols-2 gap-1 rounded-2xl overflow-hidden">
+                    <div class="aspect-square bg-green-950/50 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop" class="w-full h-full object-cover" alt="Preview">
+                    </div>
+                    <div class="aspect-square bg-green-950/50 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop" class="w-full h-full object-cover" alt="Preview">
+                    </div>
+                    <div class="aspect-square bg-green-950/50 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop" class="w-full h-full object-cover" alt="Preview">
+                    </div>
+                    <div class="relative aspect-square bg-green-950/50 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop" class="w-full h-full object-cover" alt="Preview">
+                        <div class="absolute inset-0 bg-black/60 flex items-center justify-center">
+                            <span class="text-white font-bold text-sm bg-black/70 px-3 py-1.5 rounded-lg border border-white/20">Full Collection</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="flex items-center gap-2 px-3 py-4 overflow-x-auto no-scrollbar">
+                <button id="likeBtn" onclick="toggleLike()" class="stat-pill flex-shrink-0">
+                    <span id="likeIcon" class="text-base">🤍</span>
+                    <span id="likeCount">40 Likes</span>
+                </button>
+                <div class="stat-pill flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/>
+                    </svg>
+                    <span>3530 Views</span>
+                </div>
+                <button class="stat-pill flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                    </svg>
+                    <span>Share</span>
+                </button>
+            </div>
+
+            <!-- Unlock Section -->
+            <div class="px-3">
+                <div class="unlock-box">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-yellow-400 text-lg">▶️</span>
+                        <span class="text-yellow-400 font-semibold text-base">Watch 3 ads to unlock</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="progressBar" class="progress-bar-fill"></div>
+                    </div>
+                    <p class="text-green-200/70 text-sm mt-3">Progress: <span id="progressText">0/3</span></p>
+                    <button id="unlockBtn" onclick="watchAd()" class="unlock-btn mt-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/>
+                        </svg>
+                        UNLOCK VIDEO
+                    </button>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="px-4 pt-5">
+                <h2 id="videoTitle" class="desc-title">
+                    বয়ফ্রেন্ডের সাথে হোটেলে কাটানো কয়েকটি ভাইরাল ভিডিও 😭
+                </h2>
+                <div class="mt-4 desc-text space-y-3">
+                    <p>🔥 To Watch the Video:</p>
+                    <p>Click the 🔒 Unlock Video button above and watch all 3 ads. After completing them, the ⬇️ Download button will unlock automatically. 🚀🤫👇</p>
+                    
+                    <div class="border-t border-green-900/40 my-4"></div>
+                    
+                    <p class="flex items-center gap-2">
+                        <span>🇧🇩</span> <span class="text-green-400 font-semibold">ভিডিও দেখার নিয়ম:</span>
+                    </p>
+                    <p>উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ৩ টি অ্যাড সম্পূর্ণ দেখুন। সব অ্যাড শেষ হলে ⬇️ Download বাটনটি অটোমেটিকভাবে আনলক হয়ে যাবে। 🚀🤫👇</p>
+                </div>
+            </div>
+
+            <!-- No Screenshot Box -->
+            <div class="px-4 pt-5">
+                <div class="no-screenshot-box">
+                    🖼️ No Screenshots Available For This Content! Unlock To Watch ✅
+                </div>
+            </div>
+
+            <!-- Watch More Button -->
+            <div class="px-4 pt-4 pb-24">
+                <button onclick="showPage('home')" class="watch-more-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    WATCH MORE
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Sticky Bar (Only on detail page) -->
+    <div id="bottomBar" class="bottom-bar hidden">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-green-900/40 flex items-center justify-center">
+                    <span class="text-green-400 text-xs font-bold">DH</span>
+                </div>
+                <div>
+                    <p class="text-white text-sm font-semibold">DESI HUB PREMIUM</p>
+                    <p class="text-green-500/60 text-xs">Premium Content</p>
+                </div>
+            </div>
+            <button class="px-5 py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 text-black text-sm font-bold active:scale-95 transition-transform">
+                Subscribe
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ============ PAGE NAVIGATION ============
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageName + 'Page').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'instant' });
+
+            // Show/hide bottom bar
+            if (pageName === 'detail') {
+                document.getElementById('bottomBar').classList.remove('hidden');
+            } else {
+                document.getElementById('bottomBar').classList.add('hidden');
+            }
+        }
+
+        // Open detail page from thumbnail
+        function openDetail(id) {
+            // Reset unlock state on new page
+            resetUnlock();
+            showPage('detail');
+        }
+
+        // ============ SIDEBAR ============
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar.classList.contains('open')) toggleSidebar();
+            }
+        });
+
+        // ============ CATEGORY CHIPS ============
+        document.querySelectorAll('.cat-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // ============ PAGINATION ============
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Handle Next Button (>>)
+                if (this.textContent.trim() === '»') {
+                    alert('Loading next page...');
+                    // Here you can add logic to load next set of items
+                    return;
+                }
+                
+                // Handle Number Buttons
+                document.querySelectorAll('.page-btn').forEach(b => {
+                    b.classList.remove('bg-gradient-to-br', 'from-green-400', 'to-emerald-600', 'text-black', 'shadow-lg', 'shadow-green-500/20', 'active');
+                    b.classList.add('bg-green-950/60', 'border', 'border-green-800/30', 'text-green-400');
+                });
+                
+                this.classList.remove('bg-green-950/60', 'border', 'border-green-800/30', 'text-green-400');
+                this.classList.add('bg-gradient-to-br', 'from-green-400', 'to-emerald-600', 'text-black', 'shadow-lg', 'shadow-green-500/20', 'active');
+            });
+        });
+
+        // ============ LIKE FUNCTIONALITY ============
+        let isLiked = false;
+        let likeCount = 40;
+
+        function toggleLike() {
+            const likeBtn = document.getElementById('likeBtn');
+            const likeIcon = document.getElementById('likeIcon');
+            const likeCountEl = document.getElementById('likeCount');
+
+            if (!isLiked) {
+                isLiked = true;
+                likeCount++;
+                likeIcon.textContent = '❤️';
+                likeIcon.classList.add('liked');
+                likeBtn.style.borderColor = '#ff4d6d';
+                likeBtn.style.color = '#ff8fa3';
+                setTimeout(() => likeIcon.classList.remove('liked'), 500);
+            } else {
+                isLiked = false;
+                likeCount--;
+                likeIcon.textContent = '🤍';
+                likeBtn.style.borderColor = '#1a331a';
+                likeBtn.style.color = '#a3d9a3';
+            }
+            likeCountEl.textContent = likeCount + ' Likes';
+        }
+
+        // ============ UNLOCK / AD WATCH FUNCTIONALITY ============
+        let adsWatched = 0;
+        const totalAds = 3;
+
+        function watchAd() {
+            if (adsWatched >= totalAds) return;
+
+            const unlockBtn = document.getElementById('unlockBtn');
+            unlockBtn.disabled = true;
+            unlockBtn.innerHTML = '<span class="animate-pulse">⏳ Watching Ad...</span>';
+
+            // Simulate ad watching (3 seconds)
+            setTimeout(() => {
+                adsWatched++;
+                updateProgress();
+
+                if (adsWatched >= totalAds) {
+                    unlockBtn.innerHTML = '⬇️ DOWNLOAD VIDEO';
+                    unlockBtn.disabled = false;
+                    unlockBtn.style.background = 'linear-gradient(135deg, #00c853, #00e676)';
+                    unlockBtn.onclick = function() { 
+                        alert('🎉 Video unlocked! Download starting...'); 
+                    };
+                } else {
+                    unlockBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg> UNLOCK VIDEO';
+                    unlockBtn.disabled = false;
+                }
+            }, 3000);
+        }
+
+        function updateProgress() {
+            const percent = (adsWatched / totalAds) * 100;
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressText').textContent = adsWatched + '/' + totalAds;
+        }
+
+        function resetUnlock() {
+            adsWatched = 0;
+            updateProgress();
+            const unlockBtn = document.getElementById('unlockBtn');
+            unlockBtn.disabled = false;
+            unlockBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg> UNLOCK VIDEO';
+            unlockBtn.onclick = watchAd;
+        }
+
+        // ============ MOBILE UX ============
+        document.body.addEventListener('touchmove', function(e) {
+            if (e.touches.length > 1) e.preventDefault();
+        }, { passive: false });
+    </script>
+
+</body>
+</html>
