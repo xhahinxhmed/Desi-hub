@@ -142,8 +142,9 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 .ad-foot{padding:16px;text-align:center}
 .ad-foot p{color:#facc15;font-weight:600}
 .glow{text-shadow:0 0 20px rgba(0,255,100,.4)}
-.sync-badge{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:6000;background:rgba(34,197,94,.95);color:#fff;font-size:11px;font-weight:700;padding:6px 14px;border-radius:20px;display:none;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.sync-badge{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:6000;background:rgba(34,197,94,.95);color:#fff;font-size:11px;font-weight:700;padding:6px 14px;border-radius:20px;display:none;box-shadow:0 4px 12px rgba(0,0,0,.4);max-width:90%;text-align:center}
 .sync-badge.show{display:block}
+.sync-badge.error{background:rgba(220,38,38,.95)}
 .loading-screen{position:fixed;inset:0;background:#050a05;z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#4ade80;transition:opacity .5s}
 .loading-screen.hide{opacity:0;pointer-events:none}
 .loading-spinner{width:50px;height:50px;border:4px solid rgba(34,197,94,.2);border-top-color:#22c55e;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:16px}
@@ -308,7 +309,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         <div class="admin-card">
             <h3>☁️ Cloud Status</h3>
             <p id="cloudStatusText" style="font-size:12px;color:#4ade80;font-weight:600">✅ Connected to Firebase</p>
-            <p style="font-size:10px;color:#999;margin-top:4px">যেকোনো পরিবর্তন সাথে সাথে সব ডিভাইসে সিঙ্ক হবে</p>
+            <p style="font-size:10px;color:#999;margin-top:4px">প্রতিটি ভিডিও আলাদা ডকুমেন্টে সেভ হয় — নতুন ভিডিও সবার প্রথমে দেখাবে</p>
         </div>
 
         <div class="admin-card">
@@ -440,10 +441,10 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         <input type="number" id="editViews" class="admin-input">
         <label class="admin-label">Likes</label>
         <input type="number" id="editLikes" class="admin-input">
-        <label class="admin-label">Video Link (ডাউনলোড বাটনে ক্লিক করলে যেখানে যাবে)</label>
+        <label class="admin-label">Video Link (ডাউনলোডে যাবে)</label>
         <input type="text" id="editVideoUrl" class="admin-input" placeholder="https://...">
-        <label class="admin-label">Ad Link (এই ভিডিওর জন্য আলাদা)</label>
-        <input type="text" id="editAdUrl" class="admin-input" placeholder="https://... (খালি রাখলে গ্লোবাল অ্যাড লিংক)">
+        <label class="admin-label">Ad Link (এই ভিডিওর জন্য)</label>
+        <input type="text" id="editAdUrl" class="admin-input" placeholder="https://... (খালি রাখলে গ্লোবাল)">
         <label class="admin-label">Description</label>
         <textarea id="editDesc" class="admin-input" rows="3"></textarea>
         <button onclick="saveVideoEdit()" style="width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:700;background:#22c55e;color:#000;margin-top:8px;border:none;cursor:pointer">💾 Save & Sync to All</button>
@@ -465,12 +466,11 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </div>
 </div>
 
-<!-- =================== FIREBASE SDK (v10 Modular) =================== -->
+<!-- FIREBASE SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// ================== 🔥 YOUR FIREBASE CONFIG ==================
 const firebaseConfig = {
   apiKey: "AIzaSyAqf5Mgh-dne2Sf5-is3HsPH3WfogP9cCg",
   authDomain: "premium-hub-725aa.firebaseapp.com",
@@ -480,7 +480,6 @@ const firebaseConfig = {
   appId: "1:402542096696:web:97b07c54d9023f1b5851cd",
   measurementId: "G-Y5ZK6NLYCH"
 };
-// =============================================================
 
 let db = null;
 let firebaseReady = false;
@@ -498,12 +497,14 @@ window.db = db;
 window.firebaseReady = firebaseReady;
 window.fsDoc = doc;
 window.fsSetDoc = setDoc;
+window.fsDeleteDoc = deleteDoc;
 window.fsOnSnapshot = onSnapshot;
+window.fsCollection = collection;
 
 window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
-<!-- =================== MAIN APP =================== -->
+<!-- MAIN APP -->
 <script>
 // ================= DEFAULT DATA =================
 const DEFAULT_VIDEOS = [
@@ -548,39 +549,38 @@ let adTimerInterval = null;
 let adTimeLeft = 5;
 let firebaseReady = false;
 let db = null;
-let fsDoc, fsSetDoc, fsOnSnapshot;
-let cloudLoaded = false;
+let fsDoc, fsSetDoc, fsDeleteDoc, fsOnSnapshot, fsCollection;
+let isInitialLoadDone = false;
 
-// ================= FIREBASE SETUP =================
+// ================= FIREBASE READY =================
 window.addEventListener('firebaseReady', function() {
     if (window.firebaseReady) {
         firebaseReady = true;
         db = window.db;
         fsDoc = window.fsDoc;
         fsSetDoc = window.fsSetDoc;
+        fsDeleteDoc = window.fsDeleteDoc;
         fsOnSnapshot = window.fsOnSnapshot;
+        fsCollection = window.fsCollection;
         console.log("🔥 Firebase ready");
         initFirebaseSync();
     } else {
-        loadData();
+        loadLocal();
         renderApp();
         hideLoading();
     }
 });
 
-// Backup (যদি firebaseReady event কাজ না করে)
 setTimeout(function() {
     if (!firebaseReady && window.firebaseReady) {
         firebaseReady = true;
         db = window.db;
         fsDoc = window.fsDoc;
         fsSetDoc = window.fsSetDoc;
+        fsDeleteDoc = window.fsDeleteDoc;
         fsOnSnapshot = window.fsOnSnapshot;
+        fsCollection = window.fsCollection;
         initFirebaseSync();
-    } else if (!firebaseReady) {
-        loadData();
-        renderApp();
-        hideLoading();
     }
 }, 1500);
 
@@ -589,7 +589,6 @@ function initFirebaseSync() {
     if (!firebaseReady || !db) return;
     
     try {
-        // Listen to global settings
         fsOnSnapshot(fsDoc(db, 'premiumHub', 'settings'), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
@@ -598,49 +597,78 @@ function initFirebaseSync() {
                 updateAdSystemUI();
                 saveLocal();
             } else {
-                // প্রথমবার - ডিফল্ট সেটিংস আপলোড
                 fsSetDoc(fsDoc(db, 'premiumHub', 'settings'), globalSettings).catch(e => console.log(e));
             }
         }, (err) => console.log('Settings listen error:', err));
 
-        // Listen to videos
-        fsOnSnapshot(fsDoc(db, 'premiumHub', 'videos'), (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                if (data.list && Array.isArray(data.list) && data.list.length > 0) {
-                    allVideos = data.list;
-                    cloudLoaded = true;
-                    renderApp();
-                    saveLocal();
-                    hideLoading();
-                    console.log("✅ Cloud videos loaded:", allVideos.length);
-                } else {
-                    // ডেটা খালি হলে ডিফল্ট আপলোড
-                    allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
-                    fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos }).catch(e => console.log(e));
-                    renderApp();
-                    hideLoading();
+        fsOnSnapshot(fsCollection(db, 'videos'), (snapshot) => {
+            const newCache = {};
+            snapshot.forEach(doc => {
+                const vid = doc.data();
+                if (vid && vid.id !== undefined) {
+                    newCache[vid.id] = vid;
                 }
-            } else {
-                // প্রথমবার - ডিফল্ট ভিডিও আপলোড
-                allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
-                fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos }).catch(e => console.log(e));
-                renderApp();
+            });
+            
+            const serverCount = Object.keys(newCache).length;
+            
+            if (!isInitialLoadDone) {
+                isInitialLoadDone = true;
+                if (serverCount === 0) {
+                    console.log("☁️ First time: uploading defaults");
+                    allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
+                    uploadAllToCloud();
+                } else {
+                    allVideos = Object.values(newCache).sort((a,b) => b.id - a.id);
+                    renderApp();
+                }
                 hideLoading();
+                return;
             }
+            
+            const localMap = {};
+            allVideos.forEach(v => localMap[v.id] = v);
+            
+            const merged = [];
+            Object.values(newCache).forEach(v => {
+                if (localMap[v.id] && localMap[v.id].isLiked) {
+                    v.isLiked = localMap[v.id].isLiked;
+                }
+                merged.push(v);
+            });
+            
+            allVideos = merged.sort((a,b) => b.id - a.id);
+            renderApp();
+            saveLocal();
         }, (err) => {
             console.log('Videos listen error:', err);
-            loadData();
-            renderApp();
-            hideLoading();
+            if (!isInitialLoadDone) {
+                loadLocal();
+                renderApp();
+                hideLoading();
+                isInitialLoadDone = true;
+            }
         });
 
         console.log("✅ Firebase real-time sync active");
     } catch (e) {
         console.log("Sync error:", e);
-        loadData();
+        loadLocal();
         renderApp();
         hideLoading();
+    }
+}
+
+async function uploadAllToCloud() {
+    try {
+        for (const v of allVideos) {
+            await fsSetDoc(fsDoc(db, 'videos', String(v.id)), v);
+        }
+        console.log("✅ All defaults uploaded");
+        renderApp();
+    } catch (e) {
+        console.log("Upload defaults error:", e);
+        renderApp();
     }
 }
 
@@ -649,57 +677,82 @@ function hideLoading() {
     if (ls) ls.classList.add('hide');
 }
 
-// Cloud-এ সেভ
-async function saveToCloud() {
-    saveLocal(); // লোকাল ব্যাকআপ
+async function saveVideoToCloud(video) {
     if (!firebaseReady || !db) {
-        alert('⚠️ Cloud sync active না। Data locally saved।');
-        return;
+        saveLocal();
+        return false;
     }
-    showSync('☁️ Syncing...');
     try {
-        await fsSetDoc(fsDoc(db, 'premiumHub', 'settings'), globalSettings);
-        await fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos });
-        showSync('✅ Synced to Cloud');
-        console.log("☁️ Saved to cloud");
+        await fsSetDoc(fsDoc(db, 'videos', String(video.id)), video);
+        return true;
     } catch (e) {
-        console.log("Cloud save error:", e);
-        showSync('⚠️ Sync failed');
-        alert('⚠️ Cloud sync failed: ' + e.message);
+        console.log("Save error:", e);
+        return false;
     }
 }
 
-function showSync(text) {
+async function deleteVideoFromCloud(id) {
+    if (!firebaseReady || !db) return false;
+    try {
+        await fsDeleteDoc(fsDoc(db, 'videos', String(id)));
+        return true;
+    } catch (e) {
+        console.log("Delete error:", e);
+        return false;
+    }
+}
+
+async function saveSettingsToCloud() {
+    if (!firebaseReady || !db) {
+        saveLocal();
+        return false;
+    }
+    try {
+        await fsSetDoc(fsDoc(db, 'premiumHub', 'settings'), globalSettings);
+        return true;
+    } catch (e) {
+        console.log("Settings save error:", e);
+        return false;
+    }
+}
+
+function showSync(text, isError) {
     const badge = document.getElementById('syncBadge');
     badge.textContent = text;
+    badge.classList.toggle('error', !!isError);
     badge.classList.add('show');
-    if (text.includes('✅')) {
-        setTimeout(() => badge.classList.remove('show'), 1500);
+    if (text.includes('✅') || isError) {
+        setTimeout(() => badge.classList.remove('show'), 2000);
     }
 }
 
 // ================= LOCAL STORAGE =================
-function loadData() {
+function loadLocal() {
     try {
-        const v = localStorage.getItem('premiumHubVideos_v6');
-        const s = localStorage.getItem('premiumHubSettings_v6');
+        const v = localStorage.getItem('premiumHubVideos_v8');
+        const s = localStorage.getItem('premiumHubSettings_v8');
         allVideos = v ? JSON.parse(v) : JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
         if (s) globalSettings = { ...globalSettings, ...JSON.parse(s) };
         if (!globalSettings.adminPassword) globalSettings.adminPassword = "557822";
         if (globalSettings.adSystemEnabled === undefined) globalSettings.adSystemEnabled = true;
+        // লোকাল ডেটাও বড় ID থেকে ছোট ID সাজানো (নতুন ভিডিও প্রথমে)
+        allVideos.sort((a,b) => b.id - a.id);
     } catch (e) {
         allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
     }
 }
 function saveLocal() {
     try {
-        localStorage.setItem('premiumHubVideos_v6', JSON.stringify(allVideos));
-        localStorage.setItem('premiumHubSettings_v6', JSON.stringify(globalSettings));
+        localStorage.setItem('premiumHubVideos_v8', JSON.stringify(allVideos));
+        localStorage.setItem('premiumHubSettings_v8', JSON.stringify(globalSettings));
     } catch (e) { console.log('Local save failed'); }
 }
 
 // ================= RENDER =================
 function renderApp() {
+    // সবসময় বড় ID থেকে ছোট ID ক্রমে সাজান (নতুন ভিডিও প্রথমে)
+    allVideos.sort((a,b) => b.id - a.id);
+    
     let filtered = allVideos;
     if (currentCategory !== 'all') filtered = filtered.filter(v => v.category === currentCategory);
     if (searchQuery) filtered = filtered.filter(v => v.title.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -763,7 +816,7 @@ function renderPagination(totalPages) {
     }
 }
 
-// ================= LIKE (Cloud sync) =================
+// ================= LIKE =================
 async function toggleLikeHome(id, event) {
     event.stopPropagation();
     const video = allVideos.find(v => v.id === id);
@@ -773,11 +826,11 @@ async function toggleLikeHome(id, event) {
     const button = event.currentTarget;
     button.querySelector('.heart-icon').textContent = video.isLiked ? '❤️' : '🤍';
     button.querySelector('.like-count-text').textContent = video.likes;
+    saveLocal();
     if (firebaseReady && db) {
-        try {
-            await fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos });
-        } catch (e) { saveLocal(); }
-    } else { saveLocal(); }
+        const ok = await saveVideoToCloud(video);
+        if (!ok) showSync('⚠️ Like save failed', true);
+    }
 }
 
 // ================= DETAIL =================
@@ -789,9 +842,10 @@ function openDetail(id) {
     document.getElementById('detailViews').textContent = video.views + ' Views';
     const hv = document.getElementById('homeViews_' + id);
     if (hv) hv.textContent = video.views;
+    saveLocal();
     if (firebaseReady && db) {
-        fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos }).catch(e => saveLocal());
-    } else { saveLocal(); }
+        saveVideoToCloud(video).catch(e => console.log(e));
+    }
 
     const cc = document.getElementById('collageContainer');
     const imgs = (video.detailImgs || []).filter(img => img && img.trim() !== '');
@@ -880,10 +934,11 @@ async function toggleLikeDetail() {
         const hb = hl.closest('.like-btn-home');
         if (hb) hb.querySelector('.heart-icon').textContent = video.isLiked ? '❤️' : '🤍';
     }
+    saveLocal();
     if (firebaseReady && db) {
-        try { await fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos }); }
-        catch (e) { saveLocal(); }
-    } else { saveLocal(); }
+        const ok = await saveVideoToCloud(video);
+        if (!ok) showSync('⚠️ Like save failed', true);
+    }
 }
 
 function shareVideo() {
@@ -900,7 +955,7 @@ function shareVideo() {
     }
 }
 
-// ================= NAVIGATION =================
+// ================= NAV =================
 function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(name + 'Page');
@@ -952,7 +1007,7 @@ document.getElementById('categoryContainer').addEventListener('click', function(
     }
 });
 
-// ================= AD SYSTEM =================
+// ================= AD =================
 function watchAd() {
     if (adsWatched >= totalAds) return;
     const video = allVideos.find(v => v.id === currentVideoId);
@@ -1039,7 +1094,11 @@ function updateAdSystemUI() {
 async function toggleAdSystem() {
     globalSettings.adSystemEnabled = !globalSettings.adSystemEnabled;
     updateAdSystemUI();
-    await saveToCloud();
+    saveLocal();
+    showSync('☁️ Syncing...');
+    const ok = await saveSettingsToCloud();
+    if (ok) showSync('✅ Synced');
+    else showSync('⚠️ Sync failed', true);
 }
 
 function renderAdminVideoList() {
@@ -1069,7 +1128,7 @@ function handleImageUpload(event, inputId, previewId) {
     reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-            const MAX_WIDTH = 500;
+            const MAX_WIDTH = 300;
             let scale = 1;
             if (img.width > MAX_WIDTH) scale = MAX_WIDTH / img.width;
             const canvas = document.createElement('canvas');
@@ -1077,7 +1136,7 @@ function handleImageUpload(event, inputId, previewId) {
             canvas.height = img.height * scale;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const base64 = canvas.toDataURL('image/jpeg', 0.6);
+            const base64 = canvas.toDataURL('image/jpeg', 0.4);
             document.getElementById(inputId).value = base64;
             document.getElementById(previewId).src = base64;
         };
@@ -1145,32 +1204,49 @@ async function saveVideoEdit() {
     video.videoUrl = document.getElementById('editVideoUrl').value;
     video.adUrl = document.getElementById('editAdUrl').value;
     video.desc = document.getElementById('editDesc').value;
-    await saveToCloud();
+    saveLocal();
     closeEditModal();
     renderAdminVideoList();
     renderApp();
-    alert('✅ Synced to all devices!');
+    showSync('☁️ Syncing...');
+    const ok = await saveVideoToCloud(video);
+    if (ok) showSync('✅ Synced to all devices');
+    else showSync('⚠️ Sync failed', true);
 }
 async function deleteVideo(id) {
     if (confirm('Are you sure you want to delete this video?')) {
         allVideos = allVideos.filter(v => v.id !== id);
-        await saveToCloud();
+        saveLocal();
         renderAdminVideoList();
         renderApp();
+        showSync('☁️ Syncing...');
+        const ok = await deleteVideoFromCloud(id);
+        if (ok) showSync('✅ Deleted from cloud');
+        else showSync('⚠️ Delete failed', true);
     }
 }
+// ============= এই ফাংশনে পরিবর্তন করা হয়েছে =============
+// এখন নতুন ভিডিও সর্বোচ্চ ID পায় না, বরং সর্বনিম্ন ID - 1 পায়
+// ফলে sort() করার পর নতুন ভিডিও সবার প্রথমে দেখায়
 async function addNewVideo() {
-    const newId = allVideos.length > 0 ? Math.max(...allVideos.map(v => v.id)) + 1 : 1;
-    allVideos.push({
+    // ===== পরিবর্তিত লাইন: Math.max + 1 → Math.min - 1 =====
+    const newId = allVideos.length > 0 ? Math.min(...allVideos.map(v => v.id)) - 1 : 1;
+    // ========================================================
+    const newVideo = {
         id: newId, title: "New Video Title", category: "viral",
         img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",
         detailImgs: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],
         screenshots: [], badgeText: "Full Collection", views: 0, likes: 0,
         isLiked: false, videoUrl: "https://example.com/new-video", adUrl: "", desc: "New video description..."
-    });
-    await saveToCloud();
+    };
+    allVideos.push(newVideo);
+    saveLocal();
     renderAdminVideoList();
     renderApp();
+    showSync('☁️ Syncing...');
+    const ok = await saveVideoToCloud(newVideo);
+    if (ok) showSync('✅ New video added at top');
+    else showSync('⚠️ Add failed', true);
     openEditModal(newId);
 }
 async function saveAllChanges() {
@@ -1178,21 +1254,22 @@ async function saveAllChanges() {
     globalSettings.adLink = document.getElementById('globalAdLink').value;
     const newPass = document.getElementById('globalAdminPassword').value;
     if (newPass && newPass.trim() !== '') globalSettings.adminPassword = newPass.trim();
-    await saveToCloud();
+    saveLocal();
     document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
-    alert('✅ All changes synced to all devices!');
+    showSync('☁️ Syncing...');
+    const ok = await saveSettingsToCloud();
+    if (ok) showSync('✅ Settings synced');
+    else showSync('⚠️ Sync failed', true);
 }
 
 // ================= INIT =================
-// Firebase থেকে ডেটা আসার আগে লোকাল দেখাই
-loadData();
+loadLocal();
 renderApp();
 document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
 updateAdSystemUI();
 try { history.replaceState({page:'home'}, '', window.location.pathname); } catch(e) {}
 
-// ৩ সেকেন্ড পরে লোডিং স্ক্রিন সরিয়ে দাও (backup)
-setTimeout(hideLoading, 3000);
+setTimeout(hideLoading, 4000);
 </script>
 </body>
 </html>
