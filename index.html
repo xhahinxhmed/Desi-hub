@@ -12,10 +12,8 @@ body.light-mode{--bg-body:#f0fdf4;--bg-app:#fff;--bg-card:#fff;--bg-header:rgba(
 *{font-family:'Poppins',sans-serif;-webkit-tap-highlight-color:transparent;box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg-body);color:var(--text-main);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
 #app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg-app);position:relative}
-.page{display:none}
-.page.active{display:block}
-.no-scrollbar::-webkit-scrollbar{display:none}
-.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.page{display:none}.page.active{display:block}
+.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
 .header{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:var(--bg-header);border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
 .icon-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:transparent;color:var(--primary-green);border:none;cursor:pointer}
 .icon-btn:active{background:rgba(0,230,118,.1)}
@@ -30,20 +28,15 @@ body.light-mode #sidebar{background:linear-gradient(180deg,#fff,#f0fdf4)}
 .sidebar-nav{padding:16px 8px;flex:1}
 .menu-item{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:10px;color:var(--text-sub);text-decoration:none;font-weight:500;border-left:3px solid transparent;cursor:pointer}
 .menu-item.active{background:rgba(0,255,80,.1);border-left-color:#00ff66}
-.menu-item:active{background:rgba(0,255,80,.06)}
 .telegram-btn{background:linear-gradient(135deg,#0088cc,#00aaff);display:flex;align-items:center;gap:12px;margin:0 12px;padding:14px 16px;border-radius:12px;color:#fff;font-weight:600;text-decoration:none}
 .sidebar-foot{padding:16px 20px;border-top:1px solid var(--border-color);text-align:center}
 .sidebar-foot p{font-size:12px;color:var(--text-muted);cursor:pointer;padding:8px;border-radius:8px}
-.sidebar-foot p:hover{color:var(--primary-green);background:rgba(0,230,118,.05)}
 #searchBar{display:none;padding:10px 16px;background:var(--bg-header);border-bottom:1px solid var(--border-color)}
 #searchBar.active{display:block}
 .search-input{width:100%;padding:12px 16px;border-radius:12px;background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-main);font-size:14px;outline:none}
-.search-input::placeholder{color:var(--text-muted)}
-.cats{padding:20px 16px}
-.cats-inner{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.cats{padding:20px 16px}.cats-inner{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 .cat-chip{background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-sub);padding:7px 14px;border-radius:10px;font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;transition:all .25s}
 .cat-chip.active{background:linear-gradient(135deg,#00c853,#00e676);color:#000;border-color:#00e676}
-.cat-chip:active{transform:scale(.95)}
 main{padding:0 8px 16px}
 #videoGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .thumb-card{border-radius:14px;overflow:hidden;cursor:pointer;background:var(--bg-card);border:1px solid var(--card-border);display:flex;flex-direction:column;padding:4px}
@@ -56,7 +49,6 @@ body.light-mode .card-title{color:#064e3b}
 .stat-views{color:#e0e0e0;display:flex;align-items:center;gap:4px}
 body.light-mode .stat-views{color:#374151}
 .like-btn-home{display:flex;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;color:#ff4d6d;padding:4px 6px;border-radius:8px}
-.like-btn-home:active{background:rgba(255,77,109,.1)}
 #paginationContainer{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:32px;margin-bottom:24px}
 .page-btn{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;cursor:pointer;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-sub)}
 .page-btn.active{background:linear-gradient(135deg,#00c853,#00e676);color:#000;border-color:#00e676}
@@ -114,6 +106,13 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 .admin-icon-btn{width:32px;height:32px;border-radius:6px;border:none;cursor:pointer;font-size:12px}
 .edit-btn{background:rgba(0,100,0,.5);color:#4ade80}
 .del-btn{background:rgba(200,0,0,.5);color:#ff6b6b}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.3);padding:12px 14px;border-radius:10px;margin-bottom:10px;border:1px solid var(--border-color)}
+.toggle-label{font-size:13px;font-weight:600;color:var(--text-main)}
+.toggle-switch{position:relative;width:48px;height:26px;background:#333;border-radius:13px;cursor:pointer;transition:all .3s}
+.toggle-switch.on{background:#22c55e}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:all .3s}
+.toggle-switch.on::after{left:25px}
+.toggle-sub{font-size:10px;color:#999;margin-top:2px}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(5px);z-index:4000;display:none;align-items:center;justify-content:center;padding:16px}
 .modal-overlay.active{display:flex}
 .modal-content{background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;padding:20px}
@@ -143,9 +142,23 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 .ad-foot{padding:16px;text-align:center}
 .ad-foot p{color:#facc15;font-weight:600}
 .glow{text-shadow:0 0 20px rgba(0,255,100,.4)}
+.sync-badge{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:6000;background:rgba(34,197,94,.95);color:#fff;font-size:11px;font-weight:700;padding:6px 14px;border-radius:20px;display:none;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.sync-badge.show{display:block}
+.loading-screen{position:fixed;inset:0;background:#050a05;z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#4ade80;transition:opacity .5s}
+.loading-screen.hide{opacity:0;pointer-events:none}
+.loading-spinner{width:50px;height:50px;border:4px solid rgba(34,197,94,.2);border-top-color:#22c55e;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;font-weight:600;color:#86efac}
 </style>
 </head>
 <body>
+
+<div class="loading-screen" id="loadingScreen">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">☁️ Loading from cloud...</div>
+</div>
+
+<div class="sync-badge" id="syncBadge">☁️ Syncing...</div>
 
 <div id="overlay" onclick="toggleSidebar()"></div>
 
@@ -174,8 +187,6 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 </aside>
 
 <div id="app">
-
-<!-- HOME PAGE -->
 <div id="homePage" class="page active">
     <header class="header">
         <button onclick="toggleSidebar()" class="icon-btn">
@@ -217,7 +228,6 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </main>
 </div>
 
-<!-- DETAIL PAGE -->
 <div id="detailPage" class="page">
     <header class="detail-header">
         <button onclick="goBackHome()" class="icon-btn">
@@ -243,9 +253,9 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </div>
     <div style="padding:0 12px">
         <div class="unlock-box">
-            <div class="unlock-head"><span>▶️</span><span>Watch 3 ads to unlock</span></div>
-            <div class="progress-bar-bg"><div id="progressBar" class="progress-bar-fill"></div></div>
-            <p class="progress-text">Progress: <span id="progressText">0/3</span></p>
+            <div class="unlock-head"><span>▶️</span><span id="unlockHeadText">Watch 3 ads to unlock</span></div>
+            <div class="progress-bar-bg" id="progressWrap"><div id="progressBar" class="progress-bar-fill"></div></div>
+            <p class="progress-text" id="progressTextWrap">Progress: <span id="progressText">0/3</span></p>
             <button id="unlockBtn" onclick="watchAd()" class="unlock-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg>
                 UNLOCK VIDEO
@@ -258,7 +268,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <p id="videoDesc">Loading...</p>
             <div class="divider"></div>
             <p style="display:flex;align-items:center;gap:8px"><span>🇧🇩</span><span style="color:var(--primary-green);font-weight:600">ভিডিও দেখার নিয়ম:</span></p>
-            <p>উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ৩ টি অ্যাড সম্পূর্ণ দেখুন। সব অ্যাড শেষ হলে ⬇️ Download বাটনটি অটোমেটিকভাবে আনলক হয়ে যাবে। 🚀🤫👇</p>
+            <p id="unlockRules">উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ৩ টি অ্যাড সম্পূর্ণ দেখুন। সব অ্যাড শেষ হলে ⬇️ Download বাটনটি অটোমেটিকভাবে আনলক হয়ে যাবে। 🚀🤫👇</p>
         </div>
     </div>
     <div class="screenshots-pad">
@@ -271,8 +281,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         </button>
     </div>
 </div>
-
-</div><!-- /#app -->
+</div>
 
 <div id="bottomBar" class="hidden">
     <div class="bottom-inner">
@@ -297,6 +306,12 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </header>
     <main class="admin-main">
         <div class="admin-card">
+            <h3>☁️ Cloud Status</h3>
+            <p id="cloudStatusText" style="font-size:12px;color:#4ade80;font-weight:600">✅ Connected to Firebase</p>
+            <p style="font-size:10px;color:#999;margin-top:4px">যেকোনো পরিবর্তন সাথে সাথে সব ডিভাইসে সিঙ্ক হবে</p>
+        </div>
+
+        <div class="admin-card">
             <h3>🌐 Global Settings</h3>
             <label class="admin-label">Telegram Link</label>
             <input type="text" id="globalTelegramLink" class="admin-input" placeholder="https://t.me/...">
@@ -306,6 +321,18 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <input type="text" id="globalAdminPassword" class="admin-input" placeholder="Enter new password">
             <p class="admin-hint">Leave empty to keep current password.</p>
         </div>
+
+        <div class="admin-card">
+            <h3>▶️ Ad System</h3>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Enable Ads</div>
+                    <div class="toggle-sub">বন্ধ থাকলে সরাসরি ডাউনলোড বাটন পাবেন</div>
+                </div>
+                <div class="toggle-switch" id="adToggle" onclick="toggleAdSystem()"></div>
+            </div>
+        </div>
+
         <div class="admin-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
                 <h3 style="margin:0">📹 Video Management</h3>
@@ -346,7 +373,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <option value="movies">Movies</option>
         </select>
         <div class="img-section">
-            <p class="img-section-title">🖼️ ছবি পরিবর্তন (১টি দিলেই হবে)</p>
+            <p class="img-section-title">🖼️ ছবি পরিবর্তন</p>
             <label class="admin-label">Thumbnail *</label>
             <div class="upload-row">
                 <input type="file" id="uploadThumb" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editImg','previewImg')">
@@ -361,21 +388,21 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
                 <input type="text" id="editDetailImg1" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg1',this.value)">
             </div>
             <img id="previewDetailImg1" class="img-preview">
-            <label class="admin-label">Detail Image 2 (ঐচ্ছিক)</label>
+            <label class="admin-label">Detail Image 2</label>
             <div class="upload-row">
                 <input type="file" id="uploadDetail2" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg2','previewDetailImg2')">
                 <button onclick="document.getElementById('uploadDetail2').click()" class="upload-btn">📁 আপলোড</button>
                 <input type="text" id="editDetailImg2" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg2',this.value)">
             </div>
             <img id="previewDetailImg2" class="img-preview">
-            <label class="admin-label">Detail Image 3 (ঐচ্ছিক)</label>
+            <label class="admin-label">Detail Image 3</label>
             <div class="upload-row">
                 <input type="file" id="uploadDetail3" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg3','previewDetailImg3')">
                 <button onclick="document.getElementById('uploadDetail3').click()" class="upload-btn">📁 আপলোড</button>
                 <input type="text" id="editDetailImg3" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg3',this.value)">
             </div>
             <img id="previewDetailImg3" class="img-preview">
-            <label class="admin-label">Detail Image 4 (ঐচ্ছিক)</label>
+            <label class="admin-label">Detail Image 4</label>
             <div class="upload-row">
                 <input type="file" id="uploadDetail4" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg4','previewDetailImg4')">
                 <button onclick="document.getElementById('uploadDetail4').click()" class="upload-btn">📁 আপলোড</button>
@@ -413,13 +440,13 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         <input type="number" id="editViews" class="admin-input">
         <label class="admin-label">Likes</label>
         <input type="number" id="editLikes" class="admin-input">
-        <label class="admin-label">Video Link</label>
+        <label class="admin-label">Video Link (ডাউনলোড বাটনে ক্লিক করলে যেখানে যাবে)</label>
         <input type="text" id="editVideoUrl" class="admin-input" placeholder="https://...">
-        <label class="admin-label">Ad Link</label>
-        <input type="text" id="editAdUrl" class="admin-input" placeholder="https://...">
+        <label class="admin-label">Ad Link (এই ভিডিওর জন্য আলাদা)</label>
+        <input type="text" id="editAdUrl" class="admin-input" placeholder="https://... (খালি রাখলে গ্লোবাল অ্যাড লিংক)">
         <label class="admin-label">Description</label>
         <textarea id="editDesc" class="admin-input" rows="3"></textarea>
-        <button onclick="saveVideoEdit()" style="width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:700;background:#22c55e;color:#000;margin-top:8px;border:none;cursor:pointer">💾 Save Changes</button>
+        <button onclick="saveVideoEdit()" style="width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:700;background:#22c55e;color:#000;margin-top:8px;border:none;cursor:pointer">💾 Save & Sync to All</button>
     </div>
 </div>
 
@@ -438,18 +465,57 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </div>
 </div>
 
+<!-- =================== FIREBASE SDK (v10 Modular) =================== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+// ================== 🔥 YOUR FIREBASE CONFIG ==================
+const firebaseConfig = {
+  apiKey: "AIzaSyAqf5Mgh-dne2Sf5-is3HsPH3WfogP9cCg",
+  authDomain: "premium-hub-725aa.firebaseapp.com",
+  projectId: "premium-hub-725aa",
+  storageBucket: "premium-hub-725aa.firebasestorage.app",
+  messagingSenderId: "402542096696",
+  appId: "1:402542096696:web:97b07c54d9023f1b5851cd",
+  measurementId: "G-Y5ZK6NLYCH"
+};
+// =============================================================
+
+let db = null;
+let firebaseReady = false;
+
+try {
+    const app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    firebaseReady = true;
+    console.log("✅ Firebase initialized");
+} catch (e) {
+    console.log("❌ Firebase init failed:", e);
+}
+
+window.db = db;
+window.firebaseReady = firebaseReady;
+window.fsDoc = doc;
+window.fsSetDoc = setDoc;
+window.fsOnSnapshot = onSnapshot;
+
+window.dispatchEvent(new Event('firebaseReady'));
+</script>
+
+<!-- =================== MAIN APP =================== -->
 <script>
 // ================= DEFAULT DATA =================
 const DEFAULT_VIDEOS = [
 {id:1,title:"নতুন কটি মাল 🍑😍 (Nasmin)",category:"viral",img:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],screenshots:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],badgeText:"Full Collection",views:4062,likes:45,isLiked:false,videoUrl:"https://example.com/video1",adUrl:"",desc:"🔥 নতুন কটি মালের এক্সক্লুসিভ ভিডিও।"},
-{id:2,title:"বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও 😭",category:"viral",img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],screenshots:[],badgeText:"12:45",views:4667,likes:68,isLiked:false,videoUrl:"https://example.com/video2",adUrl:"",desc:"🔥 বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও।"},
-{id:3,title:"মাথা নষ্ট কালেকশন ভিডিও",category:"leaked",img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6196,likes:67,isLiked:false,videoUrl:"https://example.com/video3",adUrl:"",desc:"🔥 মাথা নষ্ট কালেকশন ভিডিও।"},
-{id:4,title:"Slim Young Bengali Girl - 10",category:"bangladeshi",img:"https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],screenshots:[],badgeText:"10:20",views:2853,likes:30,isLiked:false,videoUrl:"https://example.com/video4",adUrl:"",desc:"🔥 সম্পূর্ণ ভিডিও।"},
-{id:5,title:"Indian Viral Clip Exclusive",category:"indian",img:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:8754,likes:120,isLiked:false,videoUrl:"https://example.com/video5",adUrl:"",desc:"🔥 Indian Viral Clip।"},
-{id:6,title:"Pakistani Desi Video HD",category:"pakistani",img:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],screenshots:[],badgeText:"15:30",views:2301,likes:35,isLiked:false,videoUrl:"https://example.com/video6",adUrl:"",desc:"🔥 Pakistani Desi Video।"},
-{id:7,title:"English Full Video Collection",category:"english",img:"https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6543,likes:98,isLiked:false,videoUrl:"https://example.com/video7",adUrl:"",desc:"🔥 English Full Video।"},
+{id:2,title:"বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও 😭",category:"viral",img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop"],screenshots:[],badgeText:"12:45",views:4667,likes:68,isLiked:false,videoUrl:"https://example.com/video2",adUrl:"",desc:"🔥 বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও।"},
+{id:3,title:"মাথা নষ্ট কালেকশন ভিডিও",category:"leaked",img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6196,likes:67,isLiked:false,videoUrl:"https://example.com/video3",adUrl:"",desc:"🔥 মাথা নষ্ট কালেকশন ভিডিও।"},
+{id:4,title:"Slim Young Bengali Girl - 10",category:"bangladeshi",img:"https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop"],screenshots:[],badgeText:"10:20",views:2853,likes:30,isLiked:false,videoUrl:"https://example.com/video4",adUrl:"",desc:"🔥 সম্পূর্ণ ভিডিও।"},
+{id:5,title:"Indian Viral Clip Exclusive",category:"indian",img:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:8754,likes:120,isLiked:false,videoUrl:"https://example.com/video5",adUrl:"",desc:"🔥 Indian Viral Clip।"},
+{id:6,title:"Pakistani Desi Video HD",category:"pakistani",img:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop"],screenshots:[],badgeText:"15:30",views:2301,likes:35,isLiked:false,videoUrl:"https://example.com/video6",adUrl:"",desc:"🔥 Pakistani Desi Video।"},
+{id:7,title:"English Full Video Collection",category:"english",img:"https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6543,likes:98,isLiked:false,videoUrl:"https://example.com/video7",adUrl:"",desc:"🔥 English Full Video।"},
 {id:8,title:"Leaked Viral Video 2",category:"leaked",img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop"],screenshots:[],badgeText:"08:15",views:1122,likes:15,isLiked:false,videoUrl:"https://example.com/video8",adUrl:"",desc:"🔥 Leaked Viral Video।"},
-{id:9,title:"Video Call Recording Scandal",category:"video-call",img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop","https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:3344,likes:55,isLiked:false,videoUrl:"https://example.com/video9",adUrl:"",desc:"🔥 Video Call Scandal।"},
+{id:9,title:"Video Call Recording Scandal",category:"video-call",img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:3344,likes:55,isLiked:false,videoUrl:"https://example.com/video9",adUrl:"",desc:"🔥 Video Call Scandal।"},
 {id:10,title:"Desi Village Exclusive",category:"desi",img:"https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&h=800&fit=crop"],screenshots:[],badgeText:"18:20",views:9988,likes:200,isLiked:false,videoUrl:"https://example.com/video10",adUrl:"",desc:"🔥 Desi Village।"},
 {id:11,title:"Web Series Part 1",category:"web-series",img:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:7766,likes:144,isLiked:false,videoUrl:"https://example.com/video11",adUrl:"",desc:"🔥 Web Series Part 1।"},
 {id:12,title:"New Movie Clip 2024",category:"movies",img:"https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&h=800&fit=crop"],screenshots:[],badgeText:"02:10:45",views:4433,likes:88,isLiked:false,videoUrl:"https://example.com/video12",adUrl:"",desc:"🔥 New Movie Clip।"},
@@ -465,7 +531,12 @@ const DEFAULT_VIDEOS = [
 
 // ================= STATE =================
 let allVideos = [];
-let globalSettings = { telegramLink: "https://t.me", adLink: "", adminPassword: "557822" };
+let globalSettings = {
+    telegramLink: "https://t.me",
+    adLink: "",
+    adminPassword: "557822",
+    adSystemEnabled: true
+};
 let currentPage = 1;
 const itemsPerPage = 20;
 let currentCategory = 'all';
@@ -475,26 +546,156 @@ let adsWatched = 0;
 const totalAds = 3;
 let adTimerInterval = null;
 let adTimeLeft = 5;
+let firebaseReady = false;
+let db = null;
+let fsDoc, fsSetDoc, fsOnSnapshot;
+let cloudLoaded = false;
 
-// ================= LOAD/SAVE =================
+// ================= FIREBASE SETUP =================
+window.addEventListener('firebaseReady', function() {
+    if (window.firebaseReady) {
+        firebaseReady = true;
+        db = window.db;
+        fsDoc = window.fsDoc;
+        fsSetDoc = window.fsSetDoc;
+        fsOnSnapshot = window.fsOnSnapshot;
+        console.log("🔥 Firebase ready");
+        initFirebaseSync();
+    } else {
+        loadData();
+        renderApp();
+        hideLoading();
+    }
+});
+
+// Backup (যদি firebaseReady event কাজ না করে)
+setTimeout(function() {
+    if (!firebaseReady && window.firebaseReady) {
+        firebaseReady = true;
+        db = window.db;
+        fsDoc = window.fsDoc;
+        fsSetDoc = window.fsSetDoc;
+        fsOnSnapshot = window.fsOnSnapshot;
+        initFirebaseSync();
+    } else if (!firebaseReady) {
+        loadData();
+        renderApp();
+        hideLoading();
+    }
+}, 1500);
+
+// ================= FIREBASE SYNC =================
+function initFirebaseSync() {
+    if (!firebaseReady || !db) return;
+    
+    try {
+        // Listen to global settings
+        fsOnSnapshot(fsDoc(db, 'premiumHub', 'settings'), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                globalSettings = { ...globalSettings, ...data };
+                document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
+                updateAdSystemUI();
+                saveLocal();
+            } else {
+                // প্রথমবার - ডিফল্ট সেটিংস আপলোড
+                fsSetDoc(fsDoc(db, 'premiumHub', 'settings'), globalSettings).catch(e => console.log(e));
+            }
+        }, (err) => console.log('Settings listen error:', err));
+
+        // Listen to videos
+        fsOnSnapshot(fsDoc(db, 'premiumHub', 'videos'), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                if (data.list && Array.isArray(data.list) && data.list.length > 0) {
+                    allVideos = data.list;
+                    cloudLoaded = true;
+                    renderApp();
+                    saveLocal();
+                    hideLoading();
+                    console.log("✅ Cloud videos loaded:", allVideos.length);
+                } else {
+                    // ডেটা খালি হলে ডিফল্ট আপলোড
+                    allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
+                    fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos }).catch(e => console.log(e));
+                    renderApp();
+                    hideLoading();
+                }
+            } else {
+                // প্রথমবার - ডিফল্ট ভিডিও আপলোড
+                allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
+                fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos }).catch(e => console.log(e));
+                renderApp();
+                hideLoading();
+            }
+        }, (err) => {
+            console.log('Videos listen error:', err);
+            loadData();
+            renderApp();
+            hideLoading();
+        });
+
+        console.log("✅ Firebase real-time sync active");
+    } catch (e) {
+        console.log("Sync error:", e);
+        loadData();
+        renderApp();
+        hideLoading();
+    }
+}
+
+function hideLoading() {
+    const ls = document.getElementById('loadingScreen');
+    if (ls) ls.classList.add('hide');
+}
+
+// Cloud-এ সেভ
+async function saveToCloud() {
+    saveLocal(); // লোকাল ব্যাকআপ
+    if (!firebaseReady || !db) {
+        alert('⚠️ Cloud sync active না। Data locally saved।');
+        return;
+    }
+    showSync('☁️ Syncing...');
+    try {
+        await fsSetDoc(fsDoc(db, 'premiumHub', 'settings'), globalSettings);
+        await fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos });
+        showSync('✅ Synced to Cloud');
+        console.log("☁️ Saved to cloud");
+    } catch (e) {
+        console.log("Cloud save error:", e);
+        showSync('⚠️ Sync failed');
+        alert('⚠️ Cloud sync failed: ' + e.message);
+    }
+}
+
+function showSync(text) {
+    const badge = document.getElementById('syncBadge');
+    badge.textContent = text;
+    badge.classList.add('show');
+    if (text.includes('✅')) {
+        setTimeout(() => badge.classList.remove('show'), 1500);
+    }
+}
+
+// ================= LOCAL STORAGE =================
 function loadData() {
     try {
-        const v = localStorage.getItem('premiumHubVideos_v4');
-        const s = localStorage.getItem('premiumHubSettings_v4');
+        const v = localStorage.getItem('premiumHubVideos_v6');
+        const s = localStorage.getItem('premiumHubSettings_v6');
         allVideos = v ? JSON.parse(v) : JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
-        if (s) {
-            globalSettings = JSON.parse(s);
-            if (!globalSettings.adminPassword) globalSettings.adminPassword = "557822";
-        }
+        if (s) globalSettings = { ...globalSettings, ...JSON.parse(s) };
+        if (!globalSettings.adminPassword) globalSettings.adminPassword = "557822";
+        if (globalSettings.adSystemEnabled === undefined) globalSettings.adSystemEnabled = true;
     } catch (e) {
         allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
     }
 }
-function saveData() {
+function saveLocal() {
     try {
-        localStorage.setItem('premiumHubVideos_v4', JSON.stringify(allVideos));
-        localStorage.setItem('premiumHubSettings_v4', JSON.stringify(globalSettings));
-    } catch (e) { console.log('Save failed'); }
+        localStorage.setItem('premiumHubVideos_v6', JSON.stringify(allVideos));
+        localStorage.setItem('premiumHubSettings_v6', JSON.stringify(globalSettings));
+    } catch (e) { console.log('Local save failed'); }
 }
 
 // ================= RENDER =================
@@ -562,8 +763,8 @@ function renderPagination(totalPages) {
     }
 }
 
-// ================= LIKE =================
-function toggleLikeHome(id, event) {
+// ================= LIKE (Cloud sync) =================
+async function toggleLikeHome(id, event) {
     event.stopPropagation();
     const video = allVideos.find(v => v.id === id);
     if (!video) return;
@@ -572,6 +773,11 @@ function toggleLikeHome(id, event) {
     const button = event.currentTarget;
     button.querySelector('.heart-icon').textContent = video.isLiked ? '❤️' : '🤍';
     button.querySelector('.like-count-text').textContent = video.likes;
+    if (firebaseReady && db) {
+        try {
+            await fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos });
+        } catch (e) { saveLocal(); }
+    } else { saveLocal(); }
 }
 
 // ================= DETAIL =================
@@ -583,8 +789,10 @@ function openDetail(id) {
     document.getElementById('detailViews').textContent = video.views + ' Views';
     const hv = document.getElementById('homeViews_' + id);
     if (hv) hv.textContent = video.views;
+    if (firebaseReady && db) {
+        fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos }).catch(e => saveLocal());
+    } else { saveLocal(); }
 
-    // Collage
     const cc = document.getElementById('collageContainer');
     const imgs = (video.detailImgs || []).filter(img => img && img.trim() !== '');
     let html = '';
@@ -601,7 +809,6 @@ function openDetail(id) {
     }
     cc.innerHTML = html;
 
-    // Screenshots
     const sc = document.getElementById('screenshotsContainer');
     const nb = document.getElementById('noScreenshotBox');
     const ss = (video.screenshots || []).filter(img => img && img.trim() !== '');
@@ -620,11 +827,31 @@ function openDetail(id) {
     updateDetailLikeUI(video);
     adsWatched = 0;
     updateProgress();
+
     const ub = document.getElementById('unlockBtn');
-    ub.disabled = false;
-    ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
-    ub.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg> UNLOCK VIDEO';
-    ub.onclick = watchAd;
+    if (!globalSettings.adSystemEnabled) {
+        document.getElementById('unlockHeadText').textContent = 'Direct Download';
+        document.getElementById('unlockRules').innerHTML = '⬇️ নিচের বাটনে ক্লিক করে সরাসরি ভিডিও ডাউনলোড করুন।';
+        document.getElementById('progressWrap').style.display = 'none';
+        document.getElementById('progressTextWrap').style.display = 'none';
+        ub.innerHTML = '⬇️ DOWNLOAD VIDEO';
+        ub.disabled = false;
+        ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
+        ub.onclick = function() {
+            if (video && video.videoUrl && video.videoUrl.trim() !== '') window.open(video.videoUrl, '_blank');
+            else alert('⚠️ No Video Link set.');
+        };
+    } else {
+        document.getElementById('unlockHeadText').textContent = 'Watch 3 ads to unlock';
+        document.getElementById('unlockRules').innerHTML = 'উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ৩ টি অ্যাড সম্পূর্ণ দেখুন। সব অ্যাড শেষ হলে ⬇️ Download বাটনটি অটোমেটিকভাবে আনলক হয়ে যাবে। 🚀🤫👇';
+        document.getElementById('progressWrap').style.display = 'block';
+        document.getElementById('progressTextWrap').style.display = 'block';
+        ub.disabled = false;
+        ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
+        ub.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg> UNLOCK VIDEO';
+        ub.onclick = watchAd;
+    }
+
     try { history.pushState({page:'detail'}, '', '#detail-' + id); } catch(e) {}
     showPage('detail');
 }
@@ -640,7 +867,7 @@ function updateDetailLikeUI(video) {
     }
 }
 
-function toggleLikeDetail() {
+async function toggleLikeDetail() {
     if (!currentVideoId) return;
     const video = allVideos.find(v => v.id === currentVideoId);
     if (!video) return;
@@ -653,6 +880,10 @@ function toggleLikeDetail() {
         const hb = hl.closest('.like-btn-home');
         if (hb) hb.querySelector('.heart-icon').textContent = video.isLiked ? '❤️' : '🤍';
     }
+    if (firebaseReady && db) {
+        try { await fsSetDoc(fsDoc(db, 'premiumHub', 'videos'), { list: allVideos }); }
+        catch (e) { saveLocal(); }
+    } else { saveLocal(); }
 }
 
 function shareVideo() {
@@ -677,37 +908,31 @@ function showPage(name) {
     window.scrollTo({ top: 0, behavior: 'instant' });
     document.getElementById('bottomBar').classList.toggle('hidden', name !== 'detail');
 }
-
 function goBackHome() {
     showPage('home');
     if (history.state && history.state.page === 'detail') {
         try { history.back(); } catch(e) {}
     }
 }
-
 window.addEventListener('popstate', function() {
     const d = document.getElementById('detailPage');
     if (d && d.classList.contains('active')) showPage('home');
 });
-
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
     document.getElementById('overlay').classList.toggle('active');
 }
-
 function toggleSearch() {
     const sb = document.getElementById('searchBar');
     sb.classList.toggle('active');
     if (sb.classList.contains('active')) document.getElementById('searchInput').focus();
     else { document.getElementById('searchInput').value = ''; searchQuery = ''; renderApp(); }
 }
-
 function handleSearch() {
     searchQuery = document.getElementById('searchInput').value;
     currentPage = 1;
     renderApp();
 }
-
 function toggleTheme() {
     document.body.classList.toggle('light-mode');
     const i = document.getElementById('themeIcon');
@@ -717,7 +942,6 @@ function toggleTheme() {
         i.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>';
     }
 }
-
 document.getElementById('categoryContainer').addEventListener('click', function(e) {
     if (e.target.classList.contains('cat-chip')) {
         document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
@@ -754,7 +978,6 @@ function watchAd() {
         }
     }, 1000);
 }
-
 function closeAdModal() {
     document.getElementById('adModal').classList.remove('active');
     const av = document.getElementById('adVideo');
@@ -773,7 +996,6 @@ function closeAdModal() {
         };
     }
 }
-
 function updateProgress() {
     document.getElementById('progressBar').style.width = (adsWatched / totalAds * 100) + '%';
     document.getElementById('progressText').textContent = adsWatched + '/' + totalAds;
@@ -787,9 +1009,7 @@ function openAdminLogin() {
     document.getElementById('adminPasswordInput').value = '';
     setTimeout(() => document.getElementById('adminPasswordInput').focus(), 100);
 }
-
 function closePasswordModal() { document.getElementById('passwordModal').classList.remove('active'); }
-
 function verifyAdminPassword() {
     const input = document.getElementById('adminPasswordInput').value;
     if (input === globalSettings.adminPassword) {
@@ -800,15 +1020,26 @@ function verifyAdminPassword() {
         document.getElementById('globalTelegramLink').value = globalSettings.telegramLink;
         document.getElementById('globalAdLink').value = globalSettings.adLink;
         document.getElementById('globalAdminPassword').value = '';
+        updateAdSystemUI();
     } else {
         alert('❌ Incorrect Code! Try again.');
         document.getElementById('adminPasswordInput').value = '';
     }
 }
-
 function closeAdminPanel() {
     document.getElementById('adminPanel').classList.remove('active');
     document.body.style.overflow = '';
+}
+function updateAdSystemUI() {
+    const t = document.getElementById('adToggle');
+    if (!t) return;
+    if (globalSettings.adSystemEnabled) t.classList.add('on');
+    else t.classList.remove('on');
+}
+async function toggleAdSystem() {
+    globalSettings.adSystemEnabled = !globalSettings.adSystemEnabled;
+    updateAdSystemUI();
+    await saveToCloud();
 }
 
 function renderAdminVideoList() {
@@ -831,7 +1062,6 @@ function renderAdminVideoList() {
         list.appendChild(item);
     });
 }
-
 function handleImageUpload(event, inputId, previewId) {
     const file = event.target.files[0];
     if (!file) return;
@@ -839,7 +1069,7 @@ function handleImageUpload(event, inputId, previewId) {
     reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-            const MAX_WIDTH = 600;
+            const MAX_WIDTH = 500;
             let scale = 1;
             if (img.width > MAX_WIDTH) scale = MAX_WIDTH / img.width;
             const canvas = document.createElement('canvas');
@@ -847,7 +1077,7 @@ function handleImageUpload(event, inputId, previewId) {
             canvas.height = img.height * scale;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const base64 = canvas.toDataURL('image/jpeg', 0.7);
+            const base64 = canvas.toDataURL('image/jpeg', 0.6);
             document.getElementById(inputId).value = base64;
             document.getElementById(previewId).src = base64;
         };
@@ -855,13 +1085,11 @@ function handleImageUpload(event, inputId, previewId) {
     };
     reader.readAsDataURL(file);
 }
-
 function updatePreview(imgId, url) {
     const img = document.getElementById(imgId);
     if (url && url.trim()) img.src = url;
     else img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="55" fill="%23666" font-size="12" text-anchor="middle">No Image</text></svg>';
 }
-
 function openEditModal(id) {
     const video = allVideos.find(v => v.id === id);
     if (!video) return;
@@ -892,10 +1120,8 @@ function openEditModal(id) {
     updatePreview('previewScreenshot3', video.screenshots ? video.screenshots[2] : '');
     document.getElementById('editVideoModal').classList.add('active');
 }
-
 function closeEditModal() { document.getElementById('editVideoModal').classList.remove('active'); }
-
-function saveVideoEdit() {
+async function saveVideoEdit() {
     const id = parseInt(document.getElementById('editVideoId').value);
     const video = allVideos.find(v => v.id === id);
     if (!video) return;
@@ -919,23 +1145,21 @@ function saveVideoEdit() {
     video.videoUrl = document.getElementById('editVideoUrl').value;
     video.adUrl = document.getElementById('editAdUrl').value;
     video.desc = document.getElementById('editDesc').value;
-    saveData();
+    await saveToCloud();
     closeEditModal();
     renderAdminVideoList();
     renderApp();
-    alert('✅ Video updated successfully!');
+    alert('✅ Synced to all devices!');
 }
-
-function deleteVideo(id) {
+async function deleteVideo(id) {
     if (confirm('Are you sure you want to delete this video?')) {
         allVideos = allVideos.filter(v => v.id !== id);
-        saveData();
+        await saveToCloud();
         renderAdminVideoList();
         renderApp();
     }
 }
-
-function addNewVideo() {
+async function addNewVideo() {
     const newId = allVideos.length > 0 ? Math.max(...allVideos.map(v => v.id)) + 1 : 1;
     allVideos.push({
         id: newId, title: "New Video Title", category: "viral",
@@ -944,27 +1168,31 @@ function addNewVideo() {
         screenshots: [], badgeText: "Full Collection", views: 0, likes: 0,
         isLiked: false, videoUrl: "https://example.com/new-video", adUrl: "", desc: "New video description..."
     });
-    saveData();
+    await saveToCloud();
     renderAdminVideoList();
     renderApp();
     openEditModal(newId);
 }
-
-function saveAllChanges() {
+async function saveAllChanges() {
     globalSettings.telegramLink = document.getElementById('globalTelegramLink').value;
     globalSettings.adLink = document.getElementById('globalAdLink').value;
     const newPass = document.getElementById('globalAdminPassword').value;
     if (newPass && newPass.trim() !== '') globalSettings.adminPassword = newPass.trim();
-    saveData();
+    await saveToCloud();
     document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
-    alert('✅ All changes saved successfully!');
+    alert('✅ All changes synced to all devices!');
 }
 
 // ================= INIT =================
+// Firebase থেকে ডেটা আসার আগে লোকাল দেখাই
 loadData();
 renderApp();
 document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
+updateAdSystemUI();
 try { history.replaceState({page:'home'}, '', window.location.pathname); } catch(e) {}
+
+// ৩ সেকেন্ড পরে লোডিং স্ক্রিন সরিয়ে দাও (backup)
+setTimeout(hideLoading, 3000);
 </script>
 </body>
 </html>
