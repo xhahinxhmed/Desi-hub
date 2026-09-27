@@ -3,21 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PREMIUM HUB </title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-
+    <title>PREMIUM HUB</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-body: #050a05;
+            --bg-app: #071207;
+            --bg-card: #0c1a0c;
+            --bg-header: rgba(7, 18, 7, 0.95);
+            --border-color: #1a331a;
+            --text-main: #ffffff;
+            --text-sub: #a3d9a3;
+            --text-muted: #4a6a4a;
+            --primary-green: #00e676;
+            --like-active: #ff4d6d;
+        }
+
+        body.light-mode {
+            --bg-body: #f0fdf4;
+            --bg-app: #ffffff;
+            --bg-card: #ffffff;
+            --bg-header: rgba(255, 255, 255, 0.95);
+            --border-color: #d1fae5;
+            --text-main: #064e3b;
+            --text-sub: #047857;
+            --text-muted: #6b7280;
+            --like-active: #e11d48;
+        }
+
         * { font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: #050a05; min-height: 100vh; overflow-x: hidden; margin: 0; }
+        body { 
+            background: var(--bg-body); 
+            color: var(--text-main);
+            min-height: 100vh; overflow-x: hidden; margin: 0; 
+            transition: background 0.3s ease, color 0.3s ease;
+        }
         .app-container {
             max-width: 480px; margin: 0 auto; min-height: 100vh;
-            background: #071207; position: relative;
+            background: var(--bg-app); position: relative;
             box-shadow: 0 0 60px rgba(0, 255, 0, 0.05);
+            transition: background 0.3s ease;
         }
+        
         /* Page switching */
         .page { display: none; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
@@ -27,10 +55,10 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Category chips - Updated to be centered and neat */
+        /* Category chips */
         .cat-chip {
-            background: #0f1f0f; border: 1px solid #1a331a;
-            color: #a3d9a3; padding: 7px 14px; border-radius: 10px;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            color: var(--text-sub); padding: 7px 14px; border-radius: 10px;
             font-size: 12px; font-weight: 600; white-space: nowrap;
             transition: all 0.25s ease; cursor: pointer;
         }
@@ -41,46 +69,73 @@
         }
         .cat-chip:active { transform: scale(0.95); }
 
-        /* Thumbnail cards */
+        /* Homepage Thumbnail cards (Updated for bigger & clearer images) */
         .thumb-card {
-            position: relative; border-radius: 16px; overflow: hidden;
+            position: relative; border-radius: 0; overflow: hidden;
             cursor: pointer; transition: transform 0.25s ease;
-            background: #0a1a0a;
+            background: transparent; display: flex; flex-direction: column;
         }
         .thumb-card:active { transform: scale(0.97); }
-        .thumb-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .thumb-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%);
+        /* object-cover ব্যবহার করা হয়েছে যাতে ছবি পুরো কার্ড জুড়ে ফিট হয় এবং object-position: top দিয়ে মুখ দেখা যায় */
+        .thumb-card img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; background: #000; }
+        
+        .card-title {
+            font-size: 14px; font-weight: 700; line-height: 1.4;
+            color: #ffffff;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; margin-bottom: 6px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
         }
-        .collection-badge {
-            position: absolute; bottom: 10px; right: 10px;
-            background: rgba(0,0,0,0.8); color: white;
-            font-size: 11px; font-weight: 600; padding: 5px 10px;
-            border-radius: 8px; backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.1);
+        .card-stats {
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 12px; font-weight: 600;
         }
-        .photo-count {
-            position: absolute; top: 10px; left: 10px;
-            background: rgba(0,0,0,0.7); color: white;
-            font-size: 10px; font-weight: 700; padding: 4px 8px;
-            border-radius: 6px; backdrop-filter: blur(4px);
+        .stat-views { color: #e0e0e0; display: flex; align-items: center; gap: 4px; }
+        
+        .like-btn-home {
+            display: flex; align-items: center; gap: 4px;
+            background: transparent; border: none; cursor: pointer;
+            color: #ff4d6d; padding: 4px 8px; border-radius: 8px;
+            transition: all 0.2s ease;
         }
+        .like-btn-home:active { background: rgba(255, 77, 109, 0.1); transform: scale(0.95); }
+        .like-btn-home.liked { color: #ff4d6d; }
+        .heart-icon { font-size: 14px; transition: transform 0.2s; }
+        .heart-icon.liked-anim { animation: heartBeat 0.5s ease; }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); } 25% { transform: scale(1.4); }
+            50% { transform: scale(0.9); } 100% { transform: scale(1); }
+        }
+
+        /* Pagination */
+        .page-btn {
+            width: 42px; height: 42px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; font-weight: 700;
+            transition: all 0.25s ease; cursor: pointer;
+            border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-sub);
+        }
+        .page-btn.active {
+            background: linear-gradient(135deg, #00c853, #00e676);
+            color: #000; border-color: #00e676;
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
+        }
+        .page-btn:active { transform: scale(0.92); }
 
         /* Detail page elements */
         .stat-pill {
             display: flex; align-items: center; gap: 6px;
-            background: #0d1f0d; border: 1px solid #1a331a;
-            color: #a3d9a3; padding: 8px 14px; border-radius: 20px;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            color: var(--text-sub); padding: 8px 14px; border-radius: 20px;
             font-size: 13px; font-weight: 600;
         }
         .unlock-box {
-            background: linear-gradient(180deg, #0a1a0a 0%, #061006 100%);
-            border: 1px solid #1a331a; border-radius: 20px;
-            padding: 20px; margin-top: 20px;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 20px; padding: 20px; margin-top: 20px;
         }
         .progress-bar-bg {
-            height: 6px; background: #1a331a; border-radius: 3px;
+            height: 6px; background: var(--border-color); border-radius: 3px;
             overflow: hidden; margin-top: 10px;
         }
         .progress-bar-fill {
@@ -97,7 +152,7 @@
         }
         .unlock-btn:active { transform: scale(0.97); }
         .unlock-btn:disabled {
-            background: #1a331a; color: #4a6a4a;
+            background: var(--border-color); color: var(--text-muted);
             box-shadow: none; cursor: not-allowed;
         }
         .watch-more-btn {
@@ -114,16 +169,29 @@
         .header-fixed {
             position: sticky; top: 0; z-index: 100;
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            background: rgba(7, 18, 7, 0.95);
-            border-bottom: 1px solid rgba(0, 255, 80, 0.06);
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
         }
         .icon-btn {
             width: 42px; height: 42px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            background: transparent; color: #00e676; border: none;
+            background: transparent; color: var(--primary-green); border: none;
             cursor: pointer; transition: background 0.2s;
         }
         .icon-btn:active { background: rgba(0, 230, 118, 0.1); }
+
+        /* Search Bar */
+        .search-bar {
+            display: none; padding: 10px 16px; background: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-bar.active { display: block; }
+        .search-input {
+            width: 100%; padding: 12px 16px; border-radius: 12px;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            color: var(--text-main); font-size: 14px; outline: none;
+        }
+        .search-input::placeholder { color: var(--text-muted); }
 
         /* Sidebar */
         .sidebar {
@@ -132,6 +200,10 @@
             z-index: 1000; transition: left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
             border-right: 1px solid rgba(0, 255, 0, 0.08);
             box-shadow: 5px 0 30px rgba(0, 0, 0, 0.7);
+        }
+        body.light-mode .sidebar {
+            background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+            border-right: 1px solid var(--border-color);
         }
         .sidebar.open { left: 0; }
         .overlay {
@@ -143,7 +215,7 @@
         .menu-item {
             transition: all 0.25s ease; border-left: 3px solid transparent;
             display: flex; align-items: center; gap: 16px;
-            padding: 14px 16px; border-radius: 10px; color: #a3d9a3;
+            padding: 14px 16px; border-radius: 10px; color: var(--text-sub);
             text-decoration: none; font-weight: 500;
         }
         .menu-item:hover, .menu-item:active { background: rgba(0, 255, 80, 0.06); border-left-color: #00cc44; }
@@ -161,44 +233,73 @@
         .glow-green { text-shadow: 0 0 20px rgba(0, 255, 100, 0.4); }
         
         /* Description text */
-        .desc-title { color: #00e676; font-size: 18px; font-weight: 700; line-height: 1.5; }
-        .desc-text { color: #c5e1c5; font-size: 14px; line-height: 1.7; }
+        .desc-title { color: var(--primary-green); font-size: 18px; font-weight: 700; line-height: 1.5; }
+        .desc-text { color: var(--text-sub); font-size: 14px; line-height: 1.7; }
         
         /* Empty screenshot box */
         .no-screenshot-box {
-            background: #0d1f0d; border: 1px solid #1a331a;
+            background: var(--bg-card); border: 1px solid var(--border-color);
             border-radius: 16px; padding: 24px 16px;
-            text-align: center; color: #a3d9a3; font-size: 14px;
+            text-align: center; color: var(--text-sub); font-size: 14px;
             line-height: 1.6;
         }
-
-        /* Like animation */
-        @keyframes heartBeat {
-            0% { transform: scale(1); } 25% { transform: scale(1.3); }
-            50% { transform: scale(0.95); } 100% { transform: scale(1); }
-        }
-        .liked { animation: heartBeat 0.5s ease; }
 
         /* Bottom bar */
         .bottom-bar {
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
             max-width: 480px; width: 100%;
-            background: rgba(7, 18, 7, 0.98); backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(0, 255, 80, 0.1);
+            background: var(--bg-header); backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
             padding: 12px 16px; z-index: 200;
+        }
+
+        /* Admin Panel Specifics (Overlay) */
+        .admin-overlay {
+            position: fixed; inset: 0; background: var(--bg-app);
+            z-index: 3000; display: none; overflow-y: auto;
+            padding-bottom: 40px;
+        }
+        .admin-overlay.active { display: block; }
+        .admin-input {
+            width: 100%; padding: 10px 14px; border-radius: 10px;
+            background: rgba(0,0,0,0.3); border: 1px solid var(--border-color);
+            color: var(--text-main); font-size: 13px; outline: none;
+            margin-bottom: 10px;
+        }
+        .admin-input:focus { border-color: var(--primary-green); }
+        .admin-label {
+            display: block; font-size: 11px; font-weight: 700;
+            color: var(--text-sub); margin-bottom: 4px; text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px); z-index: 4000;
+            display: none; align-items: center; justify-content: center; padding: 16px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 20px; width: 100%; max-width: 420px;
+            max-height: 90vh; overflow-y: auto; padding: 20px;
+        }
+        .img-preview {
+            width: 60px; height: 60px; border-radius: 8px; object-fit: cover;
+            border: 2px solid var(--border-color); margin-bottom: 12px;
+            background: #000; display: block;
         }
     </style>
 </head>
 <body>
 
-    <!-- Overlay -->
+    <!-- Overlay for Sidebar -->
     <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
 
     <!-- Sidebar -->
     <aside id="sidebar" class="sidebar no-scrollbar overflow-y-auto">
-        <div class="flex items-center justify-between px-5 py-5 border-b border-green-900/30">
-            <h2 class="text-green-400 font-bold text-lg tracking-wider glow-green">DESI HUB</h2>
-            <button onclick="toggleSidebar()" class="w-9 h-9 rounded-full bg-green-900/30 flex items-center justify-center text-green-400 active:scale-90 transition-all">
+        <div class="flex items-center justify-between px-5 py-5 border-b" style="border-color: var(--border-color);">
+            <h2 class="font-bold text-lg tracking-wider glow-green" style="color: var(--primary-green);">PREMIUM HUB</h2>
+            <button onclick="toggleSidebar()" class="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-all" style="background: var(--bg-card); color: var(--primary-green);">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -206,8 +307,83 @@
         </div>
         <nav class="mt-4 px-2">
             <a href="#" onclick="showPage('home'); toggleSidebar();" class="menu-item active">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" style="color: var(--primary-green);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>Home</span>
+            </a>
+            <div class="my-4 mx-4 border-t" style="border-color: var(--border-color);"></div>
+            <p class="px-4 text-xs font-semibold uppercase tracking-widest mb-2" style="color: var(--text-sub);">Social Links</p>
+            <a href="https://t.me" id="sidebarTelegramLink" target="_blank" rel="noopener noreferrer" class="telegram-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+                <span>Telegram</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-auto opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+            </a>
+        </nav>
+        <!-- System Verification Trigger -->
+        <div class="absolute bottom-0 left-0 right-0 px-5 py-4 border-t" style="border-color: var(--border-color);">
+            <p class="text-xs text-center cursor-pointer hover:text-green-400 transition-colors" style="color: var(--text-muted);" onclick="openAdminLogin()">© 2024 PREMIUM HUB</p>
+        </div>
+    </aside>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+
+        <!-- ============ HOME PAGE ============ -->
+        <div id="homePage" class="page active">
+            <!-- Home Header -->
+            <header class="header-fixed flex items-center justify-between px-4 py-3">
+                <button onclick="toggleSidebar()" class="icon-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <h1 class="text-lg font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-green-400 to-emerald-500 glow-green">
+                    PREMIUM HUB
+                </h1>
+                <div class="flex items-center gap-1">
+                    <button id="themeToggle" onclick="toggleTheme()" class="icon-btn">
+                        <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button onclick="toggleSearch()" class="icon-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Search Bar -->
+            <div id="searchBar" class="search-bar">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search videos..." oninput="handleSearch()">
+            </div>
+
+            <!-- Category Chips -->
+            <div class="px-4 py-5">
+                <div class="flex flex-wrap justify-center gap-2" id="categoryContainer">
+                    <button class="cat-chip active" data-category="all">🎬 All Videos</button>
+                    <button class="cat-chip" data-category="mom-son">Mom Son</button>
+                    <button class="cat-chip" data-category="viral">Viral</button>
+                    <button class="cat-chip" data-category="leaked">Leaked</button>
+                    <button class="cat-chip" data-category="video-call">Video Call</button>
+                    <button class="cat-chip" data-category="indian">Indian 🇮🇳</button>
+                    <button class="cat-chip" data-category="bangladeshi">Bangladeshi 🇧🇩</button>
+                    <button class="cat-chip" data-category="pakistani">Pakistani 🇵🇰</button>
+                    <button class="cat-chip" data-category="english">English Full Videos</button>
+                    <button class="cat-chip" data-category="desi">Desi ☀️</button>
+                    <button class="cat-chip" data-category="web-series">18+ Web Series</button>
+                    <button class="cat-chip" data-category="movies">Movies 🎬</button>
+                </div>
+            </div>
+
+            <!-- Photo Grid -->
+            <main class="1 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
                 <span>Home</span>
             </a>
