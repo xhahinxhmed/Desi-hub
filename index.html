@@ -108,7 +108,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 .del-btn{background:rgba(200,0,0,.5);color:#ff6b6b}
 .toggle-row{display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.3);padding:12px 14px;border-radius:10px;margin-bottom:10px;border:1px solid var(--border-color)}
 .toggle-label{font-size:13px;font-weight:600;color:var(--text-main)}
-.toggle-switch{position:relative;width:48px;height:26px;background:#333;border-radius:13px;cursor:pointer;transition:all .3s}
+.toggle-switch{position:relative;width:48px;height:26px;background:#333;border-radius:13px;cursor:pointer;transition:all .3s;flex-shrink:0}
 .toggle-switch.on{background:#22c55e}
 .toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:all .3s}
 .toggle-switch.on::after{left:25px}
@@ -131,16 +131,26 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 .img-section-title{font-size:12px;font-weight:700;margin-bottom:8px;color:var(--primary-green)}
 .ss-section{margin-top:12px;margin-bottom:8px;padding:12px;border-radius:8px;background:rgba(0,150,255,.05);border:1px dashed #00aaff}
 .ss-section-title{font-size:12px;font-weight:700;margin-bottom:8px;color:#00aaff}
-#adModal{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:5000;display:none;align-items:center;justify-content:center;padding:16px}
+.ad-section{margin-top:12px;margin-bottom:8px;padding:12px;border-radius:8px;background:rgba(250,204,21,.05);border:1px dashed #facc15}
+.ad-section-title{font-size:12px;font-weight:700;margin-bottom:8px;color:#facc15}
+
+/* ============ AD MODAL (Mini App Style) ============ */
+#adModal{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:5000;display:none;align-items:center;justify-content:center;padding:0}
 #adModal.active{display:flex}
-.ad-box{width:100%;max-width:448px;background:#111827;border-radius:16px;overflow:hidden;border:1px solid rgba(34,197,94,.3)}
-.ad-head{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid #1f2937}
-.ad-head span{color:#4ade80;font-weight:700}
-.ad-close{color:#999;font-size:24px;font-weight:700;background:none;border:none;cursor:pointer;display:none}
-.ad-video-wrap{background:#000;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
-.ad-video-wrap video{width:100%;height:100%}
-.ad-foot{padding:16px;text-align:center}
-.ad-foot p{color:#facc15;font-weight:600}
+.ad-box{width:100%;max-width:480px;height:100vh;max-height:100vh;background:#0a0a0a;display:flex;flex-direction:column;position:relative}
+.ad-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#111827;border-bottom:1px solid #1f2937;flex-shrink:0}
+.ad-head span{color:#4ade80;font-weight:700;font-size:14px}
+.ad-close{color:#fff;font-size:22px;font-weight:700;background:rgba(220,38,38,.9);border:none;cursor:pointer;display:none;width:36px;height:36px;border-radius:50%;line-height:1;align-items:center;justify-content:center;padding:0}
+.ad-close.show{display:flex}
+.ad-content{flex:1;background:#000;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:0}
+.ad-content iframe{width:100%;height:100%;border:0;background:#000}
+.ad-content img{max-width:100%;max-height:100%;object-fit:contain}
+.ad-foot{padding:12px 16px;text-align:center;background:#111827;border-top:1px solid #1f2937;flex-shrink:0}
+.ad-foot p{color:#facc15;font-weight:600;font-size:13px}
+.ad-loader{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#4ade80;background:#000}
+.ad-loader .spinner{width:40px;height:40px;border:3px solid rgba(34,197,94,.2);border-top-color:#22c55e;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:12px}
+.ad-loader-text{font-size:12px;color:#86efac}
+
 .glow{text-shadow:0 0 20px rgba(0,255,100,.4)}
 .sync-badge{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:6000;background:rgba(34,197,94,.95);color:#fff;font-size:11px;font-weight:700;padding:6px 14px;border-radius:20px;display:none;box-shadow:0 4px 12px rgba(0,0,0,.4);max-width:90%;text-align:center}
 .sync-badge.show{display:block}
@@ -254,7 +264,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </div>
     <div style="padding:0 12px">
         <div class="unlock-box">
-            <div class="unlock-head"><span>▶️</span><span id="unlockHeadText">Watch 3 ads to unlock</span></div>
+            <div class="unlock-head"><span>▶️</span><span id="unlockHeadText">Watch ads to unlock</span></div>
             <div class="progress-bar-bg" id="progressWrap"><div id="progressBar" class="progress-bar-fill"></div></div>
             <p class="progress-text" id="progressTextWrap">Progress: <span id="progressText">0/3</span></p>
             <button id="unlockBtn" onclick="watchAd()" class="unlock-btn">
@@ -269,7 +279,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <p id="videoDesc">Loading...</p>
             <div class="divider"></div>
             <p style="display:flex;align-items:center;gap:8px"><span>🇧🇩</span><span style="color:var(--primary-green);font-weight:600">ভিডিও দেখার নিয়ম:</span></p>
-            <p id="unlockRules">উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ৩ টি অ্যাড সম্পূর্ণ দেখুন। সব অ্যাড শেষ হলে ⬇️ Download বাটনটি অটোমেটিকভাবে আনলক হয়ে যাবে। 🚀🤫👇</p>
+            <p id="unlockRules">উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে অ্যাড সম্পূর্ণ দেখুন। সব অ্যাড শেষ হলে ⬇️ Download বাটনটি অটোমেটিকভাবে আনলক হয়ে যাবে। 🚀🤫👇</p>
         </div>
     </div>
     <div class="screenshots-pad">
@@ -309,29 +319,43 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         <div class="admin-card">
             <h3>☁️ Cloud Status</h3>
             <p id="cloudStatusText" style="font-size:12px;color:#4ade80;font-weight:600">✅ Connected to Firebase</p>
-            <p style="font-size:10px;color:#999;margin-top:4px">প্রতিটি ভিডিও আলাদা ডকুমেন্টে সেভ হয় — নতুন ভিডিও সবার প্রথমে দেখাবে</p>
+            <p style="font-size:10px;color:#999;margin-top:4px">নতুন ভিডিও সবার প্রথমে দেখাবে • প্রতিটি ভিডিও আলাদা ডকুমেন্টে সেভ হয়</p>
         </div>
 
         <div class="admin-card">
             <h3>🌐 Global Settings</h3>
             <label class="admin-label">Telegram Link</label>
             <input type="text" id="globalTelegramLink" class="admin-input" placeholder="https://t.me/...">
-            <label class="admin-label">Global Ad Link (Optional)</label>
-            <input type="text" id="globalAdLink" class="admin-input" placeholder="https://...">
             <label class="admin-label">Change Admin Password</label>
             <input type="text" id="globalAdminPassword" class="admin-input" placeholder="Enter new password">
             <p class="admin-hint">Leave empty to keep current password.</p>
         </div>
 
         <div class="admin-card">
-            <h3>▶️ Ad System</h3>
+            <h3>▶️ Ad System (Global)</h3>
             <div class="toggle-row">
                 <div>
-                    <div class="toggle-label">Enable Ads</div>
-                    <div class="toggle-sub">বন্ধ থাকলে সরাসরি ডাউনলোড বাটন পাবেন</div>
+                    <div class="toggle-label">Enable Ads Globally</div>
+                    <div class="toggle-sub">বন্ধ থাকলে সব ভিডিওতে সরাসরি ডাউনলোড</div>
                 </div>
                 <div class="toggle-switch" id="adToggle" onclick="toggleAdSystem()"></div>
             </div>
+
+            <label class="admin-label">How Many Ads to Watch</label>
+            <input type="number" id="globalAdCount" class="admin-input" placeholder="3" min="1" max="20">
+            <p class="admin-hint">ইউজারকে কতটা অ্যাড দেখতে হবে (যেমন: 1, 3, 5)</p>
+
+            <label class="admin-label">Ad Timer (Seconds)</label>
+            <input type="number" id="globalAdTimer" class="admin-input" placeholder="5" min="1" max="60">
+            <p class="admin-hint">কত সেকেন্ড পর ✕ (বন্ধ) বাটন আসবে</p>
+
+            <label class="admin-label">Ad Direct Link (Adsterra)</label>
+            <input type="text" id="globalAdLink" class="admin-input" placeholder="https://...">
+            <p class="admin-hint">Adsterra Direct Link এখানে বসান (একটা লিংক)</p>
+
+            <label class="admin-label">Ad Code (Adsterra Banner Code)</label>
+            <textarea id="globalAdCode" class="admin-input" rows="4" placeholder="<script>...</script> or <iframe>...</iframe>"></textarea>
+            <p class="admin-hint">Adsterra Banner Code পুরোটা এখানে পেস্ট করুন</p>
         </div>
 
         <div class="admin-card">
@@ -373,68 +397,87 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <option value="desi">Desi</option><option value="web-series">18+ Web Series</option>
             <option value="movies">Movies</option>
         </select>
+
+        <div class="toggle-row">
+            <div>
+                <div class="toggle-label">Enable Ads for this Video</div>
+                <div class="toggle-sub">বন্ধ থাকলে এই ভিডিওতে সরাসরি ডাউনলোড</div>
+            </div>
+            <div class="toggle-switch" id="editAdEnabled" onclick="this.classList.toggle('on')"></div>
+        </div>
+
         <div class="img-section">
-            <p class="img-section-title">🖼️ ছবি পরিবর্তন</p>
+            <p class="img-section-title">🖼️ ছবি পরিবর্তন (কোয়ালিটি ভালো থাকবে)</p>
             <label class="admin-label">Thumbnail *</label>
             <div class="upload-row">
-                <input type="file" id="uploadThumb" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editImg','previewImg')">
+                <input type="file" id="uploadThumb" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editImg','previewImg',800,0.75)">
                 <button onclick="document.getElementById('uploadThumb').click()" class="upload-btn">📁 আপলোড</button>
                 <input type="text" id="editImg" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewImg',this.value)">
             </div>
             <img id="previewImg" class="img-preview">
             <label class="admin-label">Detail Image 1 *</label>
             <div class="upload-row">
-                <input type="file" id="uploadDetail1" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg1','previewDetailImg1')">
+                <input type="file" id="uploadDetail1" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg1','previewDetailImg1',800,0.75)">
                 <button onclick="document.getElementById('uploadDetail1').click()" class="upload-btn">📁 আপলোড</button>
                 <input type="text" id="editDetailImg1" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg1',this.value)">
             </div>
             <img id="previewDetailImg1" class="img-preview">
             <label class="admin-label">Detail Image 2</label>
             <div class="upload-row">
-                <input type="file" id="uploadDetail2" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg2','previewDetailImg2')">
+                <input type="file" id="uploadDetail2" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg2','previewDetailImg2',800,0.75)">
                 <button onclick="document.getElementById('uploadDetail2').click()" class="upload-btn">📁 আপলোড</button>
                 <input type="text" id="editDetailImg2" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg2',this.value)">
             </div>
             <img id="previewDetailImg2" class="img-preview">
             <label class="admin-label">Detail Image 3</label>
             <div class="upload-row">
-                <input type="file" id="uploadDetail3" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg3','previewDetailImg3')">
+                <input type="file" id="uploadDetail3" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg3','previewDetailImg3',800,0.75)">
                 <button onclick="document.getElementById('uploadDetail3').click()" class="upload-btn">📁 আপলোড</button>
                 <input type="text" id="editDetailImg3" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg3',this.value)">
             </div>
             <img id="previewDetailImg3" class="img-preview">
             <label class="admin-label">Detail Image 4</label>
             <div class="upload-row">
-                <input type="file" id="uploadDetail4" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg4','previewDetailImg4')">
+                <input type="file" id="uploadDetail4" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg4','previewDetailImg4',800,0.75)">
                 <button onclick="document.getElementById('uploadDetail4').click()" class="upload-btn">📁 আপলোড</button>
                 <input type="text" id="editDetailImg4" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg4',this.value)">
             </div>
             <img id="previewDetailImg4" class="img-preview">
         </div>
+
         <div class="ss-section">
             <p class="ss-section-title">📸 স্ক্রিনশট (ঐচ্ছিক)</p>
             <label class="admin-label">Screenshot 1</label>
             <div class="upload-row">
-                <input type="file" id="uploadScreenshot1" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot1','previewScreenshot1')">
+                <input type="file" id="uploadScreenshot1" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot1','previewScreenshot1',700,0.7)">
                 <button onclick="document.getElementById('uploadScreenshot1').click()" class="upload-btn blue">📁 আপলোড</button>
                 <input type="text" id="editScreenshot1" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewScreenshot1',this.value)">
             </div>
             <img id="previewScreenshot1" class="img-preview">
             <label class="admin-label">Screenshot 2</label>
             <div class="upload-row">
-                <input type="file" id="uploadScreenshot2" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot2','previewScreenshot2')">
+                <input type="file" id="uploadScreenshot2" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot2','previewScreenshot2',700,0.7)">
                 <button onclick="document.getElementById('uploadScreenshot2').click()" class="upload-btn blue">📁 আপলোড</button>
                 <input type="text" id="editScreenshot2" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewScreenshot2',this.value)">
             </div>
             <img id="previewScreenshot2" class="img-preview">
             <label class="admin-label">Screenshot 3</label>
             <div class="upload-row">
-                <input type="file" id="uploadScreenshot3" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot3','previewScreenshot3')">
+                <input type="file" id="uploadScreenshot3" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot3','previewScreenshot3',700,0.7)">
                 <button onclick="document.getElementById('uploadScreenshot3').click()" class="upload-btn blue">📁 আপলোড</button>
                 <input type="text" id="editScreenshot3" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewScreenshot3',this.value)">
             </div>
             <img id="previewScreenshot3" class="img-preview">
         </div>
+
+        <div class="ad-section">
+            <p class="ad-section-title">▶️ এই ভিডিওর জন্য আলাদা অ্যাড (ঐচ্ছিক)</p>
+            <label class="admin-label">Ad Direct Link (শুধু এই ভিডিওর জন্য)</label>
+            <input type="text" id="editAdUrl" class="admin-input" placeholder="খালি রাখলে গ্লোবাল অ্যাড লিংক ব্যবহার হবে">
+            <label class="admin-label">Ad Code (শুধু এই ভিডিওর জন্য)</label>
+            <textarea id="editAdCode" class="admin-input" rows="3" placeholder="খালি রাখলে গ্লোবাল অ্যাড কোড ব্যবহার হবে"></textarea>
+        </div>
+
         <label class="admin-label">Badge Text / Duration</label>
         <input type="text" id="editBadgeText" class="admin-input" placeholder="Full Collection or 12:45">
         <label class="admin-label">Views</label>
@@ -443,26 +486,25 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         <input type="number" id="editLikes" class="admin-input">
         <label class="admin-label">Video Link (ডাউনলোডে যাবে)</label>
         <input type="text" id="editVideoUrl" class="admin-input" placeholder="https://...">
-        <label class="admin-label">Ad Link (এই ভিডিওর জন্য)</label>
-        <input type="text" id="editAdUrl" class="admin-input" placeholder="https://... (খালি রাখলে গ্লোবাল)">
         <label class="admin-label">Description</label>
         <textarea id="editDesc" class="admin-input" rows="3"></textarea>
         <button onclick="saveVideoEdit()" style="width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:700;background:#22c55e;color:#000;margin-top:8px;border:none;cursor:pointer">💾 Save & Sync to All</button>
     </div>
 </div>
 
+<!-- AD MODAL (Mini-App Style) -->
 <div id="adModal">
     <div class="ad-box">
         <div class="ad-head">
             <span>বিজ্ঞাপন <span id="adCounter">1/3</span></span>
             <button id="adCloseBtn" class="ad-close" onclick="closeAdModal()">✕</button>
         </div>
-        <div class="ad-video-wrap">
-            <video id="adVideo" controls autoplay muted>
-                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
+        <div class="ad-content" id="adContent">
+            <!-- Ad content injected here -->
         </div>
-        <div class="ad-foot"><p id="adTimerText">বিজ্ঞাপন ৫ সেকেন্ড পরে বন্ধ হবে...</p></div>
+        <div class="ad-foot">
+            <p id="adTimerText">বিজ্ঞাপন লোড হচ্ছে...</p>
+        </div>
     </div>
 </div>
 
@@ -508,26 +550,16 @@ window.dispatchEvent(new Event('firebaseReady'));
 <script>
 // ================= DEFAULT DATA =================
 const DEFAULT_VIDEOS = [
-{id:1,title:"নতুন কটি মাল 🍑😍 (Nasmin)",category:"viral",img:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],screenshots:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],badgeText:"Full Collection",views:4062,likes:45,isLiked:false,videoUrl:"https://example.com/video1",adUrl:"",desc:"🔥 নতুন কটি মালের এক্সক্লুসিভ ভিডিও।"},
-{id:2,title:"বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও 😭",category:"viral",img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop"],screenshots:[],badgeText:"12:45",views:4667,likes:68,isLiked:false,videoUrl:"https://example.com/video2",adUrl:"",desc:"🔥 বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও।"},
-{id:3,title:"মাথা নষ্ট কালেকশন ভিডিও",category:"leaked",img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6196,likes:67,isLiked:false,videoUrl:"https://example.com/video3",adUrl:"",desc:"🔥 মাথা নষ্ট কালেকশন ভিডিও।"},
-{id:4,title:"Slim Young Bengali Girl - 10",category:"bangladeshi",img:"https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop"],screenshots:[],badgeText:"10:20",views:2853,likes:30,isLiked:false,videoUrl:"https://example.com/video4",adUrl:"",desc:"🔥 সম্পূর্ণ ভিডিও।"},
-{id:5,title:"Indian Viral Clip Exclusive",category:"indian",img:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:8754,likes:120,isLiked:false,videoUrl:"https://example.com/video5",adUrl:"",desc:"🔥 Indian Viral Clip।"},
-{id:6,title:"Pakistani Desi Video HD",category:"pakistani",img:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop"],screenshots:[],badgeText:"15:30",views:2301,likes:35,isLiked:false,videoUrl:"https://example.com/video6",adUrl:"",desc:"🔥 Pakistani Desi Video।"},
-{id:7,title:"English Full Video Collection",category:"english",img:"https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6543,likes:98,isLiked:false,videoUrl:"https://example.com/video7",adUrl:"",desc:"🔥 English Full Video।"},
-{id:8,title:"Leaked Viral Video 2",category:"leaked",img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop"],screenshots:[],badgeText:"08:15",views:1122,likes:15,isLiked:false,videoUrl:"https://example.com/video8",adUrl:"",desc:"🔥 Leaked Viral Video।"},
-{id:9,title:"Video Call Recording Scandal",category:"video-call",img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:3344,likes:55,isLiked:false,videoUrl:"https://example.com/video9",adUrl:"",desc:"🔥 Video Call Scandal।"},
-{id:10,title:"Desi Village Exclusive",category:"desi",img:"https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&h=800&fit=crop"],screenshots:[],badgeText:"18:20",views:9988,likes:200,isLiked:false,videoUrl:"https://example.com/video10",adUrl:"",desc:"🔥 Desi Village।"},
-{id:11,title:"Web Series Part 1",category:"web-series",img:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:7766,likes:144,isLiked:false,videoUrl:"https://example.com/video11",adUrl:"",desc:"🔥 Web Series Part 1।"},
-{id:12,title:"New Movie Clip 2024",category:"movies",img:"https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&h=800&fit=crop"],screenshots:[],badgeText:"02:10:45",views:4433,likes:88,isLiked:false,videoUrl:"https://example.com/video12",adUrl:"",desc:"🔥 New Movie Clip।"},
-{id:13,title:"Mom Son Part 2",category:"mom-son",img:"https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:2211,likes:33,isLiked:false,videoUrl:"https://example.com/video13",adUrl:"",desc:"🔥 Mom Son Part 2।"},
-{id:14,title:"Viral TikTok Dance",category:"viral",img:"https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&h=800&fit=crop"],screenshots:[],badgeText:"00:45",views:8899,likes:177,isLiked:false,videoUrl:"https://example.com/video14",adUrl:"",desc:"🔥 Viral TikTok।"},
-{id:15,title:"Indian Desi Girl New",category:"indian",img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6544,likes:99,isLiked:false,videoUrl:"https://example.com/video15",adUrl:"",desc:"🔥 Indian Desi Girl।"},
-{id:16,title:"Pakistani Viral Video",category:"pakistani",img:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=800&fit=crop"],screenshots:[],badgeText:"14:20",views:3322,likes:44,isLiked:false,videoUrl:"https://example.com/video16",adUrl:"",desc:"🔥 Pakistani Viral।"},
-{id:17,title:"English Vlog Exclusive",category:"english",img:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:1122,likes:22,isLiked:false,videoUrl:"https://example.com/video17",adUrl:"",desc:"🔥 English Vlog।"},
-{id:18,title:"Leaked MMS 3 New",category:"leaked",img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],screenshots:[],badgeText:"09:30",views:5566,likes:77,isLiked:false,videoUrl:"https://example.com/video18",adUrl:"",desc:"🔥 Leaked MMS 3।"},
-{id:19,title:"Video Call Scandal Exclusive",category:"video-call",img:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:2233,likes:31,isLiked:false,videoUrl:"https://example.com/video19",adUrl:"",desc:"🔥 Video Call Scandal।"},
-{id:20,title:"Desi Comedy Video 2024",category:"desi",img:"https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:7788,likes:110,isLiked:false,videoUrl:"https://example.com/video20",adUrl:"",desc:"🔥 Desi Comedy।"}
+{id:1,title:"নতুন কটি মাল 🍑😍 (Nasmin)",category:"viral",img:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],screenshots:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],badgeText:"Full Collection",views:4062,likes:45,isLiked:false,videoUrl:"https://example.com/video1",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 নতুন কটি মালের এক্সক্লুসিভ ভিডিও।"},
+{id:2,title:"বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও 😭",category:"viral",img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop"],screenshots:[],badgeText:"12:45",views:4667,likes:68,isLiked:false,videoUrl:"https://example.com/video2",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও।"},
+{id:3,title:"মাথা নষ্ট কালেকশন ভিডিও",category:"leaked",img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6196,likes:67,isLiked:false,videoUrl:"https://example.com/video3",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 মাথা নষ্ট কালেকশন ভিডিও।"},
+{id:4,title:"Slim Young Bengali Girl - 10",category:"bangladeshi",img:"https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop"],screenshots:[],badgeText:"10:20",views:2853,likes:30,isLiked:false,videoUrl:"https://example.com/video4",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 সম্পূর্ণ ভিডিও।"},
+{id:5,title:"Indian Viral Clip Exclusive",category:"indian",img:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:8754,likes:120,isLiked:false,videoUrl:"https://example.com/video5",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Indian Viral Clip।"},
+{id:6,title:"Pakistani Desi Video HD",category:"pakistani",img:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop"],screenshots:[],badgeText:"15:30",views:2301,likes:35,isLiked:false,videoUrl:"https://example.com/video6",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Pakistani Desi Video।"},
+{id:7,title:"English Full Video Collection",category:"english",img:"https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6543,likes:98,isLiked:false,videoUrl:"https://example.com/video7",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 English Full Video।"},
+{id:8,title:"Leaked Viral Video 2",category:"leaked",img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop"],screenshots:[],badgeText:"08:15",views:1122,likes:15,isLiked:false,videoUrl:"https://example.com/video8",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Leaked Viral Video।"},
+{id:9,title:"Video Call Recording Scandal",category:"video-call",img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:3344,likes:55,isLiked:false,videoUrl:"https://example.com/video9",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Video Call Scandal।"},
+{id:10,title:"Desi Village Exclusive",category:"desi",img:"https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&h=800&fit=crop"],screenshots:[],badgeText:"18:20",views:9988,likes:200,isLiked:false,videoUrl:"https://example.com/video10",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Desi Village।"}
 ];
 
 // ================= STATE =================
@@ -535,8 +567,11 @@ let allVideos = [];
 let globalSettings = {
     telegramLink: "https://t.me",
     adLink: "",
-    adminPassword: "557822",
-    adSystemEnabled: true
+    adCode: "",
+    adCount: 3,
+    adTimerSeconds: 5,
+    adSystemEnabled: true,
+    adminPassword: "557822"
 };
 let currentPage = 1;
 const itemsPerPage = 20;
@@ -544,7 +579,7 @@ let currentCategory = 'all';
 let searchQuery = '';
 let currentVideoId = null;
 let adsWatched = 0;
-const totalAds = 3;
+let totalAds = 3;
 let adTimerInterval = null;
 let adTimeLeft = 5;
 let firebaseReady = false;
@@ -562,7 +597,6 @@ window.addEventListener('firebaseReady', function() {
         fsDeleteDoc = window.fsDeleteDoc;
         fsOnSnapshot = window.fsOnSnapshot;
         fsCollection = window.fsCollection;
-        console.log("🔥 Firebase ready");
         initFirebaseSync();
     } else {
         loadLocal();
@@ -570,7 +604,6 @@ window.addEventListener('firebaseReady', function() {
         hideLoading();
     }
 });
-
 setTimeout(function() {
     if (!firebaseReady && window.firebaseReady) {
         firebaseReady = true;
@@ -587,7 +620,6 @@ setTimeout(function() {
 // ================= FIREBASE SYNC =================
 function initFirebaseSync() {
     if (!firebaseReady || !db) return;
-    
     try {
         fsOnSnapshot(fsDoc(db, 'premiumHub', 'settings'), (docSnap) => {
             if (docSnap.exists()) {
@@ -605,17 +637,12 @@ function initFirebaseSync() {
             const newCache = {};
             snapshot.forEach(doc => {
                 const vid = doc.data();
-                if (vid && vid.id !== undefined) {
-                    newCache[vid.id] = vid;
-                }
+                if (vid && vid.id !== undefined) newCache[vid.id] = vid;
             });
-            
             const serverCount = Object.keys(newCache).length;
-            
             if (!isInitialLoadDone) {
                 isInitialLoadDone = true;
                 if (serverCount === 0) {
-                    console.log("☁️ First time: uploading defaults");
                     allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
                     uploadAllToCloud();
                 } else {
@@ -625,18 +652,13 @@ function initFirebaseSync() {
                 hideLoading();
                 return;
             }
-            
             const localMap = {};
             allVideos.forEach(v => localMap[v.id] = v);
-            
             const merged = [];
             Object.values(newCache).forEach(v => {
-                if (localMap[v.id] && localMap[v.id].isLiked) {
-                    v.isLiked = localMap[v.id].isLiked;
-                }
+                if (localMap[v.id] && localMap[v.id].isLiked) v.isLiked = localMap[v.id].isLiked;
                 merged.push(v);
             });
-            
             allVideos = merged.sort((a,b) => b.id - a.id);
             renderApp();
             saveLocal();
@@ -649,8 +671,6 @@ function initFirebaseSync() {
                 isInitialLoadDone = true;
             }
         });
-
-        console.log("✅ Firebase real-time sync active");
     } catch (e) {
         console.log("Sync error:", e);
         loadLocal();
@@ -658,84 +678,51 @@ function initFirebaseSync() {
         hideLoading();
     }
 }
-
 async function uploadAllToCloud() {
     try {
-        for (const v of allVideos) {
-            await fsSetDoc(fsDoc(db, 'videos', String(v.id)), v);
-        }
-        console.log("✅ All defaults uploaded");
+        for (const v of allVideos) await fsSetDoc(fsDoc(db, 'videos', String(v.id)), v);
         renderApp();
-    } catch (e) {
-        console.log("Upload defaults error:", e);
-        renderApp();
-    }
+    } catch (e) { console.log("Upload defaults error:", e); renderApp(); }
 }
-
 function hideLoading() {
     const ls = document.getElementById('loadingScreen');
     if (ls) ls.classList.add('hide');
 }
-
 async function saveVideoToCloud(video) {
-    if (!firebaseReady || !db) {
-        saveLocal();
-        return false;
-    }
-    try {
-        await fsSetDoc(fsDoc(db, 'videos', String(video.id)), video);
-        return true;
-    } catch (e) {
-        console.log("Save error:", e);
-        return false;
-    }
+    if (!firebaseReady || !db) { saveLocal(); return false; }
+    try { await fsSetDoc(fsDoc(db, 'videos', String(video.id)), video); return true; }
+    catch (e) { console.log("Save error:", e); return false; }
 }
-
 async function deleteVideoFromCloud(id) {
     if (!firebaseReady || !db) return false;
-    try {
-        await fsDeleteDoc(fsDoc(db, 'videos', String(id)));
-        return true;
-    } catch (e) {
-        console.log("Delete error:", e);
-        return false;
-    }
+    try { await fsDeleteDoc(fsDoc(db, 'videos', String(id))); return true; }
+    catch (e) { console.log("Delete error:", e); return false; }
 }
-
 async function saveSettingsToCloud() {
-    if (!firebaseReady || !db) {
-        saveLocal();
-        return false;
-    }
-    try {
-        await fsSetDoc(fsDoc(db, 'premiumHub', 'settings'), globalSettings);
-        return true;
-    } catch (e) {
-        console.log("Settings save error:", e);
-        return false;
-    }
+    if (!firebaseReady || !db) { saveLocal(); return false; }
+    try { await fsSetDoc(fsDoc(db, 'premiumHub', 'settings'), globalSettings); return true; }
+    catch (e) { console.log("Settings save error:", e); return false; }
 }
-
 function showSync(text, isError) {
     const badge = document.getElementById('syncBadge');
     badge.textContent = text;
     badge.classList.toggle('error', !!isError);
     badge.classList.add('show');
-    if (text.includes('✅') || isError) {
-        setTimeout(() => badge.classList.remove('show'), 2000);
-    }
+    if (text.includes('✅') || isError) setTimeout(() => badge.classList.remove('show'), 2000);
 }
 
-// ================= LOCAL STORAGE =================
+// ================= LOCAL =================
 function loadLocal() {
     try {
-        const v = localStorage.getItem('premiumHubVideos_v8');
-        const s = localStorage.getItem('premiumHubSettings_v8');
+        const v = localStorage.getItem('premiumHubVideos_v9');
+        const s = localStorage.getItem('premiumHubSettings_v9');
         allVideos = v ? JSON.parse(v) : JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
         if (s) globalSettings = { ...globalSettings, ...JSON.parse(s) };
         if (!globalSettings.adminPassword) globalSettings.adminPassword = "557822";
         if (globalSettings.adSystemEnabled === undefined) globalSettings.adSystemEnabled = true;
-        // লোকাল ডেটাও বড় ID থেকে ছোট ID সাজানো (নতুন ভিডিও প্রথমে)
+        if (!globalSettings.adCount) globalSettings.adCount = 3;
+        if (!globalSettings.adTimerSeconds) globalSettings.adTimerSeconds = 5;
+        if (globalSettings.adCode === undefined) globalSettings.adCode = "";
         allVideos.sort((a,b) => b.id - a.id);
     } catch (e) {
         allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
@@ -743,16 +730,14 @@ function loadLocal() {
 }
 function saveLocal() {
     try {
-        localStorage.setItem('premiumHubVideos_v8', JSON.stringify(allVideos));
-        localStorage.setItem('premiumHubSettings_v8', JSON.stringify(globalSettings));
+        localStorage.setItem('premiumHubVideos_v9', JSON.stringify(allVideos));
+        localStorage.setItem('premiumHubSettings_v9', JSON.stringify(globalSettings));
     } catch (e) { console.log('Local save failed'); }
 }
 
 // ================= RENDER =================
 function renderApp() {
-    // সবসময় বড় ID থেকে ছোট ID ক্রমে সাজান (নতুন ভিডিও প্রথমে)
     allVideos.sort((a,b) => b.id - a.id);
-    
     let filtered = allVideos;
     if (currentCategory !== 'all') filtered = filtered.filter(v => v.category === currentCategory);
     if (searchQuery) filtered = filtered.filter(v => v.title.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -843,9 +828,7 @@ function openDetail(id) {
     const hv = document.getElementById('homeViews_' + id);
     if (hv) hv.textContent = video.views;
     saveLocal();
-    if (firebaseReady && db) {
-        saveVideoToCloud(video).catch(e => console.log(e));
-    }
+    if (firebaseReady && db) saveVideoToCloud(video).catch(e => console.log(e));
 
     const cc = document.getElementById('collageContainer');
     const imgs = (video.detailImgs || []).filter(img => img && img.trim() !== '');
@@ -880,10 +863,14 @@ function openDetail(id) {
     document.getElementById('videoDesc').textContent = video.desc;
     updateDetailLikeUI(video);
     adsWatched = 0;
+    totalAds = globalSettings.adCount || 3;
     updateProgress();
 
     const ub = document.getElementById('unlockBtn');
-    if (!globalSettings.adSystemEnabled) {
+    const videoAdsEnabled = video.adEnabled !== false;
+    const globallyEnabled = globalSettings.adSystemEnabled !== false;
+
+    if (!globallyEnabled || !videoAdsEnabled) {
         document.getElementById('unlockHeadText').textContent = 'Direct Download';
         document.getElementById('unlockRules').innerHTML = '⬇️ নিচের বাটনে ক্লিক করে সরাসরি ভিডিও ডাউনলোড করুন।';
         document.getElementById('progressWrap').style.display = 'none';
@@ -892,12 +879,12 @@ function openDetail(id) {
         ub.disabled = false;
         ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
         ub.onclick = function() {
-            if (video && video.videoUrl && video.videoUrl.trim() !== '') window.open(video.videoUrl, '_blank');
+            if (video.videoUrl && video.videoUrl.trim() !== '') window.open(video.videoUrl, '_blank');
             else alert('⚠️ No Video Link set.');
         };
     } else {
-        document.getElementById('unlockHeadText').textContent = 'Watch 3 ads to unlock';
-        document.getElementById('unlockRules').innerHTML = 'উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ৩ টি অ্যাড সম্পূর্ণ দেখুন। সব অ্যাড শেষ হলে ⬇️ Download বাটনটি অটোমেটিকভাবে আনলক হয়ে যাবে। 🚀🤫👇';
+        document.getElementById('unlockHeadText').textContent = `Watch ${totalAds} ads to unlock`;
+        document.getElementById('unlockRules').innerHTML = `উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ${totalAds} টি অ্যাড সম্পূর্ণ দেখুন। সব অ্যাড শেষ হলে ⬇️ Download বাটনটি অটোমেটিকভাবে আনলক হয়ে যাবে। 🚀🤫👇`;
         document.getElementById('progressWrap').style.display = 'block';
         document.getElementById('progressTextWrap').style.display = 'block';
         ub.disabled = false;
@@ -1007,38 +994,101 @@ document.getElementById('categoryContainer').addEventListener('click', function(
     }
 });
 
-// ================= AD =================
+// ================= AD SYSTEM (NEW) =================
+function injectAdContent(container, adUrl, adCode) {
+    container.innerHTML = '';
+
+    // লোডার
+    const loader = document.createElement('div');
+    loader.className = 'ad-loader';
+    loader.innerHTML = '<div class="spinner"></div><div class="ad-loader-text">বিজ্ঞাপন লোড হচ্ছে...</div>';
+    container.appendChild(loader);
+
+    setTimeout(() => {
+        container.innerHTML = '';
+
+        // ১. Ad Code থাকলে সেটা iframe-এ ইনজেক্ট করো
+        if (adCode && adCode.trim() !== '') {
+            try {
+                const iframe = document.createElement('iframe');
+                iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox');
+                iframe.style.cssText = 'width:100%;height:100%;border:0;background:#000;';
+                container.appendChild(iframe);
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                doc.open();
+                doc.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base target="_blank"><style>body{margin:0;padding:0;background:#000;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;}iframe{max-width:100%;max-height:100%;border:0;}</style></head><body>${adCode}</body></html>`);
+                doc.close();
+                return;
+            } catch (e) {
+                console.log("AdCode inject error:", e);
+            }
+        }
+
+        // ২. Ad URL থাকলে সেটা iframe-এ লোড করো
+        if (adUrl && adUrl.trim() !== '') {
+            try {
+                const iframe = document.createElement('iframe');
+                iframe.src = adUrl;
+                iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox');
+                iframe.style.cssText = 'width:100%;height:100%;border:0;background:#000;';
+                container.appendChild(iframe);
+                return;
+            } catch (e) {
+                console.log("AdUrl iframe error:", e);
+            }
+        }
+
+        // ৩. কিছুই না থাকলে মেসেজ
+        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;text-align:center;padding:20px;flex-direction:column;gap:10px;"><div style="font-size:40px;">📢</div><div>কোনো অ্যাড কনফিগার করা নেই।<br><span style="font-size:11px;color:#666;">অ্যাডমিন প্যানেল থেকে Ad Link বা Ad Code সেট করুন।</span></div></div>';
+    }, 300);
+}
+
 function watchAd() {
     if (adsWatched >= totalAds) return;
     const video = allVideos.find(v => v.id === currentVideoId);
-    const adUrl = (video && video.adUrl) ? video.adUrl : globalSettings.adLink;
-    if (adUrl && adUrl.trim() !== '') window.open(adUrl, '_blank');
+    if (!video) return;
+
+    // এই ভিডিওর জন্য অ্যাড লিংক/কোড, না থাকলে গ্লোবাল
+    const videoAdUrl = (video.adUrl && video.adUrl.trim() !== '') ? video.adUrl : globalSettings.adLink;
+    const videoAdCode = (video.adCode && video.adCode.trim() !== '') ? video.adCode : globalSettings.adCode;
+
+    // অ্যাড মোডাল ওপেন
     document.getElementById('adCounter').textContent = (adsWatched + 1) + '/' + totalAds;
     const am = document.getElementById('adModal');
     am.classList.add('active');
-    adTimeLeft = 5;
-    document.getElementById('adTimerText').textContent = `বিজ্ঞাপন ${adTimeLeft} সেকেন্ড পরে বন্ধ হবে...`;
-    document.getElementById('adCloseBtn').style.display = 'none';
-    const av = document.getElementById('adVideo');
-    if (av) { av.currentTime = 0; av.play().catch(() => {}); }
+    document.body.style.overflow = 'hidden';
+
+    // অ্যাড কন্টেন্ট লোড
+    const adContent = document.getElementById('adContent');
+    injectAdContent(adContent, videoAdUrl, videoAdCode);
+
+    // টাইমার সেট
+    adTimeLeft = globalSettings.adTimerSeconds || 5;
+    document.getElementById('adTimerText').textContent = `বিজ্ঞাপন ${adTimeLeft} সেকেন্ড পরে বন্ধ করা যাবে...`;
+    document.getElementById('adCloseBtn').classList.remove('show');
+
     if (adTimerInterval) clearInterval(adTimerInterval);
     adTimerInterval = setInterval(() => {
         adTimeLeft--;
         if (adTimeLeft <= 0) {
             clearInterval(adTimerInterval);
-            document.getElementById('adTimerText').textContent = 'এখন আপনি বিজ্ঞাপনটি বন্ধ করতে পারবেন।';
-            document.getElementById('adCloseBtn').style.display = 'block';
+            document.getElementById('adTimerText').textContent = '✅ এখন আপনি ✕ বাটনে ক্লিক করে বন্ধ করতে পারবেন।';
+            document.getElementById('adCloseBtn').classList.add('show');
         } else {
-            document.getElementById('adTimerText').textContent = `বিজ্ঞাপন ${adTimeLeft} সেকেন্ড পরে বন্ধ হবে...`;
+            document.getElementById('adTimerText').textContent = `বিজ্ঞাপন ${adTimeLeft} সেকেন্ড পরে বন্ধ করা যাবে...`;
         }
     }, 1000);
 }
+
 function closeAdModal() {
     document.getElementById('adModal').classList.remove('active');
-    const av = document.getElementById('adVideo');
-    if (av) av.pause();
+    document.body.style.overflow = '';
+    document.getElementById('adContent').innerHTML = '';
+    if (adTimerInterval) clearInterval(adTimerInterval);
+
     adsWatched++;
     updateProgress();
+
     if (adsWatched >= totalAds) {
         const ub = document.getElementById('unlockBtn');
         ub.innerHTML = '⬇️ DOWNLOAD VIDEO';
@@ -1051,6 +1101,7 @@ function closeAdModal() {
         };
     }
 }
+
 function updateProgress() {
     document.getElementById('progressBar').style.width = (adsWatched / totalAds * 100) + '%';
     document.getElementById('progressText').textContent = adsWatched + '/' + totalAds;
@@ -1073,7 +1124,10 @@ function verifyAdminPassword() {
         document.body.style.overflow = 'hidden';
         renderAdminVideoList();
         document.getElementById('globalTelegramLink').value = globalSettings.telegramLink;
-        document.getElementById('globalAdLink').value = globalSettings.adLink;
+        document.getElementById('globalAdLink').value = globalSettings.adLink || '';
+        document.getElementById('globalAdCode').value = globalSettings.adCode || '';
+        document.getElementById('globalAdCount').value = globalSettings.adCount || 3;
+        document.getElementById('globalAdTimer').value = globalSettings.adTimerSeconds || 5;
         document.getElementById('globalAdminPassword').value = '';
         updateAdSystemUI();
     } else {
@@ -1107,11 +1161,12 @@ function renderAdminVideoList() {
     allVideos.forEach(video => {
         const item = document.createElement('div');
         item.className = 'admin-video-item';
+        const adStatus = (video.adEnabled !== false) ? '🟢 Ad ON' : '🔴 Ad OFF';
         item.innerHTML = `
             <img src="${video.img}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23333%22 width=%22100%22 height=%22100%22/></svg>'">
             <div class="admin-video-info">
                 <p>${video.title}</p>
-                <p>${video.category} • ${video.views} views • ${video.likes} likes</p>
+                <p>${video.category} • ${video.views} views • ${video.likes} likes • ${adStatus}</p>
             </div>
             <div class="admin-video-actions">
                 <button onclick="openEditModal(${video.id})" class="admin-icon-btn edit-btn">✏️</button>
@@ -1121,22 +1176,27 @@ function renderAdminVideoList() {
         list.appendChild(item);
     });
 }
-function handleImageUpload(event, inputId, previewId) {
+
+// ================= IMAGE UPLOAD (Better Quality) =================
+function handleImageUpload(event, inputId, previewId, maxWidth, quality) {
+    maxWidth = maxWidth || 800;
+    quality = quality || 0.75;
     const file = event.target.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-            const MAX_WIDTH = 300;
             let scale = 1;
-            if (img.width > MAX_WIDTH) scale = MAX_WIDTH / img.width;
+            if (img.width > maxWidth) scale = maxWidth / img.width;
             const canvas = document.createElement('canvas');
-            canvas.width = img.width * scale;
-            canvas.height = img.height * scale;
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
             const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const base64 = canvas.toDataURL('image/jpeg', 0.4);
+            const base64 = canvas.toDataURL('image/jpeg', quality);
             document.getElementById(inputId).value = base64;
             document.getElementById(previewId).src = base64;
         };
@@ -1168,7 +1228,13 @@ function openEditModal(id) {
     document.getElementById('editLikes').value = video.likes;
     document.getElementById('editVideoUrl').value = video.videoUrl || '';
     document.getElementById('editAdUrl').value = video.adUrl || '';
+    document.getElementById('editAdCode').value = video.adCode || '';
     document.getElementById('editDesc').value = video.desc || '';
+    // Ad Enabled toggle
+    const adToggle = document.getElementById('editAdEnabled');
+    if (video.adEnabled !== false) adToggle.classList.add('on');
+    else adToggle.classList.remove('on');
+    // Previews
     updatePreview('previewImg', video.img);
     updatePreview('previewDetailImg1', video.detailImgs ? video.detailImgs[0] : '');
     updatePreview('previewDetailImg2', video.detailImgs ? video.detailImgs[1] : '');
@@ -1203,6 +1269,8 @@ async function saveVideoEdit() {
     video.likes = parseInt(document.getElementById('editLikes').value) || 0;
     video.videoUrl = document.getElementById('editVideoUrl').value;
     video.adUrl = document.getElementById('editAdUrl').value;
+    video.adCode = document.getElementById('editAdCode').value;
+    video.adEnabled = document.getElementById('editAdEnabled').classList.contains('on');
     video.desc = document.getElementById('editDesc').value;
     saveLocal();
     closeEditModal();
@@ -1225,19 +1293,16 @@ async function deleteVideo(id) {
         else showSync('⚠️ Delete failed', true);
     }
 }
-// ============= এই ফাংশনে পরিবর্তন করা হয়েছে =============
-// এখন নতুন ভিডিও সর্বোচ্চ ID পায় না, বরং সর্বনিম্ন ID - 1 পায়
-// ফলে sort() করার পর নতুন ভিডিও সবার প্রথমে দেখায়
+// নতুন ভিডিও সবার প্রথমে আসবে
 async function addNewVideo() {
-    // ===== পরিবর্তিত লাইন: Math.max + 1 → Math.min - 1 =====
     const newId = allVideos.length > 0 ? Math.min(...allVideos.map(v => v.id)) - 1 : 1;
-    // ========================================================
     const newVideo = {
         id: newId, title: "New Video Title", category: "viral",
         img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",
         detailImgs: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],
         screenshots: [], badgeText: "Full Collection", views: 0, likes: 0,
-        isLiked: false, videoUrl: "https://example.com/new-video", adUrl: "", desc: "New video description..."
+        isLiked: false, videoUrl: "https://example.com/new-video", adUrl: "", adCode: "",
+        adEnabled: true, desc: "New video description..."
     };
     allVideos.push(newVideo);
     saveLocal();
@@ -1252,6 +1317,9 @@ async function addNewVideo() {
 async function saveAllChanges() {
     globalSettings.telegramLink = document.getElementById('globalTelegramLink').value;
     globalSettings.adLink = document.getElementById('globalAdLink').value;
+    globalSettings.adCode = document.getElementById('globalAdCode').value;
+    globalSettings.adCount = parseInt(document.getElementById('globalAdCount').value) || 3;
+    globalSettings.adTimerSeconds = parseInt(document.getElementById('globalAdTimer').value) || 5;
     const newPass = document.getElementById('globalAdminPassword').value;
     if (newPass && newPass.trim() !== '') globalSettings.adminPassword = newPass.trim();
     saveLocal();
@@ -1268,7 +1336,6 @@ renderApp();
 document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
 updateAdSystemUI();
 try { history.replaceState({page:'home'}, '', window.location.pathname); } catch(e) {}
-
 setTimeout(hideLoading, 4000);
 </script>
 </body>
