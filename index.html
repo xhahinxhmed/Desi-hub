@@ -64,8 +64,9 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 .progress-bar-bg{height:6px;background:var(--border-color);border-radius:3px;overflow:hidden;margin-top:10px}
 .progress-bar-fill{height:100%;background:linear-gradient(90deg,#00c853,#00e676);border-radius:3px;width:0%;transition:width .5s}
 .progress-text{font-size:14px;margin-top:12px;color:var(--text-sub)}
-.unlock-btn{width:100%;background:linear-gradient(135deg,#00c853,#00e676);color:#000;font-weight:800;font-size:15px;padding:16px;border-radius:14px;border:none;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;margin-top:16px}
+.unlock-btn{width:100%;background:linear-gradient(135deg,#00c853,#00e676);color:#000;font-weight:800;font-size:15px;padding:16px;border-radius:14px;border:none;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;margin-top:16px;transition:all .3s}
 .unlock-btn:disabled{background:var(--border-color);color:var(--text-muted);cursor:not-allowed}
+.unlock-btn.cooldown{background:linear-gradient(135deg,#78350f,#a16207);color:#fff;cursor:not-allowed}
 .content-pad{padding:20px 16px 0 16px}
 .desc-title{color:var(--primary-green);font-size:18px;font-weight:700;line-height:1.5}
 .desc-text{color:var(--text-sub);font-size:14px;line-height:1.7;margin-top:16px}
@@ -131,26 +132,12 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 .img-section-title{font-size:12px;font-weight:700;margin-bottom:8px;color:var(--primary-green)}
 .ss-section{margin-top:12px;margin-bottom:8px;padding:12px;border-radius:8px;background:rgba(0,150,255,.05);border:1px dashed #00aaff}
 .ss-section-title{font-size:12px;font-weight:700;margin-bottom:8px;color:#00aaff}
-.ad-section{margin-top:12px;margin-bottom:8px;padding:12px;border-radius:8px;background:rgba(250,204,21,.05);border:1px dashed #facc15}
-.ad-section-title{font-size:12px;font-weight:700;margin-bottom:8px;color:#facc15}
-
-/* ============ AD MODAL (Mini App Style) ============ */
-#adModal{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:5000;display:none;align-items:center;justify-content:center;padding:0}
+.ad-section{margin-top:12px;margin-bottom:8px;padding:12px;border-radius:8px;background:rgba(250,204,21,.08);border:1px dashed #facc15}
+.ad-section-title{font-size:13px;font-weight:700;margin-bottom:8px;color:#facc15;display:flex;align-items:center;gap:6px}
+#adModal{position:fixed;inset:0;background:#000;z-index:5000;display:none;align-items:center;justify-content:center}
 #adModal.active{display:flex}
-.ad-box{width:100%;max-width:480px;height:100vh;max-height:100vh;background:#0a0a0a;display:flex;flex-direction:column;position:relative}
-.ad-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#111827;border-bottom:1px solid #1f2937;flex-shrink:0}
-.ad-head span{color:#4ade80;font-weight:700;font-size:14px}
-.ad-close{color:#fff;font-size:22px;font-weight:700;background:rgba(220,38,38,.9);border:none;cursor:pointer;display:none;width:36px;height:36px;border-radius:50%;line-height:1;align-items:center;justify-content:center;padding:0}
-.ad-close.show{display:flex}
-.ad-content{flex:1;background:#000;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:0}
-.ad-content iframe{width:100%;height:100%;border:0;background:#000}
-.ad-content img{max-width:100%;max-height:100%;object-fit:contain}
-.ad-foot{padding:12px 16px;text-align:center;background:#111827;border-top:1px solid #1f2937;flex-shrink:0}
-.ad-foot p{color:#facc15;font-weight:600;font-size:13px}
-.ad-loader{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#4ade80;background:#000}
-.ad-loader .spinner{width:40px;height:40px;border:3px solid rgba(34,197,94,.2);border-top-color:#22c55e;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:12px}
-.ad-loader-text{font-size:12px;color:#86efac}
-
+#adModal iframe{width:100%;height:100%;border:0;background:#000;display:block}
+#adModal .ad-counter-toast{position:absolute;top:16px;left:16px;background:rgba(0,0,0,.85);color:#4ade80;font-size:12px;font-weight:700;padding:6px 12px;border-radius:16px;border:1px solid rgba(74,222,128,.3);pointer-events:none;z-index:10}
 .glow{text-shadow:0 0 20px rgba(0,255,100,.4)}
 .sync-badge{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:6000;background:rgba(34,197,94,.95);color:#fff;font-size:11px;font-weight:700;padding:6px 14px;border-radius:20px;display:none;box-shadow:0 4px 12px rgba(0,0,0,.4);max-width:90%;text-align:center}
 .sync-badge.show{display:block}
@@ -164,21 +151,14 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 </head>
 <body>
 
-<div class="loading-screen" id="loadingScreen">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">☁️ Loading from cloud...</div>
-</div>
-
+<div class="loading-screen" id="loadingScreen"><div class="loading-spinner"></div><div class="loading-text">☁️ Loading...</div></div>
 <div class="sync-badge" id="syncBadge">☁️ Syncing...</div>
-
 <div id="overlay" onclick="toggleSidebar()"></div>
 
 <aside id="sidebar" class="no-scrollbar">
     <div class="sidebar-head">
         <h2 class="glow">PREMIUM HUB</h2>
-        <button onclick="toggleSidebar()" class="icon-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
+        <button onclick="toggleSidebar()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
     </div>
     <nav class="sidebar-nav">
         <a href="javascript:void(0)" onclick="showPage('home'); toggleSidebar();" class="menu-item active">
@@ -192,134 +172,91 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <span>Telegram</span>
         </a>
     </nav>
-    <div class="sidebar-foot">
-        <p onclick="openAdminLogin()">© 2024 PREMIUM HUB</p>
-    </div>
+    <div class="sidebar-foot"><p onclick="openAdminLogin()">© 2024 PREMIUM HUB</p></div>
 </aside>
 
 <div id="app">
 <div id="homePage" class="page active">
     <header class="header">
-        <button onclick="toggleSidebar()" class="icon-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
+        <button onclick="toggleSidebar()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <h1 class="title glow">PREMIUM HUB</h1>
         <div style="display:flex;gap:4px">
-            <button id="themeToggle" onclick="toggleTheme()" class="icon-btn">
-                <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-            </button>
-            <button onclick="toggleSearch()" class="icon-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            </button>
+            <button id="themeToggle" onclick="toggleTheme()" class="icon-btn"><svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
+            <button onclick="toggleSearch()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></button>
         </div>
     </header>
-    <div id="searchBar">
-        <input type="text" id="searchInput" class="search-input" placeholder="Search videos..." oninput="handleSearch()">
-    </div>
-    <div class="cats">
-        <div class="cats-inner" id="categoryContainer">
-            <button class="cat-chip active" data-category="all">🎬 All Videos</button>
-            <button class="cat-chip" data-category="mom-son">Mom Son</button>
-            <button class="cat-chip" data-category="viral">Viral</button>
-            <button class="cat-chip" data-category="leaked">Leaked</button>
-            <button class="cat-chip" data-category="video-call">Video Call</button>
-            <button class="cat-chip" data-category="indian">Indian 🇮🇳</button>
-            <button class="cat-chip" data-category="bangladeshi">Bangladeshi 🇧🇩</button>
-            <button class="cat-chip" data-category="pakistani">Pakistani 🇵🇰</button>
-            <button class="cat-chip" data-category="english">English Full Videos</button>
-            <button class="cat-chip" data-category="desi">Desi ☀️</button>
-            <button class="cat-chip" data-category="web-series">18+ Web Series</button>
-            <button class="cat-chip" data-category="movies">Movies 🎬</button>
-        </div>
-    </div>
-    <main>
-        <div id="videoGrid"></div>
-        <div id="paginationContainer"></div>
-        <footer>© 2024 PREMIUM HUB</footer>
-    </main>
+    <div id="searchBar"><input type="text" id="searchInput" class="search-input" placeholder="Search videos..." oninput="handleSearch()"></div>
+    <div class="cats"><div class="cats-inner" id="categoryContainer">
+        <button class="cat-chip active" data-category="all">🎬 All Videos</button>
+        <button class="cat-chip" data-category="mom-son">Mom Son</button>
+        <button class="cat-chip" data-category="viral">Viral</button>
+        <button class="cat-chip" data-category="leaked">Leaked</button>
+        <button class="cat-chip" data-category="video-call">Video Call</button>
+        <button class="cat-chip" data-category="indian">Indian 🇮🇳</button>
+        <button class="cat-chip" data-category="bangladeshi">Bangladeshi 🇧🇩</button>
+        <button class="cat-chip" data-category="pakistani">Pakistani 🇵🇰</button>
+        <button class="cat-chip" data-category="english">English Full Videos</button>
+        <button class="cat-chip" data-category="desi">Desi ☀️</button>
+        <button class="cat-chip" data-category="web-series">18+ Web Series</button>
+        <button class="cat-chip" data-category="movies">Movies 🎬</button>
+    </div></div>
+    <main><div id="videoGrid"></div><div id="paginationContainer"></div><footer>© 2024 PREMIUM HUB</footer></main>
 </div>
 
 <div id="detailPage" class="page">
     <header class="detail-header">
-        <button onclick="goBackHome()" class="icon-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-        </button>
+        <button onclick="goBackHome()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg></button>
         <h1 class="title">PREMIUM HUB</h1>
         <div style="width:42px"></div>
     </header>
     <div id="collageContainer"></div>
     <div class="stat-row">
-        <button id="detailLikeBtn" onclick="toggleLikeDetail()" class="stat-pill">
-            <span id="detailLikeIcon" style="font-size:16px">🤍</span>
-            <span id="detailLikeCount">0 Likes</span>
-        </button>
-        <div class="stat-pill">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:var(--primary-green)" fill="currentColor" viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
-            <span id="detailViews">0 Views</span>
-        </div>
-        <button class="stat-pill" onclick="shareVideo()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:var(--primary-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-            <span>Share</span>
-        </button>
+        <button id="detailLikeBtn" onclick="toggleLikeDetail()" class="stat-pill"><span id="detailLikeIcon" style="font-size:16px">🤍</span><span id="detailLikeCount">0 Likes</span></button>
+        <div class="stat-pill"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:var(--primary-green)" fill="currentColor" viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg><span id="detailViews">0 Views</span></div>
+        <button class="stat-pill" onclick="shareVideo()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:var(--primary-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Share</span></button>
     </div>
-    <div style="padding:0 12px">
-        <div class="unlock-box">
-            <div class="unlock-head"><span>▶️</span><span id="unlockHeadText">Watch ads to unlock</span></div>
-            <div class="progress-bar-bg" id="progressWrap"><div id="progressBar" class="progress-bar-fill"></div></div>
-            <p class="progress-text" id="progressTextWrap">Progress: <span id="progressText">0/3</span></p>
-            <button id="unlockBtn" onclick="watchAd()" class="unlock-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg>
-                UNLOCK VIDEO
-            </button>
-        </div>
-    </div>
+    <div style="padding:0 12px"><div class="unlock-box">
+        <div class="unlock-head"><span>▶️</span><span id="unlockHeadText">Watch ads to unlock</span></div>
+        <div class="progress-bar-bg" id="progressWrap"><div id="progressBar" class="progress-bar-fill"></div></div>
+        <p class="progress-text" id="progressTextWrap">Progress: <span id="progressText">0/3</span></p>
+        <button id="unlockBtn" onclick="watchAd()" class="unlock-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg> UNLOCK VIDEO</button>
+    </div></div>
     <div class="content-pad">
         <h2 id="videoTitle" class="desc-title">Loading...</h2>
         <div class="desc-text">
             <p id="videoDesc">Loading...</p>
             <div class="divider"></div>
             <p style="display:flex;align-items:center;gap:8px"><span>🇧🇩</span><span style="color:var(--primary-green);font-weight:600">ভিডিও দেখার নিয়ম:</span></p>
-            <p id="unlockRules">উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে অ্যাড সম্পূর্ণ দেখুন। সব অ্যাড শেষ হলে ⬇️ Download বাটনটি অটোমেটিকভাবে আনলক হয়ে যাবে। 🚀🤫👇</p>
+            <p id="unlockRules">উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে অ্যাড সম্পূর্ণ দেখুন।</p>
         </div>
     </div>
     <div class="screenshots-pad">
         <h3 class="screenshots-title"><span>📸</span> Screenshots</h3>
         <div id="screenshotsContainer"></div>
         <div id="noScreenshotBox" class="no-screenshot-box">🖼️ No Screenshots Available For This Content! Unlock To Watch ✅</div>
-        <button onclick="goBackHome()" class="watch-more-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            WATCH MORE
-        </button>
+        <button onclick="goBackHome()" class="watch-more-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> WATCH MORE</button>
     </div>
 </div>
 </div>
 
 <div id="bottomBar" class="hidden">
     <div class="bottom-inner">
-        <div class="bottom-left">
-            <div class="avatar">PH</div>
-            <div>
-                <p style="font-size:14px;font-weight:600;color:var(--text-main)">PREMIUM HUB</p>
-                <p style="font-size:12px;color:var(--text-sub)">Premium Content</p>
-            </div>
-        </div>
+        <div class="bottom-left"><div class="avatar">PH</div><div><p style="font-size:14px;font-weight:600;color:var(--text-main)">PREMIUM HUB</p><p style="font-size:12px;color:var(--text-sub)">Premium Content</p></div></div>
         <button class="sub-btn">Subscribe</button>
     </div>
 </div>
 
 <div id="adminPanel">
     <header class="admin-head">
-        <button onclick="closeAdminPanel()" class="icon-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
+        <button onclick="closeAdminPanel()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
         <h1>⚙️ Admin Panel</h1>
         <button onclick="saveAllChanges()" class="admin-save">Save</button>
     </header>
     <main class="admin-main">
         <div class="admin-card">
             <h3>☁️ Cloud Status</h3>
-            <p id="cloudStatusText" style="font-size:12px;color:#4ade80;font-weight:600">✅ Connected to Firebase</p>
-            <p style="font-size:10px;color:#999;margin-top:4px">নতুন ভিডিও সবার প্রথমে দেখাবে • প্রতিটি ভিডিও আলাদা ডকুমেন্টে সেভ হয়</p>
+            <p style="font-size:12px;color:#4ade80;font-weight:600">✅ Connected to Firebase</p>
+            <p style="font-size:10px;color:#999;margin-top:4px">নতুন ভিডিও সবার প্রথমে • প্রতিটি ভিডিও আলাদা ডকুমেন্ট</p>
         </div>
 
         <div class="admin-card">
@@ -332,30 +269,25 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         </div>
 
         <div class="admin-card">
-            <h3>▶️ Ad System (Global)</h3>
+            <h3>▶️ Global Ad System</h3>
+            <p style="font-size:11px;color:#999;margin-bottom:12px">⚠️ শুধু সেই ভিডিওতে ব্যবহার হবে যেসব ভিডিওতে আলাদা অ্যাড সেট নেই</p>
             <div class="toggle-row">
-                <div>
-                    <div class="toggle-label">Enable Ads Globally</div>
-                    <div class="toggle-sub">বন্ধ থাকলে সব ভিডিওতে সরাসরি ডাউনলোড</div>
-                </div>
+                <div><div class="toggle-label">Enable Ads Globally</div><div class="toggle-sub">বন্ধ থাকলে সরাসরি OPEN VIDEO</div></div>
                 <div class="toggle-switch" id="adToggle" onclick="toggleAdSystem()"></div>
             </div>
-
             <label class="admin-label">How Many Ads to Watch</label>
             <input type="number" id="globalAdCount" class="admin-input" placeholder="3" min="1" max="20">
-            <p class="admin-hint">ইউজারকে কতটা অ্যাড দেখতে হবে (যেমন: 1, 3, 5)</p>
-
-            <label class="admin-label">Ad Timer (Seconds)</label>
+            <p class="admin-hint">ইউজারকে কতটা অ্যাড দেখতে হবে</p>
+            <label class="admin-label">⏱️ Ad Cooldown (Seconds)</label>
+            <input type="number" id="globalAdCooldown" class="admin-input" placeholder="5" min="1" max="60">
+            <p class="admin-hint">প্রতি অ্যাডের পর কত সেকেন্ড অপেক্ষা করবে (পরের অ্যাড লোডের আগে)</p>
+            <label class="admin-label">⏱️ Ad View Time (Seconds)</label>
             <input type="number" id="globalAdTimer" class="admin-input" placeholder="5" min="1" max="60">
-            <p class="admin-hint">কত সেকেন্ড পর ✕ (বন্ধ) বাটন আসবে</p>
-
-            <label class="admin-label">Ad Direct Link (Adsterra)</label>
-            <input type="text" id="globalAdLink" class="admin-input" placeholder="https://...">
-            <p class="admin-hint">Adsterra Direct Link এখানে বসান (একটা লিংক)</p>
-
-            <label class="admin-label">Ad Code (Adsterra Banner Code)</label>
-            <textarea id="globalAdCode" class="admin-input" rows="4" placeholder="<script>...</script> or <iframe>...</iframe>"></textarea>
-            <p class="admin-hint">Adsterra Banner Code পুরোটা এখানে পেস্ট করুন</p>
+            <p class="admin-hint">Adsterra অ্যাড কতক্ষণ চলবে (কিন্তু Adsterra নিজেও কন্ট্রোল করে)</p>
+            <label class="admin-label">Global Ad Code (Adsterra Banner Code)</label>
+            <textarea id="globalAdCode" class="admin-input" rows="4" placeholder="Adsterra Banner Code এখানে পেস্ট করুন"></textarea>
+            <label class="admin-label">Global Ad Direct Link (ঐচ্ছিক)</label>
+            <input type="text" id="globalAdLink" class="admin-input" placeholder="https://... (Direct Link হলে এখানে)">
         </div>
 
         <div class="admin-card">
@@ -397,180 +329,90 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <option value="desi">Desi</option><option value="web-series">18+ Web Series</option>
             <option value="movies">Movies</option>
         </select>
-
-        <div class="toggle-row">
-            <div>
-                <div class="toggle-label">Enable Ads for this Video</div>
-                <div class="toggle-sub">বন্ধ থাকলে এই ভিডিওতে সরাসরি ডাউনলোড</div>
+        <div class="ad-section">
+            <p class="ad-section-title">📢 এই ভিডিওর জন্য অ্যাড (আলাদাভাবে)</p>
+            <div class="toggle-row" style="margin-bottom:10px">
+                <div><div class="toggle-label">Enable Ads for this Video</div><div class="toggle-sub">বন্ধ থাকলে সরাসরি OPEN VIDEO</div></div>
+                <div class="toggle-switch" id="editAdEnabled" onclick="this.classList.toggle('on')"></div>
             </div>
-            <div class="toggle-switch" id="editAdEnabled" onclick="this.classList.toggle('on')"></div>
+            <label class="admin-label">Ad Code (Adsterra Banner Code)</label>
+            <textarea id="editAdCode" class="admin-input" rows="5" placeholder="এখানে Adsterra Banner Code পুরোটা পেস্ট করুন..."></textarea>
+            <label class="admin-label">Ad Direct Link (ঐচ্ছিক)</label>
+            <input type="text" id="editAdUrl" class="admin-input" placeholder="https://... (Direct Link হলে)">
         </div>
-
         <div class="img-section">
-            <p class="img-section-title">🖼️ ছবি পরিবর্তন (কোয়ালিটি ভালো থাকবে)</p>
+            <p class="img-section-title">🖼️ ছবি পরিবর্তন</p>
             <label class="admin-label">Thumbnail *</label>
-            <div class="upload-row">
-                <input type="file" id="uploadThumb" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editImg','previewImg',800,0.75)">
-                <button onclick="document.getElementById('uploadThumb').click()" class="upload-btn">📁 আপলোড</button>
-                <input type="text" id="editImg" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewImg',this.value)">
-            </div>
+            <div class="upload-row"><input type="file" id="uploadThumb" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editImg','previewImg',800,0.75)"><button onclick="document.getElementById('uploadThumb').click()" class="upload-btn">📁 আপলোড</button><input type="text" id="editImg" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewImg',this.value)"></div>
             <img id="previewImg" class="img-preview">
             <label class="admin-label">Detail Image 1 *</label>
-            <div class="upload-row">
-                <input type="file" id="uploadDetail1" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg1','previewDetailImg1',800,0.75)">
-                <button onclick="document.getElementById('uploadDetail1').click()" class="upload-btn">📁 আপলোড</button>
-                <input type="text" id="editDetailImg1" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg1',this.value)">
-            </div>
+            <div class="upload-row"><input type="file" id="uploadDetail1" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg1','previewDetailImg1',800,0.75)"><button onclick="document.getElementById('uploadDetail1').click()" class="upload-btn">📁 আপলোড</button><input type="text" id="editDetailImg1" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg1',this.value)"></div>
             <img id="previewDetailImg1" class="img-preview">
             <label class="admin-label">Detail Image 2</label>
-            <div class="upload-row">
-                <input type="file" id="uploadDetail2" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg2','previewDetailImg2',800,0.75)">
-                <button onclick="document.getElementById('uploadDetail2').click()" class="upload-btn">📁 আপলোড</button>
-                <input type="text" id="editDetailImg2" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg2',this.value)">
-            </div>
+            <div class="upload-row"><input type="file" id="uploadDetail2" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg2','previewDetailImg2',800,0.75)"><button onclick="document.getElementById('uploadDetail2').click()" class="upload-btn">📁 আপলোড</button><input type="text" id="editDetailImg2" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg2',this.value)"></div>
             <img id="previewDetailImg2" class="img-preview">
             <label class="admin-label">Detail Image 3</label>
-            <div class="upload-row">
-                <input type="file" id="uploadDetail3" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg3','previewDetailImg3',800,0.75)">
-                <button onclick="document.getElementById('uploadDetail3').click()" class="upload-btn">📁 আপলোড</button>
-                <input type="text" id="editDetailImg3" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg3',this.value)">
-            </div>
+            <div class="upload-row"><input type="file" id="uploadDetail3" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg3','previewDetailImg3',800,0.75)"><button onclick="document.getElementById('uploadDetail3').click()" class="upload-btn">📁 আপলোড</button><input type="text" id="editDetailImg3" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg3',this.value)"></div>
             <img id="previewDetailImg3" class="img-preview">
             <label class="admin-label">Detail Image 4</label>
-            <div class="upload-row">
-                <input type="file" id="uploadDetail4" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg4','previewDetailImg4',800,0.75)">
-                <button onclick="document.getElementById('uploadDetail4').click()" class="upload-btn">📁 আপলোড</button>
-                <input type="text" id="editDetailImg4" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg4',this.value)">
-            </div>
+            <div class="upload-row"><input type="file" id="uploadDetail4" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editDetailImg4','previewDetailImg4',800,0.75)"><button onclick="document.getElementById('uploadDetail4').click()" class="upload-btn">📁 আপলোড</button><input type="text" id="editDetailImg4" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewDetailImg4',this.value)"></div>
             <img id="previewDetailImg4" class="img-preview">
         </div>
-
         <div class="ss-section">
             <p class="ss-section-title">📸 স্ক্রিনশট (ঐচ্ছিক)</p>
             <label class="admin-label">Screenshot 1</label>
-            <div class="upload-row">
-                <input type="file" id="uploadScreenshot1" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot1','previewScreenshot1',700,0.7)">
-                <button onclick="document.getElementById('uploadScreenshot1').click()" class="upload-btn blue">📁 আপলোড</button>
-                <input type="text" id="editScreenshot1" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewScreenshot1',this.value)">
-            </div>
+            <div class="upload-row"><input type="file" id="uploadScreenshot1" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot1','previewScreenshot1',700,0.7)"><button onclick="document.getElementById('uploadScreenshot1').click()" class="upload-btn blue">📁 আপলোড</button><input type="text" id="editScreenshot1" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewScreenshot1',this.value)"></div>
             <img id="previewScreenshot1" class="img-preview">
             <label class="admin-label">Screenshot 2</label>
-            <div class="upload-row">
-                <input type="file" id="uploadScreenshot2" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot2','previewScreenshot2',700,0.7)">
-                <button onclick="document.getElementById('uploadScreenshot2').click()" class="upload-btn blue">📁 আপলোড</button>
-                <input type="text" id="editScreenshot2" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewScreenshot2',this.value)">
-            </div>
+            <div class="upload-row"><input type="file" id="uploadScreenshot2" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot2','previewScreenshot2',700,0.7)"><button onclick="document.getElementById('uploadScreenshot2').click()" class="upload-btn blue">📁 আপলোড</button><input type="text" id="editScreenshot2" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewScreenshot2',this.value)"></div>
             <img id="previewScreenshot2" class="img-preview">
             <label class="admin-label">Screenshot 3</label>
-            <div class="upload-row">
-                <input type="file" id="uploadScreenshot3" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot3','previewScreenshot3',700,0.7)">
-                <button onclick="document.getElementById('uploadScreenshot3').click()" class="upload-btn blue">📁 আপলোড</button>
-                <input type="text" id="editScreenshot3" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewScreenshot3',this.value)">
-            </div>
+            <div class="upload-row"><input type="file" id="uploadScreenshot3" accept="image/*" style="display:none" onchange="handleImageUpload(event,'editScreenshot3','previewScreenshot3',700,0.7)"><button onclick="document.getElementById('uploadScreenshot3').click()" class="upload-btn blue">📁 আপলোড</button><input type="text" id="editScreenshot3" class="admin-input" placeholder="https://..." style="margin-bottom:0" oninput="updatePreview('previewScreenshot3',this.value)"></div>
             <img id="previewScreenshot3" class="img-preview">
         </div>
-
-        <div class="ad-section">
-            <p class="ad-section-title">▶️ এই ভিডিওর জন্য আলাদা অ্যাড (ঐচ্ছিক)</p>
-            <label class="admin-label">Ad Direct Link (শুধু এই ভিডিওর জন্য)</label>
-            <input type="text" id="editAdUrl" class="admin-input" placeholder="খালি রাখলে গ্লোবাল অ্যাড লিংক ব্যবহার হবে">
-            <label class="admin-label">Ad Code (শুধু এই ভিডিওর জন্য)</label>
-            <textarea id="editAdCode" class="admin-input" rows="3" placeholder="খালি রাখলে গ্লোবাল অ্যাড কোড ব্যবহার হবে"></textarea>
-        </div>
-
         <label class="admin-label">Badge Text / Duration</label>
         <input type="text" id="editBadgeText" class="admin-input" placeholder="Full Collection or 12:45">
         <label class="admin-label">Views</label>
         <input type="number" id="editViews" class="admin-input">
         <label class="admin-label">Likes</label>
         <input type="number" id="editLikes" class="admin-input">
-        <label class="admin-label">Video Link (ডাউনলোডে যাবে)</label>
-        <input type="text" id="editVideoUrl" class="admin-input" placeholder="https://...">
+        <label class="admin-label">Video Link (OPEN VIDEO-তে যাবে)</label>
+        <input type="text" id="editVideoUrl" class="admin-input" placeholder="https://... (অবশ্যই দিন)">
         <label class="admin-label">Description</label>
         <textarea id="editDesc" class="admin-input" rows="3"></textarea>
         <button onclick="saveVideoEdit()" style="width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:700;background:#22c55e;color:#000;margin-top:8px;border:none;cursor:pointer">💾 Save & Sync to All</button>
     </div>
 </div>
 
-<!-- AD MODAL (Mini-App Style) -->
 <div id="adModal">
-    <div class="ad-box">
-        <div class="ad-head">
-            <span>বিজ্ঞাপন <span id="adCounter">1/3</span></span>
-            <button id="adCloseBtn" class="ad-close" onclick="closeAdModal()">✕</button>
-        </div>
-        <div class="ad-content" id="adContent">
-            <!-- Ad content injected here -->
-        </div>
-        <div class="ad-foot">
-            <p id="adTimerText">বিজ্ঞাপন লোড হচ্ছে...</p>
-        </div>
-    </div>
+    <div class="ad-counter-toast" id="adCounterToast">1/3</div>
 </div>
 
-<!-- FIREBASE SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAqf5Mgh-dne2Sf5-is3HsPH3WfogP9cCg",
-  authDomain: "premium-hub-725aa.firebaseapp.com",
-  projectId: "premium-hub-725aa",
-  storageBucket: "premium-hub-725aa.firebasestorage.app",
-  messagingSenderId: "402542096696",
-  appId: "1:402542096696:web:97b07c54d9023f1b5851cd",
-  measurementId: "G-Y5ZK6NLYCH"
-};
-
-let db = null;
-let firebaseReady = false;
-
-try {
-    const app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    firebaseReady = true;
-    console.log("✅ Firebase initialized");
-} catch (e) {
-    console.log("❌ Firebase init failed:", e);
-}
-
-window.db = db;
-window.firebaseReady = firebaseReady;
-window.fsDoc = doc;
-window.fsSetDoc = setDoc;
-window.fsDeleteDoc = deleteDoc;
-window.fsOnSnapshot = onSnapshot;
-window.fsCollection = collection;
-
+const firebaseConfig = {apiKey: "AIzaSyAqf5Mgh-dne2Sf5-is3HsPH3WfogP9cCg",authDomain: "premium-hub-725aa.firebaseapp.com",projectId: "premium-hub-725aa",storageBucket: "premium-hub-725aa.firebasestorage.app",messagingSenderId: "402542096696",appId: "1:402542096696:web:97b07c54d9023f1b5851cd",measurementId: "G-Y5ZK6NLYCH"};
+let db = null;let firebaseReady = false;
+try { const app = initializeApp(firebaseConfig); db = getFirestore(app); firebaseReady = true; } catch (e) { console.log("Firebase init failed:", e); }
+window.db = db; window.firebaseReady = firebaseReady;
+window.fsDoc = doc; window.fsSetDoc = setDoc; window.fsDeleteDoc = deleteDoc;
+window.fsOnSnapshot = onSnapshot; window.fsCollection = collection;
 window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
-<!-- MAIN APP -->
 <script>
-// ================= DEFAULT DATA =================
 const DEFAULT_VIDEOS = [
 {id:1,title:"নতুন কটি মাল 🍑😍 (Nasmin)",category:"viral",img:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],screenshots:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],badgeText:"Full Collection",views:4062,likes:45,isLiked:false,videoUrl:"https://example.com/video1",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 নতুন কটি মালের এক্সক্লুসিভ ভিডিও।"},
 {id:2,title:"বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও 😭",category:"viral",img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop"],screenshots:[],badgeText:"12:45",views:4667,likes:68,isLiked:false,videoUrl:"https://example.com/video2",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও।"},
 {id:3,title:"মাথা নষ্ট কালেকশন ভিডিও",category:"leaked",img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6196,likes:67,isLiked:false,videoUrl:"https://example.com/video3",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 মাথা নষ্ট কালেকশন ভিডিও।"},
 {id:4,title:"Slim Young Bengali Girl - 10",category:"bangladeshi",img:"https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop"],screenshots:[],badgeText:"10:20",views:2853,likes:30,isLiked:false,videoUrl:"https://example.com/video4",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 সম্পূর্ণ ভিডিও।"},
-{id:5,title:"Indian Viral Clip Exclusive",category:"indian",img:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:8754,likes:120,isLiked:false,videoUrl:"https://example.com/video5",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Indian Viral Clip।"},
-{id:6,title:"Pakistani Desi Video HD",category:"pakistani",img:"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop"],screenshots:[],badgeText:"15:30",views:2301,likes:35,isLiked:false,videoUrl:"https://example.com/video6",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Pakistani Desi Video।"},
-{id:7,title:"English Full Video Collection",category:"english",img:"https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6543,likes:98,isLiked:false,videoUrl:"https://example.com/video7",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 English Full Video।"},
-{id:8,title:"Leaked Viral Video 2",category:"leaked",img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=800&fit=crop"],screenshots:[],badgeText:"08:15",views:1122,likes:15,isLiked:false,videoUrl:"https://example.com/video8",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Leaked Viral Video।"},
-{id:9,title:"Video Call Recording Scandal",category:"video-call",img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:3344,likes:55,isLiked:false,videoUrl:"https://example.com/video9",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Video Call Scandal।"},
-{id:10,title:"Desi Village Exclusive",category:"desi",img:"https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&h=800&fit=crop"],screenshots:[],badgeText:"18:20",views:9988,likes:200,isLiked:false,videoUrl:"https://example.com/video10",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Desi Village।"}
+{id:5,title:"Indian Viral Clip Exclusive",category:"indian",img:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:8754,likes:120,isLiked:false,videoUrl:"https://example.com/video5",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Indian Viral Clip।"}
 ];
 
-// ================= STATE =================
 let allVideos = [];
 let globalSettings = {
-    telegramLink: "https://t.me",
-    adLink: "",
-    adCode: "",
-    adCount: 3,
-    adTimerSeconds: 5,
-    adSystemEnabled: true,
+    telegramLink: "https://t.me", adLink: "", adCode: "",
+    adCount: 3, adTimerSeconds: 5, adCooldownSeconds: 5, adSystemEnabled: true,
     adminPassword: "557822"
 };
 let currentPage = 1;
@@ -581,43 +423,32 @@ let currentVideoId = null;
 let adsWatched = 0;
 let totalAds = 3;
 let adTimerInterval = null;
-let adTimeLeft = 5;
+let adCooldownInterval = null;
+let cooldownLeft = 0;
 let firebaseReady = false;
 let db = null;
 let fsDoc, fsSetDoc, fsDeleteDoc, fsOnSnapshot, fsCollection;
 let isInitialLoadDone = false;
 
-// ================= FIREBASE READY =================
 window.addEventListener('firebaseReady', function() {
     if (window.firebaseReady) {
-        firebaseReady = true;
-        db = window.db;
-        fsDoc = window.fsDoc;
-        fsSetDoc = window.fsSetDoc;
-        fsDeleteDoc = window.fsDeleteDoc;
-        fsOnSnapshot = window.fsOnSnapshot;
+        firebaseReady = true; db = window.db;
+        fsDoc = window.fsDoc; fsSetDoc = window.fsSetDoc;
+        fsDeleteDoc = window.fsDeleteDoc; fsOnSnapshot = window.fsOnSnapshot;
         fsCollection = window.fsCollection;
         initFirebaseSync();
-    } else {
-        loadLocal();
-        renderApp();
-        hideLoading();
-    }
+    } else { loadLocal(); renderApp(); hideLoading(); }
 });
 setTimeout(function() {
     if (!firebaseReady && window.firebaseReady) {
-        firebaseReady = true;
-        db = window.db;
-        fsDoc = window.fsDoc;
-        fsSetDoc = window.fsSetDoc;
-        fsDeleteDoc = window.fsDeleteDoc;
-        fsOnSnapshot = window.fsOnSnapshot;
+        firebaseReady = true; db = window.db;
+        fsDoc = window.fsDoc; fsSetDoc = window.fsSetDoc;
+        fsDeleteDoc = window.fsDeleteDoc; fsOnSnapshot = window.fsOnSnapshot;
         fsCollection = window.fsCollection;
         initFirebaseSync();
     }
 }, 1500);
 
-// ================= FIREBASE SYNC =================
 function initFirebaseSync() {
     if (!firebaseReady || !db) return;
     try {
@@ -628,27 +459,16 @@ function initFirebaseSync() {
                 document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
                 updateAdSystemUI();
                 saveLocal();
-            } else {
-                fsSetDoc(fsDoc(db, 'premiumHub', 'settings'), globalSettings).catch(e => console.log(e));
-            }
-        }, (err) => console.log('Settings listen error:', err));
-
+            } else { fsSetDoc(fsDoc(db, 'premiumHub', 'settings'), globalSettings).catch(e => console.log(e)); }
+        }, (err) => console.log('Settings error:', err));
         fsOnSnapshot(fsCollection(db, 'videos'), (snapshot) => {
             const newCache = {};
-            snapshot.forEach(doc => {
-                const vid = doc.data();
-                if (vid && vid.id !== undefined) newCache[vid.id] = vid;
-            });
+            snapshot.forEach(doc => { const vid = doc.data(); if (vid && vid.id !== undefined) newCache[vid.id] = vid; });
             const serverCount = Object.keys(newCache).length;
             if (!isInitialLoadDone) {
                 isInitialLoadDone = true;
-                if (serverCount === 0) {
-                    allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
-                    uploadAllToCloud();
-                } else {
-                    allVideos = Object.values(newCache).sort((a,b) => b.id - a.id);
-                    renderApp();
-                }
+                if (serverCount === 0) { allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS)); uploadAllToCloud(); }
+                else { allVideos = Object.values(newCache).sort((a,b) => b.id - a.id); renderApp(); }
                 hideLoading();
                 return;
             }
@@ -660,48 +480,29 @@ function initFirebaseSync() {
                 merged.push(v);
             });
             allVideos = merged.sort((a,b) => b.id - a.id);
-            renderApp();
-            saveLocal();
-        }, (err) => {
-            console.log('Videos listen error:', err);
-            if (!isInitialLoadDone) {
-                loadLocal();
-                renderApp();
-                hideLoading();
-                isInitialLoadDone = true;
-            }
-        });
-    } catch (e) {
-        console.log("Sync error:", e);
-        loadLocal();
-        renderApp();
-        hideLoading();
-    }
+            renderApp(); saveLocal();
+        }, (err) => { if (!isInitialLoadDone) { loadLocal(); renderApp(); hideLoading(); isInitialLoadDone = true; } });
+    } catch (e) { loadLocal(); renderApp(); hideLoading(); }
 }
 async function uploadAllToCloud() {
-    try {
-        for (const v of allVideos) await fsSetDoc(fsDoc(db, 'videos', String(v.id)), v);
-        renderApp();
-    } catch (e) { console.log("Upload defaults error:", e); renderApp(); }
+    try { for (const v of allVideos) await fsSetDoc(fsDoc(db, 'videos', String(v.id)), v); renderApp(); }
+    catch (e) { renderApp(); }
 }
-function hideLoading() {
-    const ls = document.getElementById('loadingScreen');
-    if (ls) ls.classList.add('hide');
-}
+function hideLoading() { const ls = document.getElementById('loadingScreen'); if (ls) ls.classList.add('hide'); }
 async function saveVideoToCloud(video) {
     if (!firebaseReady || !db) { saveLocal(); return false; }
     try { await fsSetDoc(fsDoc(db, 'videos', String(video.id)), video); return true; }
-    catch (e) { console.log("Save error:", e); return false; }
+    catch (e) { return false; }
 }
 async function deleteVideoFromCloud(id) {
     if (!firebaseReady || !db) return false;
     try { await fsDeleteDoc(fsDoc(db, 'videos', String(id))); return true; }
-    catch (e) { console.log("Delete error:", e); return false; }
+    catch (e) { return false; }
 }
 async function saveSettingsToCloud() {
     if (!firebaseReady || !db) { saveLocal(); return false; }
     try { await fsSetDoc(fsDoc(db, 'premiumHub', 'settings'), globalSettings); return true; }
-    catch (e) { console.log("Settings save error:", e); return false; }
+    catch (e) { return false; }
 }
 function showSync(text, isError) {
     const badge = document.getElementById('syncBadge');
@@ -710,32 +511,28 @@ function showSync(text, isError) {
     badge.classList.add('show');
     if (text.includes('✅') || isError) setTimeout(() => badge.classList.remove('show'), 2000);
 }
-
-// ================= LOCAL =================
 function loadLocal() {
     try {
-        const v = localStorage.getItem('premiumHubVideos_v9');
-        const s = localStorage.getItem('premiumHubSettings_v9');
+        const v = localStorage.getItem('premiumHubVideos_v13');
+        const s = localStorage.getItem('premiumHubSettings_v13');
         allVideos = v ? JSON.parse(v) : JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
         if (s) globalSettings = { ...globalSettings, ...JSON.parse(s) };
         if (!globalSettings.adminPassword) globalSettings.adminPassword = "557822";
         if (globalSettings.adSystemEnabled === undefined) globalSettings.adSystemEnabled = true;
         if (!globalSettings.adCount) globalSettings.adCount = 3;
         if (!globalSettings.adTimerSeconds) globalSettings.adTimerSeconds = 5;
+        if (!globalSettings.adCooldownSeconds) globalSettings.adCooldownSeconds = 5;
         if (globalSettings.adCode === undefined) globalSettings.adCode = "";
         allVideos.sort((a,b) => b.id - a.id);
-    } catch (e) {
-        allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
-    }
+    } catch (e) { allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS)); }
 }
 function saveLocal() {
     try {
-        localStorage.setItem('premiumHubVideos_v9', JSON.stringify(allVideos));
-        localStorage.setItem('premiumHubSettings_v9', JSON.stringify(globalSettings));
-    } catch (e) { console.log('Local save failed'); }
+        localStorage.setItem('premiumHubVideos_v13', JSON.stringify(allVideos));
+        localStorage.setItem('premiumHubSettings_v13', JSON.stringify(globalSettings));
+    } catch (e) {}
 }
 
-// ================= RENDER =================
 function renderApp() {
     allVideos.sort((a,b) => b.id - a.id);
     let filtered = allVideos;
@@ -756,21 +553,12 @@ function renderApp() {
             card.className = 'thumb-card';
             card.onclick = () => openDetail(item.id);
             card.innerHTML = `
-                <div class="img-wrapper">
-                    <img src="${item.img}" alt="" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 500%22><rect fill=%22%231a331a%22 width=%22400%22 height=%22500%22/><text x=%22200%22 y=%22250%22 fill=%22%23666%22 font-size=%2220%22 text-anchor=%22middle%22>No Image</text></svg>'">
-                </div>
+                <div class="img-wrapper"><img src="${item.img}" alt="" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 500%22><rect fill=%22%231a331a%22 width=%22400%22 height=%22500%22/><text x=%22200%22 y=%22250%22 fill=%22%23666%22 font-size=%2220%22 text-anchor=%22middle%22>No Image</text></svg>'"></div>
                 <h3 class="card-title">${item.title}</h3>
                 <div class="card-stats">
-                    <div class="stat-views">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        <span id="homeViews_${item.id}">${item.views}</span>
-                    </div>
-                    <button class="like-btn-home" onclick="toggleLikeHome(${item.id},event)">
-                        <span class="heart-icon">${item.isLiked ? '❤️' : '🤍'}</span>
-                        <span class="like-count-text" id="homeLikes_${item.id}">${item.likes}</span>
-                    </button>
-                </div>
-            `;
+                    <div class="stat-views"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg><span id="homeViews_${item.id}">${item.views}</span></div>
+                    <button class="like-btn-home" onclick="toggleLikeHome(${item.id},event)"><span class="heart-icon">${item.isLiked ? '❤️' : '🤍'}</span><span class="like-count-text" id="homeLikes_${item.id}">${item.likes}</span></button>
+                </div>`;
             grid.appendChild(card);
         });
     }
@@ -780,28 +568,10 @@ function renderPagination(totalPages) {
     const c = document.getElementById('paginationContainer');
     c.innerHTML = '';
     if (totalPages <= 1) return;
-    if (currentPage > 1) {
-        const b = document.createElement('button');
-        b.className = 'page-btn'; b.textContent = '«';
-        b.onclick = () => { currentPage--; renderApp(); window.scrollTo({top:0,behavior:'smooth'}); };
-        c.appendChild(b);
-    }
-    for (let i = 1; i <= totalPages; i++) {
-        const b = document.createElement('button');
-        b.className = 'page-btn' + (i === currentPage ? ' active' : '');
-        b.textContent = i;
-        b.onclick = () => { currentPage = i; renderApp(); window.scrollTo({top:0,behavior:'smooth'}); };
-        c.appendChild(b);
-    }
-    if (currentPage < totalPages) {
-        const b = document.createElement('button');
-        b.className = 'page-btn'; b.textContent = '»';
-        b.onclick = () => { currentPage++; renderApp(); window.scrollTo({top:0,behavior:'smooth'}); };
-        c.appendChild(b);
-    }
+    if (currentPage > 1) { const b = document.createElement('button'); b.className = 'page-btn'; b.textContent = '«'; b.onclick = () => { currentPage--; renderApp(); window.scrollTo({top:0,behavior:'smooth'}); }; c.appendChild(b); }
+    for (let i = 1; i <= totalPages; i++) { const b = document.createElement('button'); b.className = 'page-btn' + (i === currentPage ? ' active' : ''); b.textContent = i; b.onclick = () => { currentPage = i; renderApp(); window.scrollTo({top:0,behavior:'smooth'}); }; c.appendChild(b); }
+    if (currentPage < totalPages) { const b = document.createElement('button'); b.className = 'page-btn'; b.textContent = '»'; b.onclick = () => { currentPage++; renderApp(); window.scrollTo({top:0,behavior:'smooth'}); }; c.appendChild(b); }
 }
-
-// ================= LIKE =================
 async function toggleLikeHome(id, event) {
     event.stopPropagation();
     const video = allVideos.find(v => v.id === id);
@@ -812,13 +582,9 @@ async function toggleLikeHome(id, event) {
     button.querySelector('.heart-icon').textContent = video.isLiked ? '❤️' : '🤍';
     button.querySelector('.like-count-text').textContent = video.likes;
     saveLocal();
-    if (firebaseReady && db) {
-        const ok = await saveVideoToCloud(video);
-        if (!ok) showSync('⚠️ Like save failed', true);
-    }
+    if (firebaseReady && db) saveVideoToCloud(video);
 }
 
-// ================= DETAIL =================
 function openDetail(id) {
     currentVideoId = id;
     const video = allVideos.find(v => v.id === id);
@@ -828,36 +594,23 @@ function openDetail(id) {
     const hv = document.getElementById('homeViews_' + id);
     if (hv) hv.textContent = video.views;
     saveLocal();
-    if (firebaseReady && db) saveVideoToCloud(video).catch(e => console.log(e));
+    if (firebaseReady && db) saveVideoToCloud(video);
 
     const cc = document.getElementById('collageContainer');
     const imgs = (video.detailImgs || []).filter(img => img && img.trim() !== '');
     let html = '';
-    if (imgs.length === 0) {
-        html = '<div style="width:100%;aspect-ratio:4/5;background:#000;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#4a6a4a">No Images</div>';
-    } else if (imgs.length === 1) {
-        html = `<div style="position:relative;width:100%;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:4/5"><img src="${imgs[0]}" style="width:100%;height:100%;object-fit:contain">${video.badgeText ? `<div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.8);color:#fff;font-size:12px;font-weight:600;padding:6px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.2)">${video.badgeText}</div>` : ''}</div>`;
-    } else if (imgs.length === 2) {
-        html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;border-radius:12px;overflow:hidden">${imgs.map((img,i) => `<div style="position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:4/5"><img src="${img}" style="width:100%;height:100%;object-fit:contain">${i===0&&video.badgeText ? `<div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.8);color:#fff;font-size:10px;font-weight:600;padding:4px 8px;border-radius:4px">${video.badgeText}</div>` : ''}</div>`).join('')}</div>`;
-    } else if (imgs.length === 3) {
-        html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;border-radius:12px;overflow:hidden"><div style="grid-column:1/-1;position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:16/10"><img src="${imgs[0]}" style="width:100%;height:100%;object-fit:contain">${video.badgeText ? `<div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.8);color:#fff;font-size:12px;font-weight:600;padding:6px 10px;border-radius:6px">${video.badgeText}</div>` : ''}</div><div style="position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:4/5"><img src="${imgs[1]}" style="width:100%;height:100%;object-fit:contain"></div><div style="position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:4/5"><img src="${imgs[2]}" style="width:100%;height:100%;object-fit:contain"></div></div>`;
-    } else {
-        html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;border-radius:12px;overflow:hidden">${imgs.slice(0,4).map((img,index) => `<div style="position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:4/5"><img src="${img}" style="width:100%;height:100%;object-fit:contain">${index===3&&video.badgeText ? `<div style="position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center"><span style="color:#fff;font-weight:700;font-size:14px;background:rgba(0,0,0,.7);padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.2)">${video.badgeText}</span></div>` : ''}</div>`).join('')}</div>`;
-    }
+    if (imgs.length === 0) { html = '<div style="width:100%;aspect-ratio:4/5;background:#000;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#4a6a4a">No Images</div>'; }
+    else if (imgs.length === 1) { html = `<div style="position:relative;width:100%;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:4/5"><img src="${imgs[0]}" style="width:100%;height:100%;object-fit:contain">${video.badgeText ? `<div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.8);color:#fff;font-size:12px;font-weight:600;padding:6px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.2)">${video.badgeText}</div>` : ''}</div>`; }
+    else if (imgs.length === 2) { html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;border-radius:12px;overflow:hidden">${imgs.map((img,i) => `<div style="position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:4/5"><img src="${img}" style="width:100%;height:100%;object-fit:contain">${i===0&&video.badgeText ? `<div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.8);color:#fff;font-size:10px;font-weight:600;padding:4px 8px;border-radius:4px">${video.badgeText}</div>` : ''}</div>`).join('')}</div>`; }
+    else if (imgs.length === 3) { html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;border-radius:12px;overflow:hidden"><div style="grid-column:1/-1;position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:16/10"><img src="${imgs[0]}" style="width:100%;height:100%;object-fit:contain">${video.badgeText ? `<div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.8);color:#fff;font-size:12px;font-weight:600;padding:6px 10px;border-radius:6px">${video.badgeText}</div>` : ''}</div><div style="position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:4/5"><img src="${imgs[1]}" style="width:100%;height:100%;object-fit:contain"></div><div style="position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:4/5"><img src="${imgs[2]}" style="width:100%;height:100%;object-fit:contain"></div></div>`; }
+    else { html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;border-radius:12px;overflow:hidden">${imgs.slice(0,4).map((img,index) => `<div style="position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:4/5"><img src="${img}" style="width:100%;height:100%;object-fit:contain">${index===3&&video.badgeText ? `<div style="position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center"><span style="color:#fff;font-weight:700;font-size:14px;background:rgba(0,0,0,.7);padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.2)">${video.badgeText}</span></div>` : ''}</div>`).join('')}</div>`; }
     cc.innerHTML = html;
 
     const sc = document.getElementById('screenshotsContainer');
     const nb = document.getElementById('noScreenshotBox');
     const ss = (video.screenshots || []).filter(img => img && img.trim() !== '');
-    if (ss.length > 0) {
-        sc.innerHTML = ss.map(img => `<div class="ss-item"><img src="${img}" loading="lazy"></div>`).join('');
-        sc.style.display = 'flex';
-        nb.style.display = 'none';
-    } else {
-        sc.innerHTML = '';
-        sc.style.display = 'none';
-        nb.style.display = 'block';
-    }
+    if (ss.length > 0) { sc.innerHTML = ss.map(img => `<div class="ss-item"><img src="${img}" loading="lazy"></div>`).join(''); sc.style.display = 'flex'; nb.style.display = 'none'; }
+    else { sc.innerHTML = ''; sc.style.display = 'none'; nb.style.display = 'block'; }
 
     document.getElementById('videoTitle').textContent = video.title;
     document.getElementById('videoDesc').textContent = video.desc;
@@ -866,48 +619,64 @@ function openDetail(id) {
     totalAds = globalSettings.adCount || 3;
     updateProgress();
 
+    // Cooldown timer পরিষ্কার করো (নতুন ভিডিও খোলার সময়)
+    if (adCooldownInterval) { clearInterval(adCooldownInterval); adCooldownInterval = null; }
+
+    setupUnlockButton(video);
+    try { history.pushState({page:'detail'}, '', '#detail-' + id); } catch(e) {}
+    showPage('detail');
+}
+
+function setupUnlockButton(video) {
     const ub = document.getElementById('unlockBtn');
     const videoAdsEnabled = video.adEnabled !== false;
     const globallyEnabled = globalSettings.adSystemEnabled !== false;
+    const hasVideoAd = (video.adCode && video.adCode.trim()) || (video.adUrl && video.adUrl.trim());
+    const hasGlobalAd = (globalSettings.adCode && globalSettings.adCode.trim()) || (globalSettings.adLink && globalSettings.adLink.trim());
+    const hasAnyAd = hasVideoAd || hasGlobalAd;
 
-    if (!globallyEnabled || !videoAdsEnabled) {
-        document.getElementById('unlockHeadText').textContent = 'Direct Download';
-        document.getElementById('unlockRules').innerHTML = '⬇️ নিচের বাটনে ক্লিক করে সরাসরি ভিডিও ডাউনলোড করুন।';
+    if (!globallyEnabled || !videoAdsEnabled || !hasAnyAd) {
+        document.getElementById('unlockHeadText').textContent = 'Direct Open';
+        document.getElementById('unlockRules').innerHTML = '⬇️ নিচের বাটনে ক্লিক করে সরাসরি ভিডিও ওপেন করুন।';
         document.getElementById('progressWrap').style.display = 'none';
         document.getElementById('progressTextWrap').style.display = 'none';
-        ub.innerHTML = '⬇️ DOWNLOAD VIDEO';
+        ub.innerHTML = '▶️ OPEN VIDEO';
         ub.disabled = false;
         ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
-        ub.onclick = function() {
-            if (video.videoUrl && video.videoUrl.trim() !== '') window.open(video.videoUrl, '_blank');
-            else alert('⚠️ No Video Link set.');
-        };
+        ub.onclick = function(e) { e.preventDefault(); openVideoLink(video.videoUrl); };
     } else {
         document.getElementById('unlockHeadText').textContent = `Watch ${totalAds} ads to unlock`;
-        document.getElementById('unlockRules').innerHTML = `উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ${totalAds} টি অ্যাড সম্পূর্ণ দেখুন। সব অ্যাড শেষ হলে ⬇️ Download বাটনটি অটোমেটিকভাবে আনলক হয়ে যাবে। 🚀🤫👇`;
+        document.getElementById('unlockRules').innerHTML = `উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ${totalAds} টি অ্যাড সম্পূর্ণ দেখুন। প্রতিটি অ্যাডের পর ${globalSettings.adCooldownSeconds || 5} সেকেন্ড অপেক্ষা করতে হবে। সব শেষ হলে ▶️ OPEN VIDEO আনলক হবে। 🚀🤫👇`;
         document.getElementById('progressWrap').style.display = 'block';
         document.getElementById('progressTextWrap').style.display = 'block';
         ub.disabled = false;
         ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
-        ub.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg> UNLOCK VIDEO';
+        ub.classList.remove('cooldown');
+        // বাটনের টেক্সট — কত নাম্বার অ্যাড চলবে সেটা দেখাবে
+        const nextNum = adsWatched + 1;
+        ub.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg> UNLOCK VIDEO (${nextNum}/${totalAds})`;
         ub.onclick = watchAd;
     }
+}
 
-    try { history.pushState({page:'detail'}, '', '#detail-' + id); } catch(e) {}
-    showPage('detail');
+function openVideoLink(url) {
+    if (!url || url.trim() === '') { alert('⚠️ এই ভিডিওর জন্য কোনো লিংক সেট করা হয়নি।'); return; }
+    try {
+        const a = document.createElement('a');
+        a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        a.style.display = 'none';
+        document.body.appendChild(a); a.click();
+        setTimeout(() => { try { document.body.removeChild(a); } catch(e){} }, 100);
+    } catch (e) { window.location.href = url; }
 }
 
 function updateDetailLikeUI(video) {
     document.getElementById('detailLikeCount').textContent = video.likes + ' Likes';
     document.getElementById('detailLikeIcon').textContent = video.isLiked ? '❤️' : '🤍';
     const btn = document.getElementById('detailLikeBtn');
-    if (video.isLiked) {
-        btn.style.borderColor = '#ff4d6d'; btn.style.color = '#ff8fa3';
-    } else {
-        btn.style.borderColor = 'var(--border-color)'; btn.style.color = 'var(--text-sub)';
-    }
+    if (video.isLiked) { btn.style.borderColor = '#ff4d6d'; btn.style.color = '#ff8fa3'; }
+    else { btn.style.borderColor = 'var(--border-color)'; btn.style.color = 'var(--text-sub)'; }
 }
-
 async function toggleLikeDetail() {
     if (!currentVideoId) return;
     const video = allVideos.find(v => v.id === currentVideoId);
@@ -916,24 +685,15 @@ async function toggleLikeDetail() {
     video.likes += video.isLiked ? 1 : -1;
     updateDetailLikeUI(video);
     const hl = document.getElementById('homeLikes_' + video.id);
-    if (hl) {
-        hl.textContent = video.likes;
-        const hb = hl.closest('.like-btn-home');
-        if (hb) hb.querySelector('.heart-icon').textContent = video.isLiked ? '❤️' : '🤍';
-    }
+    if (hl) { hl.textContent = video.likes; const hb = hl.closest('.like-btn-home'); if (hb) hb.querySelector('.heart-icon').textContent = video.isLiked ? '❤️' : '🤍'; }
     saveLocal();
-    if (firebaseReady && db) {
-        const ok = await saveVideoToCloud(video);
-        if (!ok) showSync('⚠️ Like save failed', true);
-    }
+    if (firebaseReady && db) saveVideoToCloud(video);
 }
-
 function shareVideo() {
     const video = allVideos.find(v => v.id === currentVideoId);
     if (!video) return;
-    if (navigator.share) {
-        navigator.share({ title: video.title, text: video.desc, url: window.location.href }).catch(() => {});
-    } else {
+    if (navigator.share) { navigator.share({ title: video.title, text: video.desc, url: window.location.href }).catch(() => {}); }
+    else {
         const t = document.createElement('textarea');
         t.value = video.title + ' - ' + video.desc;
         document.body.appendChild(t); t.select();
@@ -941,8 +701,6 @@ function shareVideo() {
         document.body.removeChild(t);
     }
 }
-
-// ================= NAV =================
 function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(name + 'Page');
@@ -951,38 +709,28 @@ function showPage(name) {
     document.getElementById('bottomBar').classList.toggle('hidden', name !== 'detail');
 }
 function goBackHome() {
+    if (document.getElementById('adModal').classList.contains('active')) { closeAdModal(); return; }
+    if (adCooldownInterval) { clearInterval(adCooldownInterval); adCooldownInterval = null; }
     showPage('home');
-    if (history.state && history.state.page === 'detail') {
-        try { history.back(); } catch(e) {}
-    }
+    if (history.state && history.state.page === 'detail') { try { history.back(); } catch(e) {} }
 }
 window.addEventListener('popstate', function() {
+    if (document.getElementById('adModal').classList.contains('active')) {
+        closeAdModal();
+        try { history.pushState({page:'detail'}, '', '#detail-' + currentVideoId); } catch(e) {}
+        return;
+    }
     const d = document.getElementById('detailPage');
     if (d && d.classList.contains('active')) showPage('home');
 });
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('overlay').classList.toggle('active');
-}
-function toggleSearch() {
-    const sb = document.getElementById('searchBar');
-    sb.classList.toggle('active');
-    if (sb.classList.contains('active')) document.getElementById('searchInput').focus();
-    else { document.getElementById('searchInput').value = ''; searchQuery = ''; renderApp(); }
-}
-function handleSearch() {
-    searchQuery = document.getElementById('searchInput').value;
-    currentPage = 1;
-    renderApp();
-}
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('active'); }
+function toggleSearch() { const sb = document.getElementById('searchBar'); sb.classList.toggle('active'); if (sb.classList.contains('active')) document.getElementById('searchInput').focus(); else { document.getElementById('searchInput').value = ''; searchQuery = ''; renderApp(); } }
+function handleSearch() { searchQuery = document.getElementById('searchInput').value; currentPage = 1; renderApp(); }
 function toggleTheme() {
     document.body.classList.toggle('light-mode');
     const i = document.getElementById('themeIcon');
-    if (document.body.classList.contains('light-mode')) {
-        i.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
-    } else {
-        i.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>';
-    }
+    if (document.body.classList.contains('light-mode')) { i.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>'; }
+    else { i.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>'; }
 }
 document.getElementById('categoryContainer').addEventListener('click', function(e) {
     if (e.target.classList.contains('cat-chip')) {
@@ -994,112 +742,125 @@ document.getElementById('categoryContainer').addEventListener('click', function(
     }
 });
 
-// ================= AD SYSTEM (NEW) =================
-function injectAdContent(container, adUrl, adCode) {
-    container.innerHTML = '';
-
-    // লোডার
-    const loader = document.createElement('div');
-    loader.className = 'ad-loader';
-    loader.innerHTML = '<div class="spinner"></div><div class="ad-loader-text">বিজ্ঞাপন লোড হচ্ছে...</div>';
-    container.appendChild(loader);
-
-    setTimeout(() => {
-        container.innerHTML = '';
-
-        // ১. Ad Code থাকলে সেটা iframe-এ ইনজেক্ট করো
-        if (adCode && adCode.trim() !== '') {
-            try {
-                const iframe = document.createElement('iframe');
-                iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox');
-                iframe.style.cssText = 'width:100%;height:100%;border:0;background:#000;';
-                container.appendChild(iframe);
-                const doc = iframe.contentDocument || iframe.contentWindow.document;
-                doc.open();
-                doc.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base target="_blank"><style>body{margin:0;padding:0;background:#000;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;}iframe{max-width:100%;max-height:100%;border:0;}</style></head><body>${adCode}</body></html>`);
-                doc.close();
-                return;
-            } catch (e) {
-                console.log("AdCode inject error:", e);
-            }
-        }
-
-        // ২. Ad URL থাকলে সেটা iframe-এ লোড করো
-        if (adUrl && adUrl.trim() !== '') {
-            try {
-                const iframe = document.createElement('iframe');
-                iframe.src = adUrl;
-                iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox');
-                iframe.style.cssText = 'width:100%;height:100%;border:0;background:#000;';
-                container.appendChild(iframe);
-                return;
-            } catch (e) {
-                console.log("AdUrl iframe error:", e);
-            }
-        }
-
-        // ৩. কিছুই না থাকলে মেসেজ
-        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;text-align:center;padding:20px;flex-direction:column;gap:10px;"><div style="font-size:40px;">📢</div><div>কোনো অ্যাড কনফিগার করা নেই।<br><span style="font-size:11px;color:#666;">অ্যাডমিন প্যানেল থেকে Ad Link বা Ad Code সেট করুন।</span></div></div>';
-    }, 300);
-}
-
+// ============ AD SYSTEM (Cooldown সহ) ============
 function watchAd() {
     if (adsWatched >= totalAds) return;
+    if (adCooldownInterval) { console.log('Cooldown active'); return; }
     const video = allVideos.find(v => v.id === currentVideoId);
     if (!video) return;
 
-    // এই ভিডিওর জন্য অ্যাড লিংক/কোড, না থাকলে গ্লোবাল
-    const videoAdUrl = (video.adUrl && video.adUrl.trim() !== '') ? video.adUrl : globalSettings.adLink;
-    const videoAdCode = (video.adCode && video.adCode.trim() !== '') ? video.adCode : globalSettings.adCode;
+    const videoAdUrl = (video.adUrl && video.adUrl.trim() !== '') ? video.adUrl : (globalSettings.adLink || "");
+    const videoAdCode = (video.adCode && video.adCode.trim() !== '') ? video.adCode : (globalSettings.adCode || "");
 
-    // অ্যাড মোডাল ওপেন
-    document.getElementById('adCounter').textContent = (adsWatched + 1) + '/' + totalAds;
+    // Ad Code নেই, শুধু Direct Link আছে → নতুন ট্যাবে খুলে দাও
+    if ((!videoAdCode || videoAdCode.trim() === '') && (!videoAdUrl || videoAdUrl.trim() === '')) {
+        // কোনো অ্যাডই নেই → সরাসরি OPEN
+        openVideoLink(video.videoUrl);
+        return;
+    }
+
     const am = document.getElementById('adModal');
+    am.querySelectorAll('iframe').forEach(f => f.remove());
+
+    document.getElementById('adCounterToast').textContent = (adsWatched + 1) + '/' + totalAds;
+
+    if (videoAdCode && videoAdCode.trim() !== '') {
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
+        iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        iframe.setAttribute('scrolling', 'no');
+        iframe.style.cssText = 'width:100%;height:100%;border:0;background:#000;display:block;';
+        am.appendChild(iframe);
+        try {
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            doc.open();
+            doc.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><base target="_blank"><style>*{margin:0;padding:0;box-sizing:border-box}html,body{background:#000;color:#fff;font-family:sans-serif;width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow-x:hidden}img,iframe,video,div,ins{max-width:100%}a{color:#4ade80}</style></head><body>${videoAdCode}</body></html>`);
+            doc.close();
+        } catch (e) { console.log("AdCode error:", e); }
+    } else if (videoAdUrl && videoAdUrl.trim() !== '') {
+        try {
+            const a = document.createElement('a');
+            a.href = videoAdUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
+            a.style.display = 'none';
+            document.body.appendChild(a); a.click();
+            setTimeout(() => { try { document.body.removeChild(a); } catch(e){} }, 100);
+        } catch (e) {}
+    }
+
     am.classList.add('active');
     document.body.style.overflow = 'hidden';
+    try { history.pushState({page:'adModal'}, '', '#ad'); } catch(e) {}
 
-    // অ্যাড কন্টেন্ট লোড
-    const adContent = document.getElementById('adContent');
-    injectAdContent(adContent, videoAdUrl, videoAdCode);
-
-    // টাইমার সেট
-    adTimeLeft = globalSettings.adTimerSeconds || 5;
-    document.getElementById('adTimerText').textContent = `বিজ্ঞাপন ${adTimeLeft} সেকেন্ড পরে বন্ধ করা যাবে...`;
-    document.getElementById('adCloseBtn').classList.remove('show');
-
+    // Adsterra-র নিজের ✕ আসবে, কিন্তু আমরা একটা টাইমার দিয়ে auto-close করব
+    // টাইমার = Ad View Time (default 5s)
+    const viewTime = globalSettings.adTimerSeconds || 5;
     if (adTimerInterval) clearInterval(adTimerInterval);
-    adTimerInterval = setInterval(() => {
-        adTimeLeft--;
-        if (adTimeLeft <= 0) {
-            clearInterval(adTimerInterval);
-            document.getElementById('adTimerText').textContent = '✅ এখন আপনি ✕ বাটনে ক্লিক করে বন্ধ করতে পারবেন।';
-            document.getElementById('adCloseBtn').classList.add('show');
-        } else {
-            document.getElementById('adTimerText').textContent = `বিজ্ঞাপন ${adTimeLeft} সেকেন্ড পরে বন্ধ করা যাবে...`;
-        }
-    }, 1000);
+    adTimerInterval = setTimeout(() => {
+        // Ad View Time শেষ → modal বন্ধ করো
+        closeAdModal();
+    }, viewTime * 1000);
 }
 
 function closeAdModal() {
-    document.getElementById('adModal').classList.remove('active');
+    const am = document.getElementById('adModal');
+    am.querySelectorAll('iframe').forEach(f => f.remove());
+    am.classList.remove('active');
     document.body.style.overflow = '';
-    document.getElementById('adContent').innerHTML = '';
-    if (adTimerInterval) clearInterval(adTimerInterval);
+    if (adTimerInterval) { clearTimeout(adTimerInterval); adTimerInterval = null; }
+
+    try { if (history.state && history.state.page === 'adModal') history.replaceState({page:'detail'}, '', '#detail-' + currentVideoId); } catch(e) {}
 
     adsWatched++;
     updateProgress();
 
+    // সব অ্যাড শেষ → সরাসরি OPEN VIDEO
     if (adsWatched >= totalAds) {
-        const ub = document.getElementById('unlockBtn');
-        ub.innerHTML = '⬇️ DOWNLOAD VIDEO';
-        ub.disabled = false;
-        ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
-        ub.onclick = function() {
-            const video = allVideos.find(v => v.id === currentVideoId);
-            if (video && video.videoUrl && video.videoUrl.trim() !== '') window.open(video.videoUrl, '_blank');
-            else alert('⚠️ No Video Link set.');
-        };
+        showOpenVideoButton();
+        return;
     }
+
+    // এখনো বাকি আছে → Cooldown শুরু করো
+    startCooldown();
+}
+
+function startCooldown() {
+    const ub = document.getElementById('unlockBtn');
+    cooldownLeft = globalSettings.adCooldownSeconds || 5;
+    ub.disabled = true;
+    ub.classList.add('cooldown');
+    ub.innerHTML = `⏳ Wait ${cooldownLeft}s...`;
+    if (adCooldownInterval) clearInterval(adCooldownInterval);
+    adCooldownInterval = setInterval(() => {
+        cooldownLeft--;
+        if (cooldownLeft > 0) {
+            ub.innerHTML = `⏳ Wait ${cooldownLeft}s...`;
+        } else {
+            clearInterval(adCooldownInterval);
+            adCooldownInterval = null;
+            // Cooldown শেষ → বাটন আবার সক্রিয়
+            ub.disabled = false;
+            ub.classList.remove('cooldown');
+            ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
+            const nextNum = adsWatched + 1;
+            ub.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg> UNLOCK VIDEO (${nextNum}/${totalAds})`;
+            ub.onclick = watchAd;
+        }
+    }, 1000);
+}
+
+function showOpenVideoButton() {
+    const ub = document.getElementById('unlockBtn');
+    const video = allVideos.find(v => v.id === currentVideoId);
+    ub.innerHTML = '▶️ OPEN VIDEO';
+    ub.disabled = false;
+    ub.classList.remove('cooldown');
+    ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
+    ub.onclick = function(e) {
+        e.preventDefault();
+        if (video) openVideoLink(video.videoUrl);
+    };
+    document.getElementById('unlockHeadText').textContent = 'Unlocked! ✅';
+    document.getElementById('unlockRules').innerHTML = '🎉 সব অ্যাড দেখা শেষ! এখন নিচের ▶️ OPEN VIDEO বাটনে ক্লিক করুন।';
 }
 
 function updateProgress() {
@@ -1128,59 +889,43 @@ function verifyAdminPassword() {
         document.getElementById('globalAdCode').value = globalSettings.adCode || '';
         document.getElementById('globalAdCount').value = globalSettings.adCount || 3;
         document.getElementById('globalAdTimer').value = globalSettings.adTimerSeconds || 5;
+        document.getElementById('globalAdCooldown').value = globalSettings.adCooldownSeconds || 5;
         document.getElementById('globalAdminPassword').value = '';
         updateAdSystemUI();
-    } else {
-        alert('❌ Incorrect Code! Try again.');
-        document.getElementById('adminPasswordInput').value = '';
-    }
+    } else { alert('❌ Incorrect Code! Try again.'); document.getElementById('adminPasswordInput').value = ''; }
 }
-function closeAdminPanel() {
-    document.getElementById('adminPanel').classList.remove('active');
-    document.body.style.overflow = '';
-}
-function updateAdSystemUI() {
-    const t = document.getElementById('adToggle');
-    if (!t) return;
-    if (globalSettings.adSystemEnabled) t.classList.add('on');
-    else t.classList.remove('on');
-}
+function closeAdminPanel() { document.getElementById('adminPanel').classList.remove('active'); document.body.style.overflow = ''; }
+function updateAdSystemUI() { const t = document.getElementById('adToggle'); if (!t) return; if (globalSettings.adSystemEnabled) t.classList.add('on'); else t.classList.remove('on'); }
 async function toggleAdSystem() {
     globalSettings.adSystemEnabled = !globalSettings.adSystemEnabled;
-    updateAdSystemUI();
-    saveLocal();
+    updateAdSystemUI(); saveLocal();
     showSync('☁️ Syncing...');
     const ok = await saveSettingsToCloud();
-    if (ok) showSync('✅ Synced');
-    else showSync('⚠️ Sync failed', true);
+    if (ok) showSync('✅ Synced'); else showSync('⚠️ Sync failed', true);
 }
-
 function renderAdminVideoList() {
     const list = document.getElementById('adminVideoList');
     list.innerHTML = '';
     allVideos.forEach(video => {
         const item = document.createElement('div');
         item.className = 'admin-video-item';
-        const adStatus = (video.adEnabled !== false) ? '🟢 Ad ON' : '🔴 Ad OFF';
+        const hasOwnAd = (video.adCode && video.adCode.trim()) || (video.adUrl && video.adUrl.trim());
+        const adStatus = (video.adEnabled === false) ? '🔴 Ad OFF' : (hasOwnAd ? '🟡 Own Ad' : '🟢 Global Ad');
         item.innerHTML = `
             <img src="${video.img}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23333%22 width=%22100%22 height=%22100%22/></svg>'">
             <div class="admin-video-info">
                 <p>${video.title}</p>
-                <p>${video.category} • ${video.views} views • ${video.likes} likes • ${adStatus}</p>
+                <p>${video.category} • ${video.views}v • ${video.likes}L • ${adStatus}</p>
             </div>
             <div class="admin-video-actions">
                 <button onclick="openEditModal(${video.id})" class="admin-icon-btn edit-btn">✏️</button>
                 <button onclick="deleteVideo(${video.id})" class="admin-icon-btn del-btn">🗑️</button>
-            </div>
-        `;
+            </div>`;
         list.appendChild(item);
     });
 }
-
-// ================= IMAGE UPLOAD (Better Quality) =================
 function handleImageUpload(event, inputId, previewId, maxWidth, quality) {
-    maxWidth = maxWidth || 800;
-    quality = quality || 0.75;
+    maxWidth = maxWidth || 800; quality = quality || 0.75;
     const file = event.target.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -1204,11 +949,7 @@ function handleImageUpload(event, inputId, previewId, maxWidth, quality) {
     };
     reader.readAsDataURL(file);
 }
-function updatePreview(imgId, url) {
-    const img = document.getElementById(imgId);
-    if (url && url.trim()) img.src = url;
-    else img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="55" fill="%23666" font-size="12" text-anchor="middle">No Image</text></svg>';
-}
+function updatePreview(imgId, url) { const img = document.getElementById(imgId); if (url && url.trim()) img.src = url; else img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="55" fill="%23666" font-size="12" text-anchor="middle">No Image</text></svg>'; }
 function openEditModal(id) {
     const video = allVideos.find(v => v.id === id);
     if (!video) return;
@@ -1230,11 +971,8 @@ function openEditModal(id) {
     document.getElementById('editAdUrl').value = video.adUrl || '';
     document.getElementById('editAdCode').value = video.adCode || '';
     document.getElementById('editDesc').value = video.desc || '';
-    // Ad Enabled toggle
     const adToggle = document.getElementById('editAdEnabled');
-    if (video.adEnabled !== false) adToggle.classList.add('on');
-    else adToggle.classList.remove('on');
-    // Previews
+    if (video.adEnabled !== false) adToggle.classList.add('on'); else adToggle.classList.remove('on');
     updatePreview('previewImg', video.img);
     updatePreview('previewDetailImg1', video.detailImgs ? video.detailImgs[0] : '');
     updatePreview('previewDetailImg2', video.detailImgs ? video.detailImgs[1] : '');
@@ -1253,17 +991,8 @@ async function saveVideoEdit() {
     video.title = document.getElementById('editTitle').value;
     video.category = document.getElementById('editCategory').value;
     video.img = document.getElementById('editImg').value;
-    video.detailImgs = [
-        document.getElementById('editDetailImg1').value,
-        document.getElementById('editDetailImg2').value,
-        document.getElementById('editDetailImg3').value,
-        document.getElementById('editDetailImg4').value
-    ].filter(u => u && u.trim() !== '');
-    video.screenshots = [
-        document.getElementById('editScreenshot1').value,
-        document.getElementById('editScreenshot2').value,
-        document.getElementById('editScreenshot3').value
-    ].filter(u => u && u.trim() !== '');
+    video.detailImgs = [document.getElementById('editDetailImg1').value,document.getElementById('editDetailImg2').value,document.getElementById('editDetailImg3').value,document.getElementById('editDetailImg4').value].filter(u => u && u.trim() !== '');
+    video.screenshots = [document.getElementById('editScreenshot1').value,document.getElementById('editScreenshot2').value,document.getElementById('editScreenshot3').value].filter(u => u && u.trim() !== '');
     video.badgeText = document.getElementById('editBadgeText').value;
     video.views = parseInt(document.getElementById('editViews').value) || 0;
     video.likes = parseInt(document.getElementById('editLikes').value) || 0;
@@ -1272,46 +1001,29 @@ async function saveVideoEdit() {
     video.adCode = document.getElementById('editAdCode').value;
     video.adEnabled = document.getElementById('editAdEnabled').classList.contains('on');
     video.desc = document.getElementById('editDesc').value;
-    saveLocal();
-    closeEditModal();
-    renderAdminVideoList();
-    renderApp();
+    saveLocal(); closeEditModal(); renderAdminVideoList(); renderApp();
     showSync('☁️ Syncing...');
     const ok = await saveVideoToCloud(video);
-    if (ok) showSync('✅ Synced to all devices');
-    else showSync('⚠️ Sync failed', true);
+    if (ok) showSync('✅ Synced'); else showSync('⚠️ Sync failed', true);
 }
 async function deleteVideo(id) {
     if (confirm('Are you sure you want to delete this video?')) {
         allVideos = allVideos.filter(v => v.id !== id);
-        saveLocal();
-        renderAdminVideoList();
-        renderApp();
+        saveLocal(); renderAdminVideoList(); renderApp();
         showSync('☁️ Syncing...');
         const ok = await deleteVideoFromCloud(id);
-        if (ok) showSync('✅ Deleted from cloud');
-        else showSync('⚠️ Delete failed', true);
+        if (ok) showSync('✅ Deleted'); else showSync('⚠️ Delete failed', true);
     }
 }
-// নতুন ভিডিও সবার প্রথমে আসবে
 async function addNewVideo() {
-    const newId = allVideos.length > 0 ? Math.min(...allVideos.map(v => v.id)) - 1 : 1;
-    const newVideo = {
-        id: newId, title: "New Video Title", category: "viral",
-        img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",
-        detailImgs: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],
-        screenshots: [], badgeText: "Full Collection", views: 0, likes: 0,
-        isLiked: false, videoUrl: "https://example.com/new-video", adUrl: "", adCode: "",
-        adEnabled: true, desc: "New video description..."
-    };
+    const newId = allVideos.length > 0 ? Math.max(...allVideos.map(v => v.id)) + 1 : 1;
+    const newVideo = {id: newId, title: "New Video Title", category: "viral", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop", detailImgs: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"], screenshots: [], badgeText: "Full Collection", views: 0, likes: 0, isLiked: false, videoUrl: "", adUrl: "", adCode: "", adEnabled: true, desc: "New video description..."};
     allVideos.push(newVideo);
-    saveLocal();
-    renderAdminVideoList();
-    renderApp();
+    allVideos.sort((a,b) => b.id - a.id);
+    saveLocal(); renderAdminVideoList(); renderApp();
     showSync('☁️ Syncing...');
     const ok = await saveVideoToCloud(newVideo);
-    if (ok) showSync('✅ New video added at top');
-    else showSync('⚠️ Add failed', true);
+    if (ok) showSync('✅ Added at top'); else showSync('⚠️ Add failed', true);
     openEditModal(newId);
 }
 async function saveAllChanges() {
@@ -1320,17 +1032,17 @@ async function saveAllChanges() {
     globalSettings.adCode = document.getElementById('globalAdCode').value;
     globalSettings.adCount = parseInt(document.getElementById('globalAdCount').value) || 3;
     globalSettings.adTimerSeconds = parseInt(document.getElementById('globalAdTimer').value) || 5;
+    globalSettings.adCooldownSeconds = parseInt(document.getElementById('globalAdCooldown').value) || 5;
     const newPass = document.getElementById('globalAdminPassword').value;
     if (newPass && newPass.trim() !== '') globalSettings.adminPassword = newPass.trim();
     saveLocal();
     document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
     showSync('☁️ Syncing...');
     const ok = await saveSettingsToCloud();
-    if (ok) showSync('✅ Settings synced');
-    else showSync('⚠️ Sync failed', true);
+    if (ok) showSync('✅ Settings synced'); else showSync('⚠️ Sync failed', true);
 }
 
-// ================= INIT =================
+// INIT
 loadLocal();
 renderApp();
 document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
