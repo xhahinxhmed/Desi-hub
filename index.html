@@ -137,8 +137,12 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 .ad-section-title{font-size:13px;font-weight:700;margin-bottom:8px;color:#facc15;display:flex;align-items:center;gap:6px}
 #adModal{position:fixed;inset:0;background:#000;z-index:5000;display:none;align-items:center;justify-content:center}
 #adModal.active{display:flex}
-#adModal iframe{width:100%;height:100%;border:0;background:#000;display:block}
+#adModal .ad-frame-holder{width:100%;height:100%;position:absolute;inset:0}
+#adModal .ad-frame-holder iframe{width:100%;height:100%;border:0;background:#000;display:block}
 #adModal .ad-counter-toast{position:absolute;top:16px;left:16px;background:rgba(0,0,0,.85);color:#4ade80;font-size:12px;font-weight:700;padding:6px 12px;border-radius:16px;border:1px solid rgba(74,222,128,.3);pointer-events:none;z-index:10}
+#interstitialAdHolder{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:5500;display:none;align-items:center;justify-content:center;overflow:hidden}
+#interstitialAdHolder.active{display:flex}
+#interstitialAdHolder .ad-content-wrapper{position:absolute;inset:0;overflow:auto;-webkit-overflow-scrolling:touch}
 .glow{text-shadow:0 0 20px rgba(0,255,100,.4)}
 .sync-badge{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:6000;background:rgba(34,197,94,.95);color:#fff;font-size:11px;font-weight:700;padding:6px 14px;border-radius:20px;display:none;box-shadow:0 4px 12px rgba(0,0,0,.4);max-width:90%;text-align:center}
 .sync-badge.show{display:block}
@@ -257,7 +261,6 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         <div class="admin-card">
             <h3>☁️ Cloud Status</h3>
             <p style="font-size:12px;color:#4ade80;font-weight:600">✅ Connected to Firebase</p>
-            <p style="font-size:10px;color:#999;margin-top:4px">নতুন ভিডিও সবার প্রথমে • প্রতিটি ভিডিও আলাদা ডকুমেন্ট</p>
         </div>
 
         <div class="admin-card">
@@ -266,29 +269,22 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <input type="text" id="globalTelegramLink" class="admin-input" placeholder="https://t.me/...">
             <label class="admin-label">Change Admin Password</label>
             <input type="text" id="globalAdminPassword" class="admin-input" placeholder="Enter new password">
-            <p class="admin-hint">Leave empty to keep current password.</p>
         </div>
 
         <div class="admin-card">
             <h3>▶️ Global Ad System</h3>
-            <p style="font-size:11px;color:#999;margin-bottom:12px">⚠️ শুধু সেই ভিডিওতে ব্যবহার হবে যেসব ভিডিওতে আলাদা অ্যাড সেট নেই</p>
             <div class="toggle-row">
-                <div><div class="toggle-label">Enable Ads Globally</div><div class="toggle-sub">বন্ধ থাকলে সরাসরি OPEN VIDEO</div></div>
+                <div><div class="toggle-label">Enable Ads Globally</div></div>
                 <div class="toggle-switch" id="adToggle" onclick="toggleAdSystem()"></div>
             </div>
             <label class="admin-label">How Many Ads to Watch</label>
             <input type="number" id="globalAdCount" class="admin-input" placeholder="3" min="1" max="20">
-            <p class="admin-hint">ইউজারকে কতটা অ্যাড দেখতে হবে</p>
             <label class="admin-label">⏱️ Ad Cooldown (Seconds)</label>
             <input type="number" id="globalAdCooldown" class="admin-input" placeholder="5" min="1" max="60">
-            <p class="admin-hint">প্রতি অ্যাডের পর কত সেকেন্ড অপেক্ষা করবে (পরের অ্যাড লোডের আগে)</p>
-            <label class="admin-label">⏱️ Ad View Time (Seconds)</label>
-            <input type="number" id="globalAdTimer" class="admin-input" placeholder="5" min="1" max="60">
-            <p class="admin-hint">Adsterra অ্যাড কতক্ষণ চলবে (কিন্তু Adsterra নিজেও কন্ট্রোল করে)</p>
-            <label class="admin-label">Global Ad Code (Adsterra Banner Code)</label>
-            <textarea id="globalAdCode" class="admin-input" rows="4" placeholder="Adsterra Banner Code এখানে পেস্ট করুন"></textarea>
+            <label class="admin-label">Global Ad Code (Adcash Interstitial)</label>
+            <textarea id="globalAdCode" class="admin-input" rows="5" placeholder="Adcash Interstitial Code এখানে পেস্ট করুন"></textarea>
             <label class="admin-label">Global Ad Direct Link (ঐচ্ছিক)</label>
-            <input type="text" id="globalAdLink" class="admin-input" placeholder="https://... (Direct Link হলে এখানে)">
+            <input type="text" id="globalAdLink" class="admin-input" placeholder="https://... (Direct Link হলে)">
         </div>
 
         <div class="admin-card">
@@ -331,13 +327,13 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <option value="movies">Movies</option>
         </select>
         <div class="ad-section">
-            <p class="ad-section-title">📢 এই ভিডিওর জন্য অ্যাড (আলাদাভাবে)</p>
+            <p class="ad-section-title">📢 এই ভিডিওর জন্য অ্যাড</p>
             <div class="toggle-row" style="margin-bottom:10px">
-                <div><div class="toggle-label">Enable Ads for this Video</div><div class="toggle-sub">বন্ধ থাকলে সরাসরি OPEN VIDEO</div></div>
+                <div><div class="toggle-label">Enable Ads for this Video</div></div>
                 <div class="toggle-switch" id="editAdEnabled" onclick="this.classList.toggle('on')"></div>
             </div>
-            <label class="admin-label">Ad Code (Adsterra Banner Code)</label>
-            <textarea id="editAdCode" class="admin-input" rows="5" placeholder="এখানে Adsterra Banner Code পুরোটা পেস্ট করুন..."></textarea>
+            <label class="admin-label">Ad Code (Adcash Interstitial)</label>
+            <textarea id="editAdCode" class="admin-input" rows="5" placeholder="Adcash Interstitial Code এখানে পেস্ট করুন"></textarea>
             <label class="admin-label">Ad Direct Link (ঐচ্ছিক)</label>
             <input type="text" id="editAdUrl" class="admin-input" placeholder="https://... (Direct Link হলে)">
         </div>
@@ -386,7 +382,12 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 </div>
 
 <div id="adModal">
+    <div class="ad-frame-holder" id="adFrameHolder"></div>
     <div class="ad-counter-toast" id="adCounterToast">1/3</div>
+</div>
+
+<div id="interstitialAdHolder">
+    <div class="ad-content-wrapper" id="interstitialAdContent"></div>
 </div>
 
 <script type="module">
@@ -430,6 +431,8 @@ let firebaseReady = false;
 let db = null;
 let fsDoc, fsSetDoc, fsDeleteDoc, fsOnSnapshot, fsCollection;
 let isInitialLoadDone = false;
+let injectedAdScripts = [];
+let currentPageState = 'home';
 
 window.addEventListener('firebaseReady', function() {
     if (window.firebaseReady) {
@@ -514,8 +517,8 @@ function showSync(text, isError) {
 }
 function loadLocal() {
     try {
-        const v = localStorage.getItem('premiumHubVideos_v13');
-        const s = localStorage.getItem('premiumHubSettings_v13');
+        const v = localStorage.getItem('premiumHubVideos_v16');
+        const s = localStorage.getItem('premiumHubSettings_v16');
         allVideos = v ? JSON.parse(v) : JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
         if (s) globalSettings = { ...globalSettings, ...JSON.parse(s) };
         if (!globalSettings.adminPassword) globalSettings.adminPassword = "557822";
@@ -529,8 +532,8 @@ function loadLocal() {
 }
 function saveLocal() {
     try {
-        localStorage.setItem('premiumHubVideos_v13', JSON.stringify(allVideos));
-        localStorage.setItem('premiumHubSettings_v13', JSON.stringify(globalSettings));
+        localStorage.setItem('premiumHubVideos_v16', JSON.stringify(allVideos));
+        localStorage.setItem('premiumHubSettings_v16', JSON.stringify(globalSettings));
     } catch (e) {}
 }
 
@@ -620,11 +623,11 @@ function openDetail(id) {
     totalAds = globalSettings.adCount || 3;
     updateProgress();
 
-    // Cooldown timer পরিষ্কার করো (নতুন ভিডিও খোলার সময়)
     if (adCooldownInterval) { clearInterval(adCooldownInterval); adCooldownInterval = null; }
-
     setupUnlockButton(video);
-    try { history.pushState({page:'detail'}, '', '#detail-' + id); } catch(e) {}
+    
+    currentPageState = 'detail';
+    try { history.pushState({page:'detail', id: id}, '', '#detail-' + id); } catch(e) {}
     showPage('detail');
 }
 
@@ -647,13 +650,12 @@ function setupUnlockButton(video) {
         ub.onclick = function(e) { e.preventDefault(); openVideoLink(video.videoUrl); };
     } else {
         document.getElementById('unlockHeadText').textContent = `Watch ${totalAds} ads to unlock`;
-        document.getElementById('unlockRules').innerHTML = `উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ${totalAds} টি অ্যাড সম্পূর্ণ দেখুন। প্রতিটি অ্যাডের পর ${globalSettings.adCooldownSeconds || 5} সেকেন্ড অপেক্ষা করতে হবে। সব শেষ হলে ▶️ OPEN VIDEO আনলক হবে। 🚀🤫👇`;
+        document.getElementById('unlockRules').innerHTML = `উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ${totalAds} টি অ্যাড দেখুন। প্রতিটি অ্যাড নিজের ✕ বাটন দিয়ে বন্ধ করুন।`;
         document.getElementById('progressWrap').style.display = 'block';
         document.getElementById('progressTextWrap').style.display = 'block';
         ub.disabled = false;
         ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
         ub.classList.remove('cooldown');
-        // বাটনের টেক্সট — কত নাম্বার অ্যাড চলবে সেটা দেখাবে
         const nextNum = adsWatched + 1;
         ub.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a5 5 0 00-5 5v3H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2v-9a2 2 0 00-2-2h-1V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg> UNLOCK VIDEO (${nextNum}/${totalAds})`;
         ub.onclick = watchAd;
@@ -710,20 +712,37 @@ function showPage(name) {
     document.getElementById('bottomBar').classList.toggle('hidden', name !== 'detail');
 }
 function goBackHome() {
-    if (document.getElementById('adModal').classList.contains('active')) { closeAdModal(); return; }
+    if (document.getElementById('adModal').classList.contains('active') || document.getElementById('interstitialAdHolder').classList.contains('active')) { closeAdModal(); return; }
     if (adCooldownInterval) { clearInterval(adCooldownInterval); adCooldownInterval = null; }
-    showPage('home');
-    if (history.state && history.state.page === 'detail') { try { history.back(); } catch(e) {} }
+    if (history.state && history.state.page === 'detail') {
+        try { history.back(); } catch(e) { showPage('home'); currentPageState = 'home'; }
+    } else {
+        showPage('home');
+        currentPageState = 'home';
+    }
 }
-window.addEventListener('popstate', function() {
-    if (document.getElementById('adModal').classList.contains('active')) {
+
+window.addEventListener('popstate', function(event) {
+    if (document.getElementById('adModal').classList.contains('active') || document.getElementById('interstitialAdHolder').classList.contains('active')) {
         closeAdModal();
-        try { history.pushState({page:'detail'}, '', '#detail-' + currentVideoId); } catch(e) {}
+        try { history.pushState({page:'detail', id: currentVideoId}, '', '#detail-' + currentVideoId); } catch(e) {}
         return;
     }
-    const d = document.getElementById('detailPage');
-    if (d && d.classList.contains('active')) showPage('home');
+    if (document.getElementById('adminPanel').classList.contains('active')) {
+        closeAdminPanel();
+        try { history.pushState({page:'home'}, '', ''); } catch(e) {}
+        return;
+    }
+    if (document.getElementById('sidebar').classList.contains('open')) {
+        toggleSidebar();
+        try { history.pushState({page:'home'}, '', ''); } catch(e) {}
+        return;
+    }
+    showPage('home');
+    currentPageState = 'home';
+    currentVideoId = null;
 });
+
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('active'); }
 function toggleSearch() { const sb = document.getElementById('searchBar'); sb.classList.toggle('active'); if (sb.classList.contains('active')) document.getElementById('searchInput').focus(); else { document.getElementById('searchInput').value = ''; searchQuery = ''; renderApp(); } }
 function handleSearch() { searchQuery = document.getElementById('searchInput').value; currentPage = 1; renderApp(); }
@@ -743,84 +762,135 @@ document.getElementById('categoryContainer').addEventListener('click', function(
     }
 });
 
-// ============ AD SYSTEM (Cooldown সহ) ============
+// ============ AD DETECTION ============
+function isInterstitialCode(code) {
+    if (!code) return false;
+    const lower = code.toLowerCase();
+    if (lower.includes('runinterstitial')) return true;
+    if (lower.includes('interstitial')) return true;
+    if (lower.includes('aclib')) return true;
+    if (lower.includes('adcash')) return true;
+    if (lower.includes('popunder')) return true;
+    if (lower.includes('popads')) return true;
+    return false;
+}
+
+// ============ INTERSTITIAL AD - মেইন পেজে inject (iframe এ না) ============
+// এটি Telegram Mini App এর ভেতরেই full screen ad দেখাবে
+function showInterstitialAd(code) {
+    const holder = document.getElementById('interstitialAdHolder');
+    const content = document.getElementById('interstitialAdContent');
+    content.innerHTML = '';
+    injectedAdScripts.forEach(s => { try { if (s.parentNode) s.parentNode.removeChild(s); } catch(e) {} });
+    injectedAdScripts = [];
+
+    const wrapper = document.createElement('div');
+    wrapper.id = 'interstitial-ad-wrapper';
+    wrapper.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;';
+    wrapper.innerHTML = code;
+    content.appendChild(wrapper);
+
+    const scripts = wrapper.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+        const newScript = document.createElement('script');
+        for (let i = 0; i < oldScript.attributes.length; i++) {
+            const attr = oldScript.attributes[i];
+            newScript.setAttribute(attr.name, attr.value);
+        }
+        if (oldScript.src) { newScript.src = oldScript.src; newScript.async = false; }
+        else { newScript.textContent = oldScript.textContent; }
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+        injectedAdScripts.push(newScript);
+    });
+
+    holder.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    currentPageState = 'adModal';
+
+    try { if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.expand(); } catch(e) {}
+
+    // Fallback - 90 সেকেন্ডে auto-close
+    setTimeout(() => { if (holder.classList.contains('active')) closeAdModal(); }, 90000);
+}
+
+function closeInterstitialAd() {
+    const holder = document.getElementById('interstitialAdHolder');
+    const content = document.getElementById('interstitialAdContent');
+    holder.classList.remove('active');
+    content.innerHTML = '';
+    injectedAdScripts.forEach(s => { try { if (s.parentNode) s.parentNode.removeChild(s); } catch(e) {} });
+    injectedAdScripts = [];
+    document.body.style.overflow = '';
+}
+
+function showBannerAd(code, url) {
+    const am = document.getElementById('adModal');
+    const holder = document.getElementById('adFrameHolder');
+    holder.innerHTML = '';
+    if (code && code.trim() !== '') {
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
+        iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        iframe.style.cssText = 'width:100%;height:100%;border:0;background:#000;display:block;';
+        holder.appendChild(iframe);
+        try {
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            doc.open();
+            doc.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><base target="_blank"><style>*{margin:0;padding:0;box-sizing:border-box}html,body{background:#000;color:#fff;font-family:sans-serif;width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow-x:hidden}img,iframe,video,div,ins{max-width:100%}a{color:#4ade80}</style></head><body>${code}</body></html>`);
+            doc.close();
+        } catch(e) {}
+    } else if (url && url.trim() !== '') {
+        try {
+            const a = document.createElement('a');
+            a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+            a.style.display = 'none';
+            document.body.appendChild(a); a.click();
+            setTimeout(() => { try { document.body.removeChild(a); } catch(e){} }, 100);
+        } catch (e) {}
+    }
+    am.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    currentPageState = 'adModal';
+    const viewTime = globalSettings.adTimerSeconds || 5;
+    if (adTimerInterval) clearTimeout(adTimerInterval);
+    adTimerInterval = setTimeout(() => { closeAdModal(); }, viewTime * 1000);
+}
+
 function watchAd() {
     if (adsWatched >= totalAds) return;
-    if (adCooldownInterval) { console.log('Cooldown active'); return; }
+    if (adCooldownInterval) return;
     const video = allVideos.find(v => v.id === currentVideoId);
     if (!video) return;
 
     const videoAdUrl = (video.adUrl && video.adUrl.trim() !== '') ? video.adUrl : (globalSettings.adLink || "");
     const videoAdCode = (video.adCode && video.adCode.trim() !== '') ? video.adCode : (globalSettings.adCode || "");
 
-    // Ad Code নেই, শুধু Direct Link আছে → নতুন ট্যাবে খুলে দাও
     if ((!videoAdCode || videoAdCode.trim() === '') && (!videoAdUrl || videoAdUrl.trim() === '')) {
-        // কোনো অ্যাডই নেই → সরাসরি OPEN
         openVideoLink(video.videoUrl);
         return;
     }
 
-    const am = document.getElementById('adModal');
-    am.querySelectorAll('iframe').forEach(f => f.remove());
-
     document.getElementById('adCounterToast').textContent = (adsWatched + 1) + '/' + totalAds;
 
-    if (videoAdCode && videoAdCode.trim() !== '') {
-        const iframe = document.createElement('iframe');
-        iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
-        iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-        iframe.setAttribute('scrolling', 'no');
-        iframe.style.cssText = 'width:100%;height:100%;border:0;background:#000;display:block;';
-        am.appendChild(iframe);
-        try {
-            const doc = iframe.contentDocument || iframe.contentWindow.document;
-            doc.open();
-            doc.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><base target="_blank"><style>*{margin:0;padding:0;box-sizing:border-box}html,body{background:#000;color:#fff;font-family:sans-serif;width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow-x:hidden}img,iframe,video,div,ins{max-width:100%}a{color:#4ade80}</style></head><body>${videoAdCode}</body></html>`);
-            doc.close();
-        } catch (e) { console.log("AdCode error:", e); }
-    } else if (videoAdUrl && videoAdUrl.trim() !== '') {
-        try {
-            const a = document.createElement('a');
-            a.href = videoAdUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
-            a.style.display = 'none';
-            document.body.appendChild(a); a.click();
-            setTimeout(() => { try { document.body.removeChild(a); } catch(e){} }, 100);
-        } catch (e) {}
+    if (videoAdCode && videoAdCode.trim() !== '' && isInterstitialCode(videoAdCode)) {
+        showInterstitialAd(videoAdCode);
+    } else {
+        showBannerAd(videoAdCode, videoAdUrl);
     }
-
-    am.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    try { history.pushState({page:'adModal'}, '', '#ad'); } catch(e) {}
-
-    // Adsterra-র নিজের ✕ আসবে, কিন্তু আমরা একটা টাইমার দিয়ে auto-close করব
-    // টাইমার = Ad View Time (default 5s)
-    const viewTime = globalSettings.adTimerSeconds || 5;
-    if (adTimerInterval) clearInterval(adTimerInterval);
-    adTimerInterval = setTimeout(() => {
-        // Ad View Time শেষ → modal বন্ধ করো
-        closeAdModal();
-    }, viewTime * 1000);
 }
 
 function closeAdModal() {
+    closeInterstitialAd();
     const am = document.getElementById('adModal');
-    am.querySelectorAll('iframe').forEach(f => f.remove());
+    const holder = document.getElementById('adFrameHolder');
+    holder.innerHTML = '';
     am.classList.remove('active');
-    document.body.style.overflow = '';
     if (adTimerInterval) { clearTimeout(adTimerInterval); adTimerInterval = null; }
-
-    try { if (history.state && history.state.page === 'adModal') history.replaceState({page:'detail'}, '', '#detail-' + currentVideoId); } catch(e) {}
-
+    document.body.style.overflow = '';
+    currentPageState = 'detail';
     adsWatched++;
     updateProgress();
-
-    // সব অ্যাড শেষ → সরাসরি OPEN VIDEO
-    if (adsWatched >= totalAds) {
-        showOpenVideoButton();
-        return;
-    }
-
-    // এখনো বাকি আছে → Cooldown শুরু করো
+    if (adsWatched >= totalAds) { showOpenVideoButton(); return; }
     startCooldown();
 }
 
@@ -833,12 +903,10 @@ function startCooldown() {
     if (adCooldownInterval) clearInterval(adCooldownInterval);
     adCooldownInterval = setInterval(() => {
         cooldownLeft--;
-        if (cooldownLeft > 0) {
-            ub.innerHTML = `⏳ Wait ${cooldownLeft}s...`;
-        } else {
+        if (cooldownLeft > 0) { ub.innerHTML = `⏳ Wait ${cooldownLeft}s...`; }
+        else {
             clearInterval(adCooldownInterval);
             adCooldownInterval = null;
-            // Cooldown শেষ → বাটন আবার সক্রিয়
             ub.disabled = false;
             ub.classList.remove('cooldown');
             ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
@@ -856,10 +924,7 @@ function showOpenVideoButton() {
     ub.disabled = false;
     ub.classList.remove('cooldown');
     ub.style.background = 'linear-gradient(135deg,#00c853,#00e676)';
-    ub.onclick = function(e) {
-        e.preventDefault();
-        if (video) openVideoLink(video.videoUrl);
-    };
+    ub.onclick = function(e) { e.preventDefault(); if (video) openVideoLink(video.videoUrl); };
     document.getElementById('unlockHeadText').textContent = 'Unlocked! ✅';
     document.getElementById('unlockRules').innerHTML = '🎉 সব অ্যাড দেখা শেষ! এখন নিচের ▶️ OPEN VIDEO বাটনে ক্লিক করুন।';
 }
@@ -889,13 +954,14 @@ function verifyAdminPassword() {
         document.getElementById('globalAdLink').value = globalSettings.adLink || '';
         document.getElementById('globalAdCode').value = globalSettings.adCode || '';
         document.getElementById('globalAdCount').value = globalSettings.adCount || 3;
-        document.getElementById('globalAdTimer').value = globalSettings.adTimerSeconds || 5;
         document.getElementById('globalAdCooldown').value = globalSettings.adCooldownSeconds || 5;
         document.getElementById('globalAdminPassword').value = '';
         updateAdSystemUI();
+        currentPageState = 'admin';
+        try { history.pushState({page:'admin'}, '', '#admin'); } catch(e) {}
     } else { alert('❌ Incorrect Code! Try again.'); document.getElementById('adminPasswordInput').value = ''; }
 }
-function closeAdminPanel() { document.getElementById('adminPanel').classList.remove('active'); document.body.style.overflow = ''; }
+function closeAdminPanel() { document.getElementById('adminPanel').classList.remove('active'); document.body.style.overflow = ''; currentPageState = 'home'; }
 function updateAdSystemUI() { const t = document.getElementById('adToggle'); if (!t) return; if (globalSettings.adSystemEnabled) t.classList.add('on'); else t.classList.remove('on'); }
 async function toggleAdSystem() {
     globalSettings.adSystemEnabled = !globalSettings.adSystemEnabled;
@@ -1032,7 +1098,6 @@ async function saveAllChanges() {
     globalSettings.adLink = document.getElementById('globalAdLink').value;
     globalSettings.adCode = document.getElementById('globalAdCode').value;
     globalSettings.adCount = parseInt(document.getElementById('globalAdCount').value) || 3;
-    globalSettings.adTimerSeconds = parseInt(document.getElementById('globalAdTimer').value) || 5;
     globalSettings.adCooldownSeconds = parseInt(document.getElementById('globalAdCooldown').value) || 5;
     const newPass = document.getElementById('globalAdminPassword').value;
     if (newPass && newPass.trim() !== '') globalSettings.adminPassword = newPass.trim();
@@ -1042,6 +1107,57 @@ async function saveAllChanges() {
     const ok = await saveSettingsToCloud();
     if (ok) showSync('✅ Settings synced'); else showSync('⚠️ Sync failed', true);
 }
+
+// ============ PAGE VISIBILITY - LOCK FIX ============
+let lastHiddenTime = 0;
+
+function softReset() {
+    try {
+        const am = document.getElementById('adModal');
+        const holder = document.getElementById('adFrameHolder');
+        if (am && am.classList.contains('active')) { holder.innerHTML = ''; am.classList.remove('active'); }
+        const ih = document.getElementById('interstitialAdHolder');
+        const ic = document.getElementById('interstitialAdContent');
+        if (ih && ih.classList.contains('active')) { ic.innerHTML = ''; ih.classList.remove('active'); }
+        const sb = document.getElementById('sidebar');
+        const ov = document.getElementById('overlay');
+        if (sb && sb.classList.contains('open')) { sb.classList.remove('open'); ov.classList.remove('active'); }
+        if (adTimerInterval) { clearTimeout(adTimerInterval); adTimerInterval = null; }
+        if (adCooldownInterval) { clearInterval(adCooldownInterval); adCooldownInterval = null; }
+        document.body.style.overflow = '';
+        document.body.style.filter = '';
+        document.body.style.transform = '';
+        document.querySelectorAll('*').forEach(el => { try { el.style.pointerEvents = ''; } catch(e) {} });
+        injectedAdScripts.forEach(s => { try { if (s.parentNode) s.parentNode.removeChild(s); } catch(e) {} });
+        injectedAdScripts = [];
+        if (holder) holder.innerHTML = '';
+        if (ic) ic.innerHTML = '';
+        if (currentVideoId && document.getElementById('detailPage').classList.contains('active')) {
+            const video = allVideos.find(v => v.id === currentVideoId);
+            if (video) setupUnlockButton(video);
+        }
+    } catch (e) { console.error("Soft reset error:", e); }
+}
+
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden') {
+        lastHiddenTime = Date.now();
+        try {
+            const am = document.getElementById('adModal');
+            const ih = document.getElementById('interstitialAdHolder');
+            if (am && am.classList.contains('active')) { document.getElementById('adFrameHolder').innerHTML = ''; am.classList.remove('active'); }
+            if (ih && ih.classList.contains('active')) { document.getElementById('interstitialAdContent').innerHTML = ''; ih.classList.remove('active'); }
+            document.body.style.overflow = '';
+            if (adTimerInterval) { clearTimeout(adTimerInterval); adTimerInterval = null; }
+            if (adCooldownInterval) { clearInterval(adCooldownInterval); adCooldownInterval = null; }
+        } catch(e) {}
+    } else if (document.visibilityState === 'visible') {
+        setTimeout(softReset, 100);
+    }
+});
+
+window.addEventListener('focus', function() { setTimeout(softReset, 100); });
+window.addEventListener('pageshow', function(event) { if (event.persisted) setTimeout(softReset, 100); });
 
 // INIT
 loadLocal();
