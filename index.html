@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>PREMIUM HUB</title>
- <meta name="monetag" content="cf17a36c1aa263d4b3ac17a32bb42a2e">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg-body:#050a05;--bg-app:#071207;--bg-card:#0c1a0c;--bg-header:rgba(7,18,7,.95);--border-color:#1a331a;--card-border:#14532d;--text-main:#fff;--text-sub:#a3d9a3;--text-muted:#4a6a4a;--primary-green:#00e676}
@@ -152,6 +153,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 .loading-spinner{width:50px;height:50px;border:4px solid rgba(34,197,94,.2);border-top-color:#22c55e;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:16px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-text{font-size:14px;font-weight:600;color:#86efac}
+#adsgram-task-container{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:6000;display:flex;align-items:center;justify-content:center;padding:16px;flex-direction:column;}
 </style>
 </head>
 <body>
@@ -281,10 +283,11 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <input type="number" id="globalAdCount" class="admin-input" placeholder="3" min="1" max="20">
             <label class="admin-label">⏱️ Ad Cooldown (Seconds)</label>
             <input type="number" id="globalAdCooldown" class="admin-input" placeholder="5" min="1" max="60">
-            <label class="admin-label">Global Ad Code (Adcash Interstitial)</label>
-            <textarea id="globalAdCode" class="admin-input" rows="5" placeholder="Adcash Interstitial Code এখানে পেস্ট করুন"></textarea>
-            <label class="admin-label">Global Ad Direct Link (ঐচ্ছিক)</label>
-            <input type="text" id="globalAdLink" class="admin-input" placeholder="https://... (Direct Link হলে)">
+            <label class="admin-label">🎯 AdsGram Block ID (int-xxx / reward-xxx / task-xxx)</label>
+            <input type="text" id="globalAdLink" class="admin-input" placeholder="যেমন: int-52521">
+            <p class="admin-hint">AdsGram Block ID এখানে বসান। অথবা নিচে Adsterra/Adcash কোড থাকলে সেটাও কাজ করবে।</p>
+            <label class="admin-label">Ad Code (Adsterra/Adcash - ঐচ্ছিক)</label>
+            <textarea id="globalAdCode" class="admin-input" rows="4" placeholder="পুরোনো Adsterra/Adcash কোড থাকলে এখানে"></textarea>
         </div>
 
         <div class="admin-card">
@@ -332,10 +335,11 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
                 <div><div class="toggle-label">Enable Ads for this Video</div></div>
                 <div class="toggle-switch" id="editAdEnabled" onclick="this.classList.toggle('on')"></div>
             </div>
-            <label class="admin-label">Ad Code (Adcash Interstitial)</label>
-            <textarea id="editAdCode" class="admin-input" rows="5" placeholder="Adcash Interstitial Code এখানে পেস্ট করুন"></textarea>
-            <label class="admin-label">Ad Direct Link (ঐচ্ছিক)</label>
-            <input type="text" id="editAdUrl" class="admin-input" placeholder="https://... (Direct Link হলে)">
+            <label class="admin-label">🎯 AdsGram Block ID (int-xxx / reward-xxx / task-xxx)</label>
+            <input type="text" id="editAdUrl" class="admin-input" placeholder="যেমন: int-52521">
+            <p class="admin-hint">খালি রাখলে গ্লোবাল অ্যাড ব্যবহার হবে</p>
+            <label class="admin-label">Ad Code (Adsterra/Adcash - ঐচ্ছিক)</label>
+            <textarea id="editAdCode" class="admin-input" rows="4" placeholder="পুরোনো Adsterra/Adcash কোড থাকলে এখানে"></textarea>
         </div>
         <div class="img-section">
             <p class="img-section-title">🖼️ ছবি পরিবর্তন</p>
@@ -403,6 +407,9 @@ window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <script>
+// Telegram WebApp init
+try { if (window.Telegram && window.Telegram.WebApp) { window.Telegram.WebApp.ready(); } } catch(e) {}
+
 const DEFAULT_VIDEOS = [
 {id:1,title:"নতুন কটি মাল 🍑😍 (Nasmin)",category:"viral",img:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],screenshots:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],badgeText:"Full Collection",views:4062,likes:45,isLiked:false,videoUrl:"https://example.com/video1",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 নতুন কটি মালের এক্সক্লুসিভ ভিডিও।"},
 {id:2,title:"বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও 😭",category:"viral",img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop"],screenshots:[],badgeText:"12:45",views:4667,likes:68,isLiked:false,videoUrl:"https://example.com/video2",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও।"},
@@ -433,6 +440,7 @@ let fsDoc, fsSetDoc, fsDeleteDoc, fsOnSnapshot, fsCollection;
 let isInitialLoadDone = false;
 let injectedAdScripts = [];
 let currentPageState = 'home';
+let isAdsGramActive = false;
 
 window.addEventListener('firebaseReady', function() {
     if (window.firebaseReady) {
@@ -517,8 +525,8 @@ function showSync(text, isError) {
 }
 function loadLocal() {
     try {
-        const v = localStorage.getItem('premiumHubVideos_v16');
-        const s = localStorage.getItem('premiumHubSettings_v16');
+        const v = localStorage.getItem('premiumHubVideos_v17');
+        const s = localStorage.getItem('premiumHubSettings_v17');
         allVideos = v ? JSON.parse(v) : JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
         if (s) globalSettings = { ...globalSettings, ...JSON.parse(s) };
         if (!globalSettings.adminPassword) globalSettings.adminPassword = "557822";
@@ -532,8 +540,8 @@ function loadLocal() {
 }
 function saveLocal() {
     try {
-        localStorage.setItem('premiumHubVideos_v16', JSON.stringify(allVideos));
-        localStorage.setItem('premiumHubSettings_v16', JSON.stringify(globalSettings));
+        localStorage.setItem('premiumHubVideos_v17', JSON.stringify(allVideos));
+        localStorage.setItem('premiumHubSettings_v17', JSON.stringify(globalSettings));
     } catch (e) {}
 }
 
@@ -650,7 +658,7 @@ function setupUnlockButton(video) {
         ub.onclick = function(e) { e.preventDefault(); openVideoLink(video.videoUrl); };
     } else {
         document.getElementById('unlockHeadText').textContent = `Watch ${totalAds} ads to unlock`;
-        document.getElementById('unlockRules').innerHTML = `উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ${totalAds} টি অ্যাড দেখুন। প্রতিটি অ্যাড নিজের ✕ বাটন দিয়ে বন্ধ করুন।`;
+        document.getElementById('unlockRules').innerHTML = `উপরে থাকা 🔒 Unlock Video বাটনে ক্লিক করে ${totalAds} টি অ্যাড দেখুন।`;
         document.getElementById('progressWrap').style.display = 'block';
         document.getElementById('progressTextWrap').style.display = 'block';
         ub.disabled = false;
@@ -762,7 +770,18 @@ document.getElementById('categoryContainer').addEventListener('click', function(
     }
 });
 
-// ============ AD DETECTION ============
+// ============ ADSGRAM AD SYSTEM ============
+function detectAdFormat(adCode) {
+    if (!adCode) return 'unknown';
+    const code = adCode.trim().toLowerCase();
+    if (code.startsWith('int-')) return 'adsgram-interstitial';
+    if (code.startsWith('reward-')) return 'adsgram-reward';
+    if (code.startsWith('task-')) return 'adsgram-task';
+    if (code.includes('runinterstitial') || code.includes('aclib') || code.includes('adcash')) return 'legacy-interstitial';
+    if (code.includes('<script') || code.includes('<iframe') || code.includes('<ins')) return 'legacy-banner';
+    return 'unknown';
+}
+
 function isInterstitialCode(code) {
     if (!code) return false;
     const lower = code.toLowerCase();
@@ -770,46 +789,56 @@ function isInterstitialCode(code) {
     if (lower.includes('interstitial')) return true;
     if (lower.includes('aclib')) return true;
     if (lower.includes('adcash')) return true;
-    if (lower.includes('popunder')) return true;
-    if (lower.includes('popads')) return true;
     return false;
 }
 
-// ============ INTERSTITIAL AD - মেইন পেজে inject (iframe এ না) ============
-// এটি Telegram Mini App এর ভেতরেই full screen ad দেখাবে
+// AdsGram Task
+function showTaskAd(blockId) {
+    const old = document.getElementById('adsgram-task-container');
+    if (old) old.remove();
+    const taskContainer = document.createElement('div');
+    taskContainer.id = 'adsgram-task-container';
+    const taskEl = document.createElement('adsgram-task');
+    taskEl.setAttribute('block-id', blockId);
+    taskEl.setAttribute('debug', 'false');
+    taskEl.style.cssText = 'width:100%;max-width:400px;';
+    const closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '✕ CLOSE';
+    closeBtn.style.cssText = 'margin-top:20px;padding:10px 30px;background:#dc2626;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px;';
+    closeBtn.onclick = () => { taskContainer.remove(); closeAdModal(); };
+    taskEl.addEventListener('reward', () => {
+        setTimeout(() => { taskContainer.remove(); closeAdModal(); }, 1000);
+    });
+    taskEl.addEventListener('onBannerNotFound', () => { taskContainer.remove(); showOpenVideoButton(); });
+    taskEl.addEventListener('onError', () => { taskContainer.remove(); showOpenVideoButton(); });
+    taskContainer.appendChild(taskEl);
+    taskContainer.appendChild(closeBtn);
+    document.body.appendChild(taskContainer);
+}
+
+// পুরোনো Interstitial (Adcash)
 function showInterstitialAd(code) {
     const holder = document.getElementById('interstitialAdHolder');
     const content = document.getElementById('interstitialAdContent');
     content.innerHTML = '';
     injectedAdScripts.forEach(s => { try { if (s.parentNode) s.parentNode.removeChild(s); } catch(e) {} });
     injectedAdScripts = [];
-
     const wrapper = document.createElement('div');
-    wrapper.id = 'interstitial-ad-wrapper';
     wrapper.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;';
     wrapper.innerHTML = code;
     content.appendChild(wrapper);
-
     const scripts = wrapper.querySelectorAll('script');
     scripts.forEach(oldScript => {
         const newScript = document.createElement('script');
-        for (let i = 0; i < oldScript.attributes.length; i++) {
-            const attr = oldScript.attributes[i];
-            newScript.setAttribute(attr.name, attr.value);
-        }
+        for (let i = 0; i < oldScript.attributes.length; i++) { newScript.setAttribute(oldScript.attributes[i].name, oldScript.attributes[i].value); }
         if (oldScript.src) { newScript.src = oldScript.src; newScript.async = false; }
         else { newScript.textContent = oldScript.textContent; }
         oldScript.parentNode.replaceChild(newScript, oldScript);
         injectedAdScripts.push(newScript);
     });
-
     holder.classList.add('active');
     document.body.style.overflow = 'hidden';
     currentPageState = 'adModal';
-
-    try { if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.expand(); } catch(e) {}
-
-    // Fallback - 90 সেকেন্ডে auto-close
     setTimeout(() => { if (holder.classList.contains('active')) closeAdModal(); }, 90000);
 }
 
@@ -872,6 +901,39 @@ function watchAd() {
 
     document.getElementById('adCounterToast').textContent = (adsWatched + 1) + '/' + totalAds;
 
+    // AdsGram Block ID চেক - Ad Direct Link এ দিলে
+    const adString = videoAdUrl.trim();
+    
+    // AdsGram Interstitial
+    if (adString.startsWith('int-')) {
+        isAdsGramActive = true;
+        try {
+            const controller = window.Adsgram.init({ blockId: adString });
+            controller.show()
+                .then(() => { isAdsGramActive = false; closeAdModal(); })
+                .catch((err) => { isAdsGramActive = false; console.log('AdsGram int error:', err); showOpenVideoButton(); });
+        } catch (e) { isAdsGramActive = false; showOpenVideoButton(); }
+        return;
+    }
+    // AdsGram Reward
+    else if (adString.startsWith('reward-')) {
+        isAdsGramActive = true;
+        try {
+            const controller = window.Adsgram.init({ blockId: adString });
+            controller.addEventListener('onReward', () => { isAdsGramActive = false; closeAdModal(); });
+            controller.addEventListener('onSkip', () => { isAdsGramActive = false; showOpenVideoButton(); });
+            controller.addEventListener('onError', () => { isAdsGramActive = false; showOpenVideoButton(); });
+            controller.show().catch(() => { isAdsGramActive = false; showOpenVideoButton(); });
+        } catch (e) { isAdsGramActive = false; showOpenVideoButton(); }
+        return;
+    }
+    // AdsGram Task
+    else if (adString.startsWith('task-')) {
+        showTaskAd(adString);
+        return;
+    }
+    
+    // পুরোনো সিস্টেমে পড়লে
     if (videoAdCode && videoAdCode.trim() !== '' && isInterstitialCode(videoAdCode)) {
         showInterstitialAd(videoAdCode);
     } else {
@@ -880,6 +942,10 @@ function watchAd() {
 }
 
 function closeAdModal() {
+    // Task container সরাও
+    const taskContainer = document.getElementById('adsgram-task-container');
+    if (taskContainer) taskContainer.remove();
+    
     closeInterstitialAd();
     const am = document.getElementById('adModal');
     const holder = document.getElementById('adFrameHolder');
@@ -976,8 +1042,15 @@ function renderAdminVideoList() {
     allVideos.forEach(video => {
         const item = document.createElement('div');
         item.className = 'admin-video-item';
-        const hasOwnAd = (video.adCode && video.adCode.trim()) || (video.adUrl && video.adUrl.trim());
-        const adStatus = (video.adEnabled === false) ? '🔴 Ad OFF' : (hasOwnAd ? '🟡 Own Ad' : '🟢 Global Ad');
+        const adUrl = video.adUrl || '';
+        let adStatus = '🔴 OFF';
+        if (video.adEnabled !== false) {
+            if (adUrl.startsWith('int-')) adStatus = '🟢 AdsGram Int';
+            else if (adUrl.startsWith('reward-')) adStatus = '🟢 AdsGram Reward';
+            else if (adUrl.startsWith('task-')) adStatus = '🟢 AdsGram Task';
+            else if (adUrl && adUrl.trim()) adStatus = '🟢 Own Ad';
+            else adStatus = '🟡 Global';
+        }
         item.innerHTML = `
             <img src="${video.img}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23333%22 width=%22100%22 height=%22100%22/></svg>'">
             <div class="admin-video-info">
@@ -1119,6 +1192,8 @@ function softReset() {
         const ih = document.getElementById('interstitialAdHolder');
         const ic = document.getElementById('interstitialAdContent');
         if (ih && ih.classList.contains('active')) { ic.innerHTML = ''; ih.classList.remove('active'); }
+        const taskContainer = document.getElementById('adsgram-task-container');
+        if (taskContainer) taskContainer.remove();
         const sb = document.getElementById('sidebar');
         const ov = document.getElementById('overlay');
         if (sb && sb.classList.contains('open')) { sb.classList.remove('open'); ov.classList.remove('active'); }
