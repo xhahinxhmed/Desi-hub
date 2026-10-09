@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>PREMIUM HUB</title>
+<title>PREMIUM HUB - Entertainment Videos</title>
+<meta name="description" content="Premium Hub - Watch free entertainment videos, movies, music, sports and more.">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -28,7 +29,7 @@ body.light-mode #sidebar{background:linear-gradient(180deg,#fff,#f0fdf4)}
 .sidebar-head{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid var(--border-color)}
 .sidebar-head h2{color:var(--primary-green);font-weight:700;font-size:18px}
 .sidebar-nav{padding:16px 8px;flex:1}
-.menu-item{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:10px;color:var(--text-sub);text-decoration:none;font-weight:500;border-left:3px solid transparent;cursor:pointer}
+.menu-item{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:10px;color:var(--text-sub);text-decoration:none;font-weight:500;border-left:3px solid transparent;cursor:pointer;font-size:14px}
 .menu-item.active{background:rgba(0,255,80,.1);border-left-color:#00ff66}
 .telegram-btn{background:linear-gradient(135deg,#0088cc,#00aaff);display:flex;align-items:center;gap:12px;margin:0 12px;padding:14px 16px;border-radius:12px;color:#fff;font-weight:600;text-decoration:none}
 .sidebar-foot{padding:16px 20px;border-top:1px solid var(--border-color);text-align:center}
@@ -154,6 +155,15 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-text{font-size:14px;font-weight:600;color:#86efac}
 #adsgram-task-container{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:6000;display:flex;align-items:center;justify-content:center;padding:16px;flex-direction:column;}
+
+/* Policy Page Styles */
+.policy-content{padding:20px 16px 100px 16px;color:var(--text-sub);font-size:13px;line-height:1.8}
+.policy-content h2{color:var(--primary-green);font-size:16px;font-weight:700;margin-top:20px;margin-bottom:8px}
+.policy-content h3{color:var(--primary-green);font-size:14px;font-weight:600;margin-top:16px;margin-bottom:6px}
+.policy-content p{margin-bottom:10px}
+.policy-content ul{margin-left:18px;margin-bottom:10px}
+.policy-content li{margin-bottom:4px}
+.policy-content a{color:var(--primary-green);text-decoration:underline}
 </style>
 </head>
 <body>
@@ -162,6 +172,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 <div class="sync-badge" id="syncBadge">☁️ Syncing...</div>
 <div id="overlay" onclick="toggleSidebar()"></div>
 
+<!-- SIDEBAR -->
 <aside id="sidebar" class="no-scrollbar">
     <div class="sidebar-head">
         <h2 class="glow">PREMIUM HUB</h2>
@@ -169,8 +180,24 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </div>
     <nav class="sidebar-nav">
         <a href="javascript:void(0)" onclick="showPage('home'); toggleSidebar();" class="menu-item active">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="color:var(--primary-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="color:var(--primary-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
             <span>Home</span>
+        </a>
+        <a href="javascript:void(0)" onclick="showPage('about'); toggleSidebar();" class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="color:var(--primary-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>About Us</span>
+        </a>
+        <a href="javascript:void(0)" onclick="showPage('privacy'); toggleSidebar();" class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="color:var(--primary-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <span>Privacy Policy</span>
+        </a>
+        <a href="javascript:void(0)" onclick="showPage('terms'); toggleSidebar();" class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="color:var(--primary-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span>Terms of Service</span>
+        </a>
+        <a href="javascript:void(0)" onclick="showPage('disclaimer'); toggleSidebar();" class="menu-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="color:var(--primary-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <span>Disclaimer</span>
         </a>
         <div style="margin:16px;border-top:1px solid var(--border-color)"></div>
         <p style="padding:0 16px;font-size:11px;font-weight:600;color:var(--text-sub);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px">Social Links</p>
@@ -183,6 +210,8 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 </aside>
 
 <div id="app">
+
+<!-- ============ HOME PAGE ============ -->
 <div id="homePage" class="page active">
     <header class="header">
         <button onclick="toggleSidebar()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -194,22 +223,28 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </header>
     <div id="searchBar"><input type="text" id="searchInput" class="search-input" placeholder="Search videos..." oninput="handleSearch()"></div>
     <div class="cats"><div class="cats-inner" id="categoryContainer">
-        <button class="cat-chip active" data-category="all">🎬 All Videos</button>
-        <button class="cat-chip" data-category="mom-son">Mom Son</button>
-        <button class="cat-chip" data-category="viral">Viral</button>
-        <button class="cat-chip" data-category="leaked">Leaked</button>
-        <button class="cat-chip" data-category="video-call">Video Call</button>
-        <button class="cat-chip" data-category="indian">Indian 🇮🇳</button>
-        <button class="cat-chip" data-category="bangladeshi">Bangladeshi 🇧🇩</button>
-        <button class="cat-chip" data-category="pakistani">Pakistani 🇵🇰</button>
-        <button class="cat-chip" data-category="english">English Full Videos</button>
-        <button class="cat-chip" data-category="desi">Desi ☀️</button>
-        <button class="cat-chip" data-category="web-series">18+ Web Series</button>
-        <button class="cat-chip" data-category="movies">Movies 🎬</button>
+        <button class="cat-chip active" data-category="all">📺 All Videos</button>
+        <button class="cat-chip" data-category="movies">🎬 Movies</button>
+        <button class="cat-chip" data-category="comedy">😂 Comedy</button>
+        <button class="cat-chip" data-category="music">🎵 Music</button>
+        <button class="cat-chip" data-category="sports">⚽ Sports</button>
+        <button class="cat-chip" data-category="education">📚 Education</button>
+        <button class="cat-chip" data-category="news">📰 News</button>
+        <button class="cat-chip" data-category="entertainment">🎭 Entertainment</button>
+        <button class="cat-chip" data-category="documentary">🎥 Documentary</button>
+        <button class="cat-chip" data-category="kids">👶 Kids</button>
+        <button class="cat-chip" data-category="tech">💻 Tech</button>
+        <button class="cat-chip" data-category="travel">✈️ Travel</button>
     </div></div>
-    <main><div id="videoGrid"></div><div id="paginationContainer"></div><footer>© 2024 PREMIUM HUB</footer></main>
+    <main><div id="videoGrid"></div><div id="paginationContainer"></div>
+    <footer>
+        <p>© 2024 PREMIUM HUB</p>
+        <p style="margin-top:6px"><a href="javascript:void(0)" onclick="showPage('privacy')" style="color:var(--primary-green)">Privacy</a> • <a href="javascript:void(0)" onclick="showPage('terms')" style="color:var(--primary-green)">Terms</a> • <a href="javascript:void(0)" onclick="showPage('about')" style="color:var(--primary-green)">About</a></p>
+    </footer>
+    </main>
 </div>
 
+<!-- ============ DETAIL PAGE ============ -->
 <div id="detailPage" class="page">
     <header class="detail-header">
         <button onclick="goBackHome()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg></button>
@@ -244,15 +279,206 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         <button onclick="goBackHome()" class="watch-more-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> WATCH MORE</button>
     </div>
 </div>
+
+<!-- ============ ABOUT PAGE ============ -->
+<div id="aboutPage" class="page">
+    <header class="detail-header">
+        <button onclick="goBackHome()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg></button>
+        <h1 class="title">About Us</h1>
+        <div style="width:42px"></div>
+    </header>
+    <div class="policy-content">
+        <h2>Welcome to Premium Hub</h2>
+        <p>Premium Hub is a video streaming platform that provides free access to a curated collection of family-friendly content including movies, comedy clips, music videos, sports highlights, educational content, news, and entertainment videos.</p>
+        
+        <h2>Our Mission</h2>
+        <p>Our mission is to make quality entertainment accessible to everyone, everywhere. We believe that great content should be available without barriers, and we work hard to bring you the best videos in one convenient place.</p>
+        
+        <h2>What We Offer</h2>
+        <ul>
+            <li>Free access to a wide variety of videos</li>
+            <li>Family-friendly content across multiple categories</li>
+            <li>Simple, easy-to-use interface</li>
+            <li>Regular updates with new content</li>
+            <li>Available on Telegram Mini App and web browsers</li>
+        </ul>
+        
+        <h2>Our Content</h2>
+        <p>We feature content from various categories including:</p>
+        <ul>
+            <li>Movies and movie trailers</li>
+            <li>Comedy and funny videos</li>
+            <li>Music and music videos</li>
+            <li>Sports highlights and clips</li>
+            <li>Educational and tutorial videos</li>
+            <li>News and current events</li>
+            <li>Documentary clips</li>
+            <li>Kids-friendly content</li>
+            <li>Technology reviews and tutorials</li>
+            <li>Travel vlogs</li>
+        </ul>
+        
+        <h2>Contact Us</h2>
+        <p>If you have any questions, suggestions, or concerns, please feel free to reach out to us through our Telegram channel.</p>
+        
+        <h2>Ad Support</h2>
+        <p>Premium Hub is supported by advertisements. These ads help us keep the platform free for all users. We appreciate your understanding and support.</p>
+    </div>
 </div>
 
+<!-- ============ PRIVACY POLICY PAGE ============ -->
+<div id="privacyPage" class="page">
+    <header class="detail-header">
+        <button onclick="goBackHome()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg></button>
+        <h1 class="title">Privacy Policy</h1>
+        <div style="width:42px"></div>
+    </header>
+    <div class="policy-content">
+        <p><strong>Last Updated: January 2024</strong></p>
+        
+        <h2>1. Introduction</h2>
+        <p>Welcome to Premium Hub ("we," "our," or "us"). We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our application.</p>
+        
+        <h2>2. Information We Collect</h2>
+        <p>We may collect the following types of information:</p>
+        <ul>
+            <li><strong>Usage Data:</strong> Information about how you use our app, including pages visited and videos viewed.</li>
+            <li><strong>Device Information:</strong> Browser type, operating system, and device type.</li>
+            <li><strong>Local Storage:</strong> We use your browser's local storage to save preferences like theme settings and viewed content.</li>
+        </ul>
+        
+        <h2>3. How We Use Your Information</h2>
+        <ul>
+            <li>To provide and maintain our service</li>
+            <li>To improve user experience</li>
+            <li>To display relevant advertisements</li>
+            <li>To analyze usage patterns</li>
+        </ul>
+        
+        <h2>4. Advertising</h2>
+        <p>We use third-party advertising networks to display ads. These networks may collect information about your visits to provide targeted advertisements. We do not control the data collection practices of these third parties.</p>
+        
+        <h2>5. Cookies and Local Storage</h2>
+        <p>Our app uses browser local storage to save your preferences. You can clear this data at any time through your browser settings.</p>
+        
+        <h2>6. Third-Party Services</h2>
+        <p>We use the following third-party services:</p>
+        <ul>
+            <li>Firebase (for data storage and synchronization)</li>
+            <li>AdsGram (for advertising)</li>
+            <li>Telegram WebApp API</li>
+        </ul>
+        
+        <h2>7. Data Security</h2>
+        <p>We take reasonable measures to protect your information. However, no method of transmission over the internet is 100% secure.</p>
+        
+        <h2>8. Children's Privacy</h2>
+        <p>Our service is not intended for children under 13. We do not knowingly collect personal information from children under 13.</p>
+        
+        <h2>9. Changes to This Policy</h2>
+        <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy in the app.</p>
+        
+        <h2>10. Contact Us</h2>
+        <p>If you have questions about this Privacy Policy, please contact us through our Telegram channel.</p>
+        
+        <p style="margin-top:20px;color:var(--text-muted)">By using Premium Hub, you agree to this Privacy Policy.</p>
+    </div>
+</div>
+
+<!-- ============ TERMS OF SERVICE PAGE ============ -->
+<div id="termsPage" class="page">
+    <header class="detail-header">
+        <button onclick="goBackHome()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg></button>
+        <h1 class="title">Terms of Service</h1>
+        <div style="width:42px"></div>
+    </header>
+    <div class="policy-content">
+        <p><strong>Last Updated: January 2024</strong></p>
+        
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing or using Premium Hub, you agree to be bound by these Terms of Service. If you do not agree, please do not use our service.</p>
+        
+        <h2>2. Description of Service</h2>
+        <p>Premium Hub is a video streaming platform providing free access to family-friendly content. Users may need to watch advertisements to unlock certain videos.</p>
+        
+        <h2>3. User Conduct</h2>
+        <p>You agree NOT to:</p>
+        <ul>
+            <li>Use our service for any illegal purpose</li>
+            <li>Attempt to hack, disrupt, or damage our service</li>
+            <li>Copy, reproduce, or redistribute our content without permission</li>
+            <li>Use automated tools to access our service</li>
+            <li>Impersonate other users or entities</li>
+        </ul>
+        
+        <h2>4. Content</h2>
+        <p>All content on Premium Hub is provided for entertainment and informational purposes. We do not claim ownership of videos hosted on third-party platforms.</p>
+        
+        <h2>5. Advertisements</h2>
+        <p>Our service is supported by advertisements. By using Premium Hub, you agree to view ads as part of the service.</p>
+        
+        <h2>6. Intellectual Property</h2>
+        <p>The Premium Hub name, logo, and design are our intellectual property. Videos may be subject to third-party copyrights.</p>
+        
+        <h2>7. Disclaimer of Warranties</h2>
+        <p>Our service is provided "as is" without warranties of any kind. We do not guarantee that the service will be uninterrupted or error-free.</p>
+        
+        <h2>8. Limitation of Liability</h2>
+        <p>We shall not be liable for any indirect, incidental, or consequential damages arising from your use of the service.</p>
+        
+        <h2>9. Termination</h2>
+        <p>We reserve the right to terminate or suspend access to our service at any time, without notice, for any reason.</p>
+        
+        <h2>10. Changes to Terms</h2>
+        <p>We may modify these terms at any time. Continued use of the service after changes constitutes acceptance of the new terms.</p>
+        
+        <h2>11. Contact</h2>
+        <p>For questions about these Terms, please contact us through our Telegram channel.</p>
+    </div>
+</div>
+
+<!-- ============ DISCLAIMER PAGE ============ -->
+<div id="disclaimerPage" class="page">
+    <header class="detail-header">
+        <button onclick="goBackHome()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg></button>
+        <h1 class="title">Disclaimer</h1>
+        <div style="width:42px"></div>
+    </header>
+    <div class="policy-content">
+        <h2>General Disclaimer</h2>
+        <p>The information and content on Premium Hub are provided for general entertainment and informational purposes only. We make no warranties about the completeness, reliability, or accuracy of this content.</p>
+        
+        <h2>Content Disclaimer</h2>
+        <p>Premium Hub does not host any videos directly. All videos are embedded from third-party platforms. We are not responsible for the content hosted on those platforms.</p>
+        
+        <h2>External Links</h2>
+        <p>Our app may contain links to external websites. We are not responsible for the content or privacy practices of those websites.</p>
+        
+        <h2>Copyright Notice</h2>
+        <p>If you believe any content on our platform infringes your copyright, please contact us through our Telegram channel. We will respond promptly and take appropriate action.</p>
+        
+        <h2>Fair Use</h2>
+        <p>Some content may be used under the fair use doctrine for educational or informational purposes.</p>
+        
+        <h2>Advertisements</h2>
+        <p>Premium Hub displays third-party advertisements. We are not responsible for the products or services advertised.</p>
+        
+        <h2>Consent</h2>
+        <p>By using Premium Hub, you consent to this disclaimer and agree to its terms.</p>
+    </div>
+</div>
+
+</div>
+
+<!-- BOTTOM BAR -->
 <div id="bottomBar" class="hidden">
     <div class="bottom-inner">
-        <div class="bottom-left"><div class="avatar">PH</div><div><p style="font-size:14px;font-weight:600;color:var(--text-main)">PREMIUM HUB</p><p style="font-size:12px;color:var(--text-sub)">Premium Content</p></div></div>
+        <div class="bottom-left"><div class="avatar">PH</div><div><p style="font-size:14px;font-weight:600;color:var(--text-main)">PREMIUM HUB</p><p style="font-size:12px;color:var(--text-sub)">Free Entertainment</p></div></div>
         <button class="sub-btn">Subscribe</button>
     </div>
 </div>
 
+<!-- ADMIN PANEL -->
 <div id="adminPanel">
     <header class="admin-head">
         <button onclick="closeAdminPanel()" class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
@@ -285,7 +511,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <input type="number" id="globalAdCooldown" class="admin-input" placeholder="5" min="1" max="60">
             <label class="admin-label">🎯 AdsGram Block ID (int-xxx / reward-xxx / task-xxx)</label>
             <input type="text" id="globalAdLink" class="admin-input" placeholder="যেমন: int-52521">
-            <p class="admin-hint">AdsGram Block ID এখানে বসান। অথবা নিচে Adsterra/Adcash কোড থাকলে সেটাও কাজ করবে।</p>
+            <p class="admin-hint">AdsGram Block ID এখানে বসান।</p>
             <label class="admin-label">Ad Code (Adsterra/Adcash - ঐচ্ছিক)</label>
             <textarea id="globalAdCode" class="admin-input" rows="4" placeholder="পুরোনো Adsterra/Adcash কোড থাকলে এখানে"></textarea>
         </div>
@@ -300,6 +526,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </main>
 </div>
 
+<!-- PASSWORD MODAL -->
 <div id="passwordModal" class="modal-overlay">
     <div class="modal-content">
         <h3>🔑 System Verification</h3>
@@ -311,6 +538,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </div>
 </div>
 
+<!-- EDIT VIDEO MODAL -->
 <div id="editVideoModal" class="modal-overlay">
     <div class="modal-content">
         <div class="edit-head">
@@ -322,12 +550,17 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         <input type="text" id="editTitle" class="admin-input">
         <label class="admin-label">Category</label>
         <select id="editCategory" class="admin-input">
-            <option value="viral">Viral</option><option value="mom-son">Mom Son</option>
-            <option value="leaked">Leaked</option><option value="video-call">Video Call</option>
-            <option value="indian">Indian</option><option value="bangladeshi">Bangladeshi</option>
-            <option value="pakistani">Pakistani</option><option value="english">English Full Videos</option>
-            <option value="desi">Desi</option><option value="web-series">18+ Web Series</option>
-            <option value="movies">Movies</option>
+            <option value="movies">Movies 🎬</option>
+            <option value="comedy">Comedy 😂</option>
+            <option value="music">Music 🎵</option>
+            <option value="sports">Sports ⚽</option>
+            <option value="education">Education 📚</option>
+            <option value="news">News 📰</option>
+            <option value="entertainment">Entertainment 🎭</option>
+            <option value="documentary">Documentary 🎥</option>
+            <option value="kids">Kids 👶</option>
+            <option value="tech">Tech 💻</option>
+            <option value="travel">Travel ✈️</option>
         </select>
         <div class="ad-section">
             <p class="ad-section-title">📢 এই ভিডিওর জন্য অ্যাড</p>
@@ -335,11 +568,11 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
                 <div><div class="toggle-label">Enable Ads for this Video</div></div>
                 <div class="toggle-switch" id="editAdEnabled" onclick="this.classList.toggle('on')"></div>
             </div>
-            <label class="admin-label">🎯 AdsGram Block ID (int-xxx / reward-xxx / task-xxx)</label>
+            <label class="admin-label">🎯 AdsGram Block ID</label>
             <input type="text" id="editAdUrl" class="admin-input" placeholder="যেমন: int-52521">
             <p class="admin-hint">খালি রাখলে গ্লোবাল অ্যাড ব্যবহার হবে</p>
             <label class="admin-label">Ad Code (Adsterra/Adcash - ঐচ্ছিক)</label>
-            <textarea id="editAdCode" class="admin-input" rows="4" placeholder="পুরোনো Adsterra/Adcash কোড থাকলে এখানে"></textarea>
+            <textarea id="editAdCode" class="admin-input" rows="4" placeholder="পুরোনো কোড থাকলে এখানে"></textarea>
         </div>
         <div class="img-section">
             <p class="img-section-title">🖼️ ছবি পরিবর্তন</p>
@@ -372,7 +605,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <img id="previewScreenshot3" class="img-preview">
         </div>
         <label class="admin-label">Badge Text / Duration</label>
-        <input type="text" id="editBadgeText" class="admin-input" placeholder="Full Collection or 12:45">
+        <input type="text" id="editBadgeText" class="admin-input" placeholder="HD or 12:45">
         <label class="admin-label">Views</label>
         <input type="number" id="editViews" class="admin-input">
         <label class="admin-label">Likes</label>
@@ -385,6 +618,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     </div>
 </div>
 
+<!-- AD MODAL -->
 <div id="adModal">
     <div class="ad-frame-holder" id="adFrameHolder"></div>
     <div class="ad-counter-toast" id="adCounterToast">1/3</div>
@@ -394,6 +628,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
     <div class="ad-content-wrapper" id="interstitialAdContent"></div>
 </div>
 
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
@@ -410,12 +645,28 @@ window.dispatchEvent(new Event('firebaseReady'));
 // Telegram WebApp init
 try { if (window.Telegram && window.Telegram.WebApp) { window.Telegram.WebApp.ready(); } } catch(e) {}
 
+// ============ CLEAN FAMILY-FRIENDLY DEFAULT DATA ============
 const DEFAULT_VIDEOS = [
-{id:1,title:"নতুন কটি মাল 🍑😍 (Nasmin)",category:"viral",img:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"],screenshots:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],badgeText:"Full Collection",views:4062,likes:45,isLiked:false,videoUrl:"https://example.com/video1",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 নতুন কটি মালের এক্সক্লুসিভ ভিডিও।"},
-{id:2,title:"বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও 😭",category:"viral",img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop"],screenshots:[],badgeText:"12:45",views:4667,likes:68,isLiked:false,videoUrl:"https://example.com/video2",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 বয়ফ্রেন্ডের সাথে হোটেলে কাটানো ১৪টি ভিডিও।"},
-{id:3,title:"মাথা নষ্ট কালেকশন ভিডিও",category:"leaked",img:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:6196,likes:67,isLiked:false,videoUrl:"https://example.com/video3",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 মাথা নষ্ট কালেকশন ভিডিও।"},
-{id:4,title:"Slim Young Bengali Girl - 10",category:"bangladeshi",img:"https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop"],screenshots:[],badgeText:"10:20",views:2853,likes:30,isLiked:false,videoUrl:"https://example.com/video4",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 সম্পূর্ণ ভিডিও।"},
-{id:5,title:"Indian Viral Clip Exclusive",category:"indian",img:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Full Collection",views:8754,likes:120,isLiked:false,videoUrl:"https://example.com/video5",adUrl:"",adCode:"",adEnabled:true,desc:"🔥 Indian Viral Clip।"}
+{id:1,title:"Best Comedy Moments 2024 Collection",category:"comedy",img:"https://images.unsplash.com/photo-1543589077-47d81606c1bf?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1543589077-47d81606c1bf?w=600&h=800&fit=crop"],screenshots:["https://images.unsplash.com/photo-1543589077-47d81606c1bf?w=600&h=800&fit=crop"],badgeText:"HD",views:12400,likes:820,isLiked:false,videoUrl:"https://example.com/video1",adUrl:"",adCode:"",adEnabled:true,desc:"😂 Enjoy the best comedy moments of 2024. Funny clips guaranteed to make you laugh!"},
+{id:2,title:"Top 10 Action Movie Scenes Ever",category:"movies",img:"https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&h=800&fit=crop"],screenshots:[],badgeText:"15:30",views:8900,likes:670,isLiked:false,videoUrl:"https://example.com/video2",adUrl:"",adCode:"",adEnabled:true,desc:"🎬 A compilation of the best action movie scenes from classic films."},
+{id:3,title:"Relaxing Piano Music for Study",category:"music",img:"https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=600&h=800&fit=crop"],screenshots:[],badgeText:"1:00:00",views:22000,likes:1450,isLiked:false,videoUrl:"https://example.com/video3",adUrl:"",adCode:"",adEnabled:true,desc:"🎵 Beautiful relaxing piano music perfect for studying or working."},
+{id:4,title:"Football Match Highlights 2024",category:"sports",img:"https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&h=800&fit=crop"],screenshots:[],badgeText:"08:20",views:15600,likes:980,isLiked:false,videoUrl:"https://example.com/video4",adUrl:"",adCode:"",adEnabled:true,desc:"⚽ Best football match highlights from the latest tournament."},
+{id:5,title:"Learn English in 10 Minutes Daily",category:"education",img:"https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=800&fit=crop"],screenshots:[],badgeText:"10:15",views:34000,likes:2100,isLiked:false,videoUrl:"https://example.com/video5",adUrl:"",adCode:"",adEnabled:true,desc:"📚 Learn English quickly with these simple daily lessons."},
+{id:6,title:"World News Roundup - Today",category:"news",img:"https://images.unsplash.com/photo-1495020689067-958852a7765e?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1495020689067-958852a7765e?w=600&h=800&fit=crop"],screenshots:[],badgeText:"NEW",views:5600,likes:280,isLiked:false,videoUrl:"https://example.com/video6",adUrl:"",adCode:"",adEnabled:true,desc:"📰 Stay updated with the latest world news in this quick roundup."},
+{id:7,title:"Amazing Dance Performance Show",category:"entertainment",img:"https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&h=800&fit=crop"],screenshots:[],badgeText:"HD",views:18900,likes:1230,isLiked:false,videoUrl:"https://example.com/video7",adUrl:"",adCode:"",adEnabled:true,desc:"🎭 Watch this amazing dance performance from talented artists."},
+{id:8,title:"Amazing Nature Documentary Clip",category:"documentary",img:"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=800&fit=crop"],screenshots:[],badgeText:"4K",views:12800,likes:890,isLiked:false,videoUrl:"https://example.com/video8",adUrl:"",adCode:"",adEnabled:true,desc:"🎥 Beautiful nature documentary showcasing wildlife and landscapes."},
+{id:9,title:"Fun Cartoon for Kids - Episode 1",category:"kids",img:"https://images.unsplash.com/photo-1560785496-3c9d27877182?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1560785496-3c9d27877182?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Kids",views:25600,likes:1780,isLiked:false,videoUrl:"https://example.com/video9",adUrl:"",adCode:"",adEnabled:true,desc:"👶 Fun and educational cartoon for kids. Safe and entertaining!"},
+{id:10,title:"Smartphone Review 2024 - Best Picks",category:"tech",img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Tech",views:9800,likes:540,isLiked:false,videoUrl:"https://example.com/video10",adUrl:"",adCode:"",adEnabled:true,desc:"💻 Detailed review of the best smartphones of 2024."},
+{id:11,title:"Travel Vlog - Beautiful Bali Trip",category:"travel",img:"https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1537996736806-a2b7d2b8e6e9?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Vlog",views:7600,likes:420,isLiked:false,videoUrl:"https://example.com/video11",adUrl:"",adCode:"",adEnabled:true,desc:"✈️ Amazing travel vlog from a beautiful Bali vacation."},
+{id:12,title:"Easy Cooking Tutorial - Pasta Recipe",category:"education",img:"https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Recipe",views:11200,likes:730,isLiked:false,videoUrl:"https://example.com/video12",adUrl:"",adCode:"",adEnabled:true,desc:"🍝 Learn to cook delicious pasta with this easy step-by-step tutorial."},
+{id:13,title:"Motivational Speech - Success Tips",category:"education",img:"https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=800&fit=crop"],screenshots:[],badgeText:"HD",views:14500,likes:1050,isLiked:false,videoUrl:"https://example.com/video13",adUrl:"",adCode:"",adEnabled:true,desc:"💪 Powerful motivational speech to help you succeed in life."},
+{id:14,title:"Funny Cat Videos Compilation",category:"comedy",img:"https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Funny",views:28900,likes:2340,isLiked:false,videoUrl:"https://example.com/video14",adUrl:"",adCode:"",adEnabled:true,desc:"😂 Hilarious compilation of funny cat videos. Guaranteed to make you smile!"},
+{id:15,title:"Space Exploration Documentary",category:"documentary",img:"https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=600&h=800&fit=crop"],screenshots:[],badgeText:"4K",views:16700,likes:1120,isLiked:false,videoUrl:"https://example.com/video15",adUrl:"",adCode:"",adEnabled:true,desc:"🚀 Fascinating documentary about space exploration and the universe."},
+{id:16,title:"Cricket Match Best Moments",category:"sports",img:"https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=600&h=800&fit=crop"],screenshots:[],badgeText:"12:40",views:19800,likes:1340,isLiked:false,videoUrl:"https://example.com/video16",adUrl:"",adCode:"",adEnabled:true,desc:"🏏 Top cricket match moments from recent tournaments."},
+{id:17,title:"New Music Video - Latest Song",category:"music",img:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=800&fit=crop"],screenshots:[],badgeText:"New",views:23400,likes:1890,isLiked:false,videoUrl:"https://example.com/video17",adUrl:"",adCode:"",adEnabled:true,desc:"🎵 Check out this brand new music video from a popular artist."},
+{id:18,title:"Programming Tutorial for Beginners",category:"tech",img:"https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Tutorial",views:8800,likes:610,isLiked:false,videoUrl:"https://example.com/video18",adUrl:"",adCode:"",adEnabled:true,desc:"💻 Learn programming basics with this beginner-friendly tutorial."},
+{id:19,title:"Home Workout for Beginners",category:"sports",img:"https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=800&fit=crop"],screenshots:[],badgeText:"15:00",views:13500,likes:920,isLiked:false,videoUrl:"https://example.com/video19",adUrl:"",adCode:"",adEnabled:true,desc:"💪 Easy home workout routine for beginners. No equipment needed!"},
+{id:20,title:"Movie Trailer 2024 - Must Watch",category:"movies",img:"https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&h=800&fit=crop",detailImgs:["https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&h=800&fit=crop"],screenshots:[],badgeText:"Trailer",views:21700,likes:1560,isLiked:false,videoUrl:"https://example.com/video20",adUrl:"",adCode:"",adEnabled:true,desc:"🎬 Official trailer for one of the most anticipated movies of 2024."}
 ];
 
 let allVideos = [];
@@ -440,7 +691,6 @@ let fsDoc, fsSetDoc, fsDeleteDoc, fsOnSnapshot, fsCollection;
 let isInitialLoadDone = false;
 let injectedAdScripts = [];
 let currentPageState = 'home';
-let isAdsGramActive = false;
 
 window.addEventListener('firebaseReady', function() {
     if (window.firebaseReady) {
@@ -525,8 +775,8 @@ function showSync(text, isError) {
 }
 function loadLocal() {
     try {
-        const v = localStorage.getItem('premiumHubVideos_v17');
-        const s = localStorage.getItem('premiumHubSettings_v17');
+        const v = localStorage.getItem('premiumHubVideos_v18');
+        const s = localStorage.getItem('premiumHubSettings_v18');
         allVideos = v ? JSON.parse(v) : JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
         if (s) globalSettings = { ...globalSettings, ...JSON.parse(s) };
         if (!globalSettings.adminPassword) globalSettings.adminPassword = "557822";
@@ -540,8 +790,8 @@ function loadLocal() {
 }
 function saveLocal() {
     try {
-        localStorage.setItem('premiumHubVideos_v17', JSON.stringify(allVideos));
-        localStorage.setItem('premiumHubSettings_v17', JSON.stringify(globalSettings));
+        localStorage.setItem('premiumHubVideos_v18', JSON.stringify(allVideos));
+        localStorage.setItem('premiumHubSettings_v18', JSON.stringify(globalSettings));
     } catch (e) {}
 }
 
@@ -565,7 +815,7 @@ function renderApp() {
             card.className = 'thumb-card';
             card.onclick = () => openDetail(item.id);
             card.innerHTML = `
-                <div class="img-wrapper"><img src="${item.img}" alt="" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 500%22><rect fill=%22%231a331a%22 width=%22400%22 height=%22500%22/><text x=%22200%22 y=%22250%22 fill=%22%23666%22 font-size=%2220%22 text-anchor=%22middle%22>No Image</text></svg>'"></div>
+                <div class="img-wrapper"><img src="${item.img}" alt="${item.title}" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 500%22><rect fill=%22%231a331a%22 width=%22400%22 height=%22500%22/><text x=%22200%22 y=%22250%22 fill=%22%23666%22 font-size=%2220%22 text-anchor=%22middle%22>No Image</text></svg>'"></div>
                 <h3 class="card-title">${item.title}</h3>
                 <div class="card-stats">
                     <div class="stat-views"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg><span id="homeViews_${item.id}">${item.views}</span></div>
@@ -621,7 +871,7 @@ function openDetail(id) {
     const sc = document.getElementById('screenshotsContainer');
     const nb = document.getElementById('noScreenshotBox');
     const ss = (video.screenshots || []).filter(img => img && img.trim() !== '');
-    if (ss.length > 0) { sc.innerHTML = ss.map(img => `<div class="ss-item"><img src="${img}" loading="lazy"></div>`).join(''); sc.style.display = 'flex'; nb.style.display = 'none'; }
+    if (ss.length > 0) { sc.innerHTML = ss.map(img => `<div class="ss-item"><img src="${img}" loading="lazy" alt="Screenshot"></div>`).join(''); sc.style.display = 'flex'; nb.style.display = 'none'; }
     else { sc.innerHTML = ''; sc.style.display = 'none'; nb.style.display = 'block'; }
 
     document.getElementById('videoTitle').textContent = video.title;
@@ -771,17 +1021,6 @@ document.getElementById('categoryContainer').addEventListener('click', function(
 });
 
 // ============ ADSGRAM AD SYSTEM ============
-function detectAdFormat(adCode) {
-    if (!adCode) return 'unknown';
-    const code = adCode.trim().toLowerCase();
-    if (code.startsWith('int-')) return 'adsgram-interstitial';
-    if (code.startsWith('reward-')) return 'adsgram-reward';
-    if (code.startsWith('task-')) return 'adsgram-task';
-    if (code.includes('runinterstitial') || code.includes('aclib') || code.includes('adcash')) return 'legacy-interstitial';
-    if (code.includes('<script') || code.includes('<iframe') || code.includes('<ins')) return 'legacy-banner';
-    return 'unknown';
-}
-
 function isInterstitialCode(code) {
     if (!code) return false;
     const lower = code.toLowerCase();
@@ -792,7 +1031,6 @@ function isInterstitialCode(code) {
     return false;
 }
 
-// AdsGram Task
 function showTaskAd(blockId) {
     const old = document.getElementById('adsgram-task-container');
     if (old) old.remove();
@@ -816,7 +1054,6 @@ function showTaskAd(blockId) {
     document.body.appendChild(taskContainer);
 }
 
-// পুরোনো Interstitial (Adcash)
 function showInterstitialAd(code) {
     const holder = document.getElementById('interstitialAdHolder');
     const content = document.getElementById('interstitialAdContent');
@@ -900,40 +1137,30 @@ function watchAd() {
     }
 
     document.getElementById('adCounterToast').textContent = (adsWatched + 1) + '/' + totalAds;
-
-    // AdsGram Block ID চেক - Ad Direct Link এ দিলে
     const adString = videoAdUrl.trim();
     
-    // AdsGram Interstitial
     if (adString.startsWith('int-')) {
-        isAdsGramActive = true;
         try {
             const controller = window.Adsgram.init({ blockId: adString });
-            controller.show()
-                .then(() => { isAdsGramActive = false; closeAdModal(); })
-                .catch((err) => { isAdsGramActive = false; console.log('AdsGram int error:', err); showOpenVideoButton(); });
-        } catch (e) { isAdsGramActive = false; showOpenVideoButton(); }
+            controller.show().then(() => { closeAdModal(); }).catch(() => { showOpenVideoButton(); });
+        } catch (e) { showOpenVideoButton(); }
         return;
     }
-    // AdsGram Reward
     else if (adString.startsWith('reward-')) {
-        isAdsGramActive = true;
         try {
             const controller = window.Adsgram.init({ blockId: adString });
-            controller.addEventListener('onReward', () => { isAdsGramActive = false; closeAdModal(); });
-            controller.addEventListener('onSkip', () => { isAdsGramActive = false; showOpenVideoButton(); });
-            controller.addEventListener('onError', () => { isAdsGramActive = false; showOpenVideoButton(); });
-            controller.show().catch(() => { isAdsGramActive = false; showOpenVideoButton(); });
-        } catch (e) { isAdsGramActive = false; showOpenVideoButton(); }
+            controller.addEventListener('onReward', () => { closeAdModal(); });
+            controller.addEventListener('onSkip', () => { showOpenVideoButton(); });
+            controller.addEventListener('onError', () => { showOpenVideoButton(); });
+            controller.show().catch(() => { showOpenVideoButton(); });
+        } catch (e) { showOpenVideoButton(); }
         return;
     }
-    // AdsGram Task
     else if (adString.startsWith('task-')) {
         showTaskAd(adString);
         return;
     }
     
-    // পুরোনো সিস্টেমে পড়লে
     if (videoAdCode && videoAdCode.trim() !== '' && isInterstitialCode(videoAdCode)) {
         showInterstitialAd(videoAdCode);
     } else {
@@ -942,10 +1169,8 @@ function watchAd() {
 }
 
 function closeAdModal() {
-    // Task container সরাও
     const taskContainer = document.getElementById('adsgram-task-container');
     if (taskContainer) taskContainer.remove();
-    
     closeInterstitialAd();
     const am = document.getElementById('adModal');
     const holder = document.getElementById('adFrameHolder');
@@ -1052,7 +1277,7 @@ function renderAdminVideoList() {
             else adStatus = '🟡 Global';
         }
         item.innerHTML = `
-            <img src="${video.img}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23333%22 width=%22100%22 height=%22100%22/></svg>'">
+            <img src="${video.img}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23333%22 width=%22100%22 height=%22100%22/></svg>'" alt="thumb">
             <div class="admin-video-info">
                 <p>${video.title}</p>
                 <p>${video.category} • ${video.views}v • ${video.likes}L • ${adStatus}</p>
@@ -1157,7 +1382,7 @@ async function deleteVideo(id) {
 }
 async function addNewVideo() {
     const newId = allVideos.length > 0 ? Math.max(...allVideos.map(v => v.id)) + 1 : 1;
-    const newVideo = {id: newId, title: "New Video Title", category: "viral", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop", detailImgs: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop"], screenshots: [], badgeText: "Full Collection", views: 0, likes: 0, isLiked: false, videoUrl: "", adUrl: "", adCode: "", adEnabled: true, desc: "New video description..."};
+    const newVideo = {id: newId, title: "New Video Title", category: "movies", img: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&h=800&fit=crop", detailImgs: ["https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&h=800&fit=crop"], screenshots: [], badgeText: "HD", views: 0, likes: 0, isLiked: false, videoUrl: "", adUrl: "", adCode: "", adEnabled: true, desc: "Video description..."};
     allVideos.push(newVideo);
     allVideos.sort((a,b) => b.id - a.id);
     saveLocal(); renderAdminVideoList(); renderApp();
