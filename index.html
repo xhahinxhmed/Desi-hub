@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>PREMIUM HUB - Entertainment Videos</title>
-<meta name="monetag" content="983d54f813f6c29bbb49945c0ef1a5a3">
+<meta name="monetag" content="cf17a36c1aa263d4b3ac17a32bb42a2e">
 <meta name="description" content="Premium Hub - Watch free entertainment videos, movies, music, sports and more.">
-<script src='//libtl.com/sdk.js' data-zone='11994828' data-sdk='show_11994828'></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<!-- ✅ Monetag SDK (Rewarded Interstitial) -->
+<script src='//libtl.com/sdk.js' data-zone='11994828' data-sdk='show_11994828'></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg-body:#050a05;--bg-app:#071207;--bg-card:#0c1a0c;--bg-header:rgba(7,18,7,.95);--border-color:#1a331a;--card-border:#14532d;--text-main:#fff;--text-sub:#a3d9a3;--text-muted:#4a6a4a;--primary-green:#00e676}
@@ -139,6 +140,8 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
 .ss-section-title{font-size:12px;font-weight:700;margin-bottom:8px;color:#00aaff}
 .ad-section{margin-top:12px;margin-bottom:8px;padding:12px;border-radius:8px;background:rgba(250,204,21,.08);border:1px dashed #facc15}
 .ad-section-title{font-size:13px;font-weight:700;margin-bottom:8px;color:#facc15;display:flex;align-items:center;gap:6px}
+.monetag-section{margin-top:12px;margin-bottom:8px;padding:12px;border-radius:8px;background:rgba(168,85,247,.08);border:1px dashed #a855f7}
+.monetag-section-title{font-size:13px;font-weight:700;margin-bottom:8px;color:#a855f7;display:flex;align-items:center;gap:6px}
 #adModal{position:fixed;inset:0;background:#000;z-index:5000;display:none;align-items:center;justify-content:center}
 #adModal.active{display:flex}
 #adModal .ad-frame-holder{width:100%;height:100%;position:absolute;inset:0}
@@ -368,6 +371,7 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
         <ul>
             <li>Firebase (for data storage and synchronization)</li>
             <li>AdsGram (for advertising)</li>
+            <li>Monetag (for advertising)</li>
             <li>Telegram WebApp API</li>
         </ul>
         
@@ -513,9 +517,27 @@ footer{text-align:center;padding-bottom:16px;font-size:12px;color:var(--text-mut
             <input type="number" id="globalAdCooldown" class="admin-input" placeholder="5" min="1" max="60">
             <label class="admin-label">🎯 AdsGram Block ID (int-xxx / reward-xxx / task-xxx)</label>
             <input type="text" id="globalAdLink" class="admin-input" placeholder="যেমন: int-52521">
-            <p class="admin-hint">AdsGram Block ID এখানে বসান।</p>
+            <p class="admin-hint">AdsGram Block ID এখানে বসান। খালি রাখলে AdsGram দেখাবে না।</p>
             <label class="admin-label">Ad Code (Adsterra/Adcash - ঐচ্ছিক)</label>
             <textarea id="globalAdCode" class="admin-input" rows="4" placeholder="পুরোনো Adsterra/Adcash কোড থাকলে এখানে"></textarea>
+        </div>
+
+        <!-- ✅ Monetag Global Settings -->
+        <div class="admin-card">
+            <h3>💰 Monetag Ad System</h3>
+            <div class="toggle-row">
+                <div><div class="toggle-label">🟢 Enable Monetag</div><div class="toggle-sub">Primary ad network</div></div>
+                <div class="toggle-switch" id="monetagToggle" onclick="toggleMonetag()"></div>
+            </div>
+            <label class="admin-label">🎯 Monetag Zone ID</label>
+            <input type="text" id="globalMonetagZone" class="admin-input" placeholder="11994828">
+            <p class="admin-hint">Monetag ড্যাশবোর্ড থেকে Zone ID দিন (যেমন: 11994828)। শুধু সংখ্যা।</p>
+            <label class="admin-label">🔧 Ad Format</label>
+            <select id="globalMonetagFormat" class="admin-input">
+                <option value="rewarded_interstitial">Rewarded Interstitial (Recommended)</option>
+                <option value="rewarded_popup">Rewarded Popup</option>
+            </select>
+            <p class="admin-hint">Rewarded Interstitial সিলেক্ট করলে SDK ফাংশন কল হবে।</p>
         </div>
 
         <div class="admin-card">
@@ -673,8 +695,18 @@ const DEFAULT_VIDEOS = [
 
 let allVideos = [];
 let globalSettings = {
-    telegramLink: "https://t.me", adLink: "", adCode: "",
-    adCount: 3, adTimerSeconds: 5, adCooldownSeconds: 5, adSystemEnabled: true,
+    telegramLink: "https://t.me", 
+    adLink: "", 
+    adCode: "",
+    // ✅ Monetag Settings
+    monetagZoneId: "11994828",
+    monetagEnabled: true,
+    monetagFormat: "rewarded_interstitial",
+    // Other settings
+    adCount: 3, 
+    adTimerSeconds: 5, 
+    adCooldownSeconds: 5, 
+    adSystemEnabled: true,
     adminPassword: "557822"
 };
 let currentPage = 1;
@@ -720,6 +752,10 @@ function initFirebaseSync() {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 globalSettings = { ...globalSettings, ...data };
+                // ✅ Ensure Monetag defaults
+                if (!globalSettings.monetagZoneId) globalSettings.monetagZoneId = "11994828";
+                if (globalSettings.monetagEnabled === undefined) globalSettings.monetagEnabled = true;
+                if (!globalSettings.monetagFormat) globalSettings.monetagFormat = "rewarded_interstitial";
                 document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
                 updateAdSystemUI();
                 saveLocal();
@@ -777,8 +813,8 @@ function showSync(text, isError) {
 }
 function loadLocal() {
     try {
-        const v = localStorage.getItem('premiumHubVideos_v18');
-        const s = localStorage.getItem('premiumHubSettings_v18');
+        const v = localStorage.getItem('premiumHubVideos_v19');
+        const s = localStorage.getItem('premiumHubSettings_v19');
         allVideos = v ? JSON.parse(v) : JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
         if (s) globalSettings = { ...globalSettings, ...JSON.parse(s) };
         if (!globalSettings.adminPassword) globalSettings.adminPassword = "557822";
@@ -787,13 +823,17 @@ function loadLocal() {
         if (!globalSettings.adTimerSeconds) globalSettings.adTimerSeconds = 5;
         if (!globalSettings.adCooldownSeconds) globalSettings.adCooldownSeconds = 5;
         if (globalSettings.adCode === undefined) globalSettings.adCode = "";
+        // ✅ Monetag defaults
+        if (!globalSettings.monetagZoneId) globalSettings.monetagZoneId = "11994828";
+        if (globalSettings.monetagEnabled === undefined) globalSettings.monetagEnabled = true;
+        if (!globalSettings.monetagFormat) globalSettings.monetagFormat = "rewarded_interstitial";
         allVideos.sort((a,b) => b.id - a.id);
     } catch (e) { allVideos = JSON.parse(JSON.stringify(DEFAULT_VIDEOS)); }
 }
 function saveLocal() {
     try {
-        localStorage.setItem('premiumHubVideos_v18', JSON.stringify(allVideos));
-        localStorage.setItem('premiumHubSettings_v18', JSON.stringify(globalSettings));
+        localStorage.setItem('premiumHubVideos_v19', JSON.stringify(allVideos));
+        localStorage.setItem('premiumHubSettings_v19', JSON.stringify(globalSettings));
     } catch (e) {}
 }
 
@@ -891,13 +931,22 @@ function openDetail(id) {
     showPage('detail');
 }
 
+// ✅ Helper: check Monetag availability
+function isMonetagAvailable() {
+    if (!globalSettings.monetagEnabled) return false;
+    const zoneId = (globalSettings.monetagZoneId || '').trim();
+    if (!zoneId) return false;
+    return typeof window['show_' + zoneId] === 'function';
+}
+
 function setupUnlockButton(video) {
     const ub = document.getElementById('unlockBtn');
     const videoAdsEnabled = video.adEnabled !== false;
     const globallyEnabled = globalSettings.adSystemEnabled !== false;
     const hasVideoAd = (video.adCode && video.adCode.trim()) || (video.adUrl && video.adUrl.trim());
     const hasGlobalAd = (globalSettings.adCode && globalSettings.adCode.trim()) || (globalSettings.adLink && globalSettings.adLink.trim());
-    const hasAnyAd = hasVideoAd || hasGlobalAd;
+    const hasMonetag = isMonetagAvailable();
+    const hasAnyAd = hasVideoAd || hasGlobalAd || hasMonetag;
 
     if (!globallyEnabled || !videoAdsEnabled || !hasAnyAd) {
         document.getElementById('unlockHeadText').textContent = 'Direct Open';
@@ -1124,50 +1173,97 @@ function showBannerAd(code, url) {
     adTimerInterval = setTimeout(() => { closeAdModal(); }, viewTime * 1000);
 }
 
-function watchAd() {
-    if (adsWatched >= totalAds) return;
-    if (adCooldownInterval) return;
-    const video = allVideos.find(v => v.id === currentVideoId);
-    if (!video) return;
+// ✅ NEW: Monetag ad caller
+function callMonetagAd(video) {
+    const zoneId = (globalSettings.monetagZoneId || '').trim();
+    if (!zoneId) { fallbackAd(video); return false; }
+    const showFn = window['show_' + zoneId];
+    if (typeof showFn !== 'function') {
+        console.warn('Monetag function not found: show_' + zoneId);
+        fallbackAd(video);
+        return false;
+    }
+    document.getElementById('adCounterToast').textContent = (adsWatched + 1) + '/' + totalAds;
+    try {
+        const result = showFn();
+        if (result && typeof result.then === 'function') {
+            result.then(() => {
+                // ✅ অ্যাড সফল — reward দিন
+                console.log('Monetag ad watched successfully');
+                closeAdModal();
+            }).catch((err) => {
+                // ❌ ইউজার স্কিপ করল বা অ্যাড ফেইল
+                console.log('Monetag ad failed/skipped:', err);
+                fallbackAd(video);
+            });
+        } else {
+            // কিছু পুরোনো Monetag ভার্সনে Promise রিটার্ন করে না
+            // সেক্ষেত্রে সফল ধরলাম
+            setTimeout(() => { closeAdModal(); }, (globalSettings.adTimerSeconds || 5) * 1000);
+        }
+        return true;
+    } catch (e) {
+        console.error('Monetag call error:', e);
+        fallbackAd(video);
+        return false;
+    }
+}
 
+// ✅ Fallback chain: AdsGram → Custom Code → Open Video
+function fallbackAd(video) {
     const videoAdUrl = (video.adUrl && video.adUrl.trim() !== '') ? video.adUrl : (globalSettings.adLink || "");
     const videoAdCode = (video.adCode && video.adCode.trim() !== '') ? video.adCode : (globalSettings.adCode || "");
 
-    if ((!videoAdCode || videoAdCode.trim() === '') && (!videoAdUrl || videoAdUrl.trim() === '')) {
-        openVideoLink(video.videoUrl);
-        return;
-    }
-
-    document.getElementById('adCounterToast').textContent = (adsWatched + 1) + '/' + totalAds;
-    const adString = videoAdUrl.trim();
-    
+    // AdsGram check
+    const adString = (videoAdUrl || '').trim();
     if (adString.startsWith('int-')) {
         try {
             const controller = window.Adsgram.init({ blockId: adString });
             controller.show().then(() => { closeAdModal(); }).catch(() => { showOpenVideoButton(); });
-        } catch (e) { showOpenVideoButton(); }
-        return;
+            return;
+        } catch (e) { showOpenVideoButton(); return; }
     }
-    else if (adString.startsWith('reward-')) {
+    if (adString.startsWith('reward-')) {
         try {
             const controller = window.Adsgram.init({ blockId: adString });
             controller.addEventListener('onReward', () => { closeAdModal(); });
             controller.addEventListener('onSkip', () => { showOpenVideoButton(); });
             controller.addEventListener('onError', () => { showOpenVideoButton(); });
             controller.show().catch(() => { showOpenVideoButton(); });
-        } catch (e) { showOpenVideoButton(); }
-        return;
+            return;
+        } catch (e) { showOpenVideoButton(); return; }
     }
-    else if (adString.startsWith('task-')) {
+    if (adString.startsWith('task-')) {
         showTaskAd(adString);
         return;
     }
-    
+    // Custom code
     if (videoAdCode && videoAdCode.trim() !== '' && isInterstitialCode(videoAdCode)) {
         showInterstitialAd(videoAdCode);
-    } else {
-        showBannerAd(videoAdCode, videoAdUrl);
+        return;
     }
+    if (videoAdCode && videoAdCode.trim() !== '') {
+        showBannerAd(videoAdCode, videoAdUrl);
+        return;
+    }
+    // কিছুই নেই — সরাসরি ওপেন
+    showOpenVideoButton();
+}
+
+function watchAd() {
+    if (adsWatched >= totalAds) return;
+    if (adCooldownInterval) return;
+    const video = allVideos.find(v => v.id === currentVideoId);
+    if (!video) return;
+
+    // ✅ 1. Monetag প্রায়োরিটি — সবার আগে চেষ্টা
+    if (isMonetagAvailable()) {
+        const called = callMonetagAd(video);
+        if (called) return;
+    }
+
+    // ✅ 2. Fallback: AdsGram / Custom Code
+    fallbackAd(video);
 }
 
 function closeAdModal() {
@@ -1249,16 +1345,28 @@ function verifyAdminPassword() {
         document.getElementById('globalAdCount').value = globalSettings.adCount || 3;
         document.getElementById('globalAdCooldown').value = globalSettings.adCooldownSeconds || 5;
         document.getElementById('globalAdminPassword').value = '';
+        // ✅ Monetag fields populate
+        document.getElementById('globalMonetagZone').value = globalSettings.monetagZoneId || '11994828';
+        document.getElementById('globalMonetagFormat').value = globalSettings.monetagFormat || 'rewarded_interstitial';
         updateAdSystemUI();
+        updateMonetagUI();
         currentPageState = 'admin';
         try { history.pushState({page:'admin'}, '', '#admin'); } catch(e) {}
     } else { alert('❌ Incorrect Code! Try again.'); document.getElementById('adminPasswordInput').value = ''; }
 }
 function closeAdminPanel() { document.getElementById('adminPanel').classList.remove('active'); document.body.style.overflow = ''; currentPageState = 'home'; }
 function updateAdSystemUI() { const t = document.getElementById('adToggle'); if (!t) return; if (globalSettings.adSystemEnabled) t.classList.add('on'); else t.classList.remove('on'); }
+function updateMonetagUI() { const t = document.getElementById('monetagToggle'); if (!t) return; if (globalSettings.monetagEnabled) t.classList.add('on'); else t.classList.remove('on'); }
 async function toggleAdSystem() {
     globalSettings.adSystemEnabled = !globalSettings.adSystemEnabled;
     updateAdSystemUI(); saveLocal();
+    showSync('☁️ Syncing...');
+    const ok = await saveSettingsToCloud();
+    if (ok) showSync('✅ Synced'); else showSync('⚠️ Sync failed', true);
+}
+async function toggleMonetag() {
+    globalSettings.monetagEnabled = !globalSettings.monetagEnabled;
+    updateMonetagUI(); saveLocal();
     showSync('☁️ Syncing...');
     const ok = await saveSettingsToCloud();
     if (ok) showSync('✅ Synced'); else showSync('⚠️ Sync failed', true);
@@ -1399,6 +1507,9 @@ async function saveAllChanges() {
     globalSettings.adCode = document.getElementById('globalAdCode').value;
     globalSettings.adCount = parseInt(document.getElementById('globalAdCount').value) || 3;
     globalSettings.adCooldownSeconds = parseInt(document.getElementById('globalAdCooldown').value) || 5;
+    // ✅ Monetag settings
+    globalSettings.monetagZoneId = (document.getElementById('globalMonetagZone').value || '').trim();
+    globalSettings.monetagFormat = document.getElementById('globalMonetagFormat').value || 'rewarded_interstitial';
     const newPass = document.getElementById('globalAdminPassword').value;
     if (newPass && newPass.trim() !== '') globalSettings.adminPassword = newPass.trim();
     saveLocal();
@@ -1466,8 +1577,19 @@ loadLocal();
 renderApp();
 document.getElementById('sidebarTelegramLink').href = globalSettings.telegramLink;
 updateAdSystemUI();
+updateMonetagUI();
 try { history.replaceState({page:'home'}, '', window.location.pathname); } catch(e) {}
 setTimeout(hideLoading, 4000);
+
+// ✅ Extra: Monetag SDK check (পর্যবেক্ষণ)
+setTimeout(function() {
+    const zoneId = (globalSettings.monetagZoneId || '11994828').trim();
+    if (typeof window['show_' + zoneId] === 'function') {
+        console.log('✅ Monetag SDK loaded. Function: show_' + zoneId);
+    } else {
+        console.warn('⚠️ Monetag SDK not loaded yet. Function show_' + zoneId + ' not found.');
+    }
+}, 3000);
 </script>
 </body>
 </html>
